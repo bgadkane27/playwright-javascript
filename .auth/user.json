@@ -1,0 +1,35 @@
+{
+  "cookies": [
+    {
+      "name": "returnDomain",
+      "value": "testerp.onenfinity.com",
+      "domain": "testlogin.onenfinity.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": ".TESTAUTH",
+      "value": "5BA67CAAA7227D78F8EFE334615E47D3DBD9262A084F6F587BC5AC005EAC030ED6E854AA47734F961FB2EC3E88FA80ED7D1AA024C271F0ABC734AD1983073ACB3A3285B69056F158602A260625581E7B2A912F01DAD02026F50455F7C827FFCADBE1D3C26E17F662440DB58048935A2BCC9A24DD1591EC20FFD4959B5B98D2F30BD32366C9EBA9232132ECA9F9FBA9C14CEC8DEF",
+      "domain": ".onenfinity.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://testerp.onenfinity.com",
+      "localStorage": [
+        {
+          "name": "refresh_notification_55f8425d-e9b7-456e-82dc-f1c8b5ec023f",
+          "value": "Sat Dec 13 2025 22:15:14 GMT+0530 (India Standard Time)"
+        }
+      ]
+    }
+  ]
+}
