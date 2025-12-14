@@ -53,4 +53,20 @@ test.describe.serial('Salesman CRUD Operations', () => {
             await salesmanPage.clickOnSalesman();
         }
     });
+
+    test('delete salesman', async ({ page }) => {
+        await commonAction.clickOnLeftMenuOption('Setups');
+        await salesSetupPage.clickOnSalesman();
+
+        for (const salesman of salesmanData.Delete) {
+            await commonAction.provideMasterNameOnList(salesman.Name);
+            await commonAction.selectMasterFromList(salesman.Name);
+
+            await commonAction.clickOnMenu();
+            await commonAction.clickOnDelete();
+            await commonAction.clickOnOk();
+
+            await commonAction.clickOnListingItem('Refresh');
+        }
+    });
 });

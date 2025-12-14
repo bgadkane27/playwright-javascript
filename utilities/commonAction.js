@@ -55,4 +55,28 @@ export class CommonAction {
     async clickOnTopMenuOption(optionName) {
         await this.page.getByText(optionName, { exact: true }).click();
     }
+
+    async provideMasterNameOnList(masterName) {
+        await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async selectMasterFromList(masterName) {
+        // await this.page.getByText(masterName, { exact: true }).click();
+        await this.page.locator('.salesman-column').filter({ hasText: masterName }).click();
+    }
+
+    async clickOnMenu(){
+        await this.page.locator('img[alt="..."]').click();
+        await this.page.waitForTimeout(5000);
+    }
+
+    async clickOnDelete(){
+        await this.page.getByText('Delete').click();
+        await this.page.waitForLoadState('domcontentloaded');
+    }
+
+    async clickOnOk(){
+        await this.page.getByText('Ok', { exact: true }).click();
+    }
 }
