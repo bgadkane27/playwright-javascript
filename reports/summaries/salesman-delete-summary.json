@@ -1,0 +1,12 @@
+{
+  "module": "salesman",
+  "totalAttempted": 2,
+  "deletedCount": 0,
+  "skippedCount": 2,
+  "deletedRecords": [],
+  "skippedRecords": [
+    "Ali Khan",
+    "Adil Tamer"
+  ],
+  "executedAt": "15/12/2025, 11:08:13 pm"
+}

@@ -76,8 +76,20 @@ export class CommonAction {
         await this.page.getByText(optionName, { exact: true }).click();
     }
 
+    // async provideMasterNameOnList(masterName) {
+    //     await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
+    //     await this.page.waitForTimeout(1000);
+    // }
     async provideMasterNameOnList(masterName) {
-        await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
+        const searchInput = this.page.locator('input[aria-describedby="dx-col-3"]');
+
+        // 🧹 Clear existing value
+        await searchInput.fill('');
+
+        // ✍️ Type new master name
+        await searchInput.fill(masterName);
+
+        // ⏳ Small wait for grid refresh (if required)
         await this.page.waitForTimeout(1000);
     }
 
