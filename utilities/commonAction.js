@@ -52,19 +52,39 @@ export class CommonAction {
         await input.fill(value);
     }
 
+    async fillCode(value) {
+        const input = this.page.getByRole('textbox', { name: 'Code', exact: true })
+        await input.fill(value);
+    }
+
+    async fillName(value) {
+        const input = this.page.getByRole('textbox', { name: 'Name', exact: true })
+        await input.fill(value);
+    }
+
+    async fillNameArabic(value) {
+        const input = this.page.getByRole('textbox', { name: 'Name (Arabic)', exact: true })
+        await input.fill(value);
+    }
+
+    async fillDescription(value) {
+        const input = this.page.getByRole('textbox', { name: 'Description', exact: true })
+        await input.fill(value);
+    }
+
     async clickOnTopMenuOption(optionName) {
         await this.page.getByText(optionName, { exact: true }).click();
     }
 
     async provideMasterNameOnList(masterName) {
         await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(1000);
     }
 
     async selectMasterFromList(masterName) {
         // await this.page.getByText(masterName, { exact: true }).click();
         await this.page.locator('.salesman-column').filter({ hasText: masterName }).click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
     }
 
     /**
@@ -79,16 +99,16 @@ export class CommonAction {
 
     async clickOnMenu() {
         await this.page.locator('img[alt="..."]').click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
     }
 
     async clickOnDelete() {
         await this.page.getByText('Delete', { exact: true }).click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
     }
 
     async clickOnOk() {
         await this.page.getByText('Ok', { exact: true }).click();
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(500);
     }
 }

@@ -1,50 +1,48 @@
 import { test, expect } from '@playwright/test'
-import { CommonAction } from '../../utilities/commonAction';
-import { SalesSetupPage } from '../../pages/sales/salessetupPage';
-import { SalesmanPage } from '../../pages/sales/salesmanPage';
-import { LookupHelper } from '../../helpers/lookupHelpers';
-import salesmanData from '../../testdata/sales/salesman.json';
+import { CommonAction } from '../../utilities/CommonAction';
+import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
+import { SalesmanPage } from '../../pages/sales/SalesmanPage';
+import LookupHelper from '../../helpers/LookupHelper.js';
+import salesmanData from '../../testdata/sales/salesmanData.json';
 
 test.describe.serial('Salesman CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
     let salesmanPage;
-    let lookupHelper;
 
     test.beforeEach(async ({ page }) => {
         commonAction = new CommonAction(page);
         salesSetupPage = new SalesSetupPage(page);
         salesmanPage = new SalesmanPage(page);
-        lookupHelper = new LookupHelper(page);
         await commonAction.navigateToApp('/');
         await commonAction.selectModule('Sales');
     });
 
-    test('create salesman', async ({ page }) => {
+    test('should able to create new salesman', async ({ page }) => {
 
         await commonAction.clickOnLeftMenuOption('Setups');
         await salesSetupPage.clickOnSalesman();
 
-        for (const salesman of salesmanData.Info) {
+        for (const salesman of salesmanData.create) {
             await commonAction.clickOnListingItem('New');
 
-            if (salesmanData.Feature.AllowCodeManual && salesman.Code) {
-                await commonAction.fillField('Code', salesman.Code);
+            if (salesmanData.feature.allowCodeManual && salesman.code) {
+                await commonAction.fillCode(salesman.code);
             }
 
-            await commonAction.fillField('Name', salesman.Name);
-            await commonAction.fillField('Name (Arabic)', salesman.NameArabic);
-            await commonAction.fillField('Description', salesman.Description);
+            await commonAction.fillName(salesman.name);
+            await commonAction.fillNameArabic(salesman.nameArabic);
+            await commonAction.fillDescription(salesman.description);
 
-            if (salesman.Other) {
+            if (salesman.other) {
                 await salesmanPage.clickOnOtherGird();
                 await salesmanPage.clickOnType();
-                await lookupHelper.selectLookupBoxItemRow(salesman.Other.Type);
-                await salesmanPage.fillSalesCommissionInPercent(salesman.Other.SalesCommissionInPercent);
-                await salesmanPage.fillTitle(salesman.Other.Title);
-                await salesmanPage.fillEmail(salesman.Other.Email);
-                await salesmanPage.fillExtension(salesman.Other.Extension);
-                await salesmanPage.fillMobile(salesman.Other.Mobile);
+                await LookupHelper.selectLookupBoxItemRow(page, salesman.other.type);
+                await salesmanPage.fillSalesCommissionInPercent(salesman.other.salesCommissionInPercent);
+                await salesmanPage.fillTitle(salesman.other.title);
+                await salesmanPage.fillEmail(salesman.other.email);
+                await salesmanPage.fillExtension(salesman.other.extension);
+                await salesmanPage.fillMobile(salesman.other.mobile);
             }
 
             await commonAction.clickOnTopMenuOption('Save');
@@ -54,13 +52,13 @@ test.describe.serial('Salesman CRUD Operations', () => {
         }
     });
 
-    test('delete salesman', async ({ page }) => {
+    test('should able to delete salesman', async ({ page }) => {
         await commonAction.clickOnLeftMenuOption('Setups');
         await salesSetupPage.clickOnSalesman();
 
-        for (const salesman of salesmanData.Delete) {
-            await commonAction.provideMasterNameOnList(salesman.Name);
-            await commonAction.selectMasterFromList(salesman.Name);
+        for (const salesman of salesmanData.delete) {
+            await commonAction.provideMasterNameOnList(salesman.name);
+            await commonAction.selectMasterFromList(salesman.name);
 
             await commonAction.clickOnMenu();
             await commonAction.clickOnDelete();
