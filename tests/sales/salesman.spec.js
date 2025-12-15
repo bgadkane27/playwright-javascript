@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { CommonAction } from '../../utilities/CommonAction';
+import { CommonAction } from '../../utilities/commonAction';
 import { SalesSetupPage } from '../../pages/sales/salessetupPage';
 import { SalesmanPage } from '../../pages/sales/salesmanPage';
 import { LookupHelper } from '../../helpers/lookupHelpers';

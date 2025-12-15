@@ -58,25 +58,37 @@ export class CommonAction {
 
     async provideMasterNameOnList(masterName) {
         await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
-        await this.page.waitForLoadState('domcontentloaded');
+        await this.page.waitForTimeout(2000);
     }
 
     async selectMasterFromList(masterName) {
         // await this.page.getByText(masterName, { exact: true }).click();
         await this.page.locator('.salesman-column').filter({ hasText: masterName }).click();
+        await this.page.waitForTimeout(1000);
     }
 
-    async clickOnMenu(){
+    /**
+ * Select grid row by any identifying text
+ * @param {string} identifier - Any text in the row to identify it
+ */
+    async selectGridRow(identifier) {
+        const row = this.page.getByRole('row').filter({ hasText: identifier });
+        await row.hover();
+        await row.click();
+    }
+
+    async clickOnMenu() {
         await this.page.locator('img[alt="..."]').click();
-        await this.page.waitForTimeout(5000);
+        await this.page.waitForTimeout(1000);
     }
 
-    async clickOnDelete(){
-        await this.page.getByText('Delete').click();
-        await this.page.waitForLoadState('domcontentloaded');
+    async clickOnDelete() {
+        await this.page.getByText('Delete', { exact: true }).click();
+        await this.page.waitForTimeout(1000);
     }
 
-    async clickOnOk(){
+    async clickOnOk() {
         await this.page.getByText('Ok', { exact: true }).click();
+        await this.page.waitForTimeout(1000);
     }
 }
