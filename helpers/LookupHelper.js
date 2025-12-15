@@ -1,6 +1,6 @@
 export default class LookupHelper {
   static async selectLookupBoxItemRow(page, optionText) {
-    const rows = page.locator("//tr[@class='dxeListBoxItemRow_Office365']");
+    const rows = page.locator("tr.dxeListBoxItemRow_Office365");
 
     const count = await rows.count();
 
