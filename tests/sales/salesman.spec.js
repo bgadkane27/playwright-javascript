@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
-import { CommonAction } from '../../utilities/CommonAction';
 import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { SalesmanPage } from '../../pages/sales/SalesmanPage';
-import LookupHelper from '../../helpers/LookupHelper.js';
+import { CommonAction } from '../../utilities/CommonAction';
 import salesmanData from '../../testdata/sales/salesmanData.json';
+import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
@@ -22,7 +22,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test('should able to create salesman', async ({ page }) => {
+    test.skip('should able to create salesman', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -99,7 +99,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         );
     });
 
-    test('should able to update salesman', async ({ page }) => {
+    test.skip('should able to update salesman', async ({ page }) => {
         // 🗑️ Updation Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];

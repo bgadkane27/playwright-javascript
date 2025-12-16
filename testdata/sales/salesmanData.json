@@ -34,11 +34,26 @@
   ],
   "update": [
     {
+      "code": "SM05",
+      "name": "Adil Tamer",
+      "updatedName": null,
+      "nameArabic": "Adil Tamer Updated",
+      "description": null,
+      "other": {
+        "type": "Collector Only",
+        "salesCommissionInPercent": 10,
+        "title": null,
+        "email": null,
+        "extension": null,
+        "mobile": null
+      }
+    },
+    {
       "code": "SM06",
       "name": "Ali Khan",
       "updatedName": null,
       "nameArabic": "Ali Khan Updated",
-      "description": "Updated Regional Sales Manager",
+      "description": "Regional Sales Manager Updated",
       "other": {
         "type": "Salesman Only",
         "salesCommissionInPercent": 10,

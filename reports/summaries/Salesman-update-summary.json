@@ -1,12 +1,13 @@
 {
   "module": "Salesman",
   "action": "Update",
-  "totalRecordsAttempted": 1,
-  "successCount": 1,
+  "totalRecordsAttempted": 2,
+  "successCount": 2,
   "skippedCount": 0,
   "successRecords": [
+    "Adil Tamer",
     "Ali Khan"
   ],
   "skippedRecords": [],
-  "executedAt": "16/12/2025, 6:54:15 pm"
+  "executedAt": "16/12/2025, 10:06:02 pm"
 }
