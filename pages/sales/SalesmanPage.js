@@ -24,6 +24,8 @@ export class SalesmanPage {
   }
 
   async fillSalesCommissionInPercent(value) {
+    var salesCommissionInPercent = this.salesCommissionInPercent;
+    salesCommissionInPercent.clear();
     await this.salesCommissionInPercent.fill(String(value));
   }
 

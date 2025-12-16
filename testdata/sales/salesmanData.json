@@ -35,16 +35,17 @@
   "update": [
     {
       "code": "SM06",
-      "name": "Ali Khan Updated",
+      "name": "Ali Khan",
+      "updatedName": null,
       "nameArabic": "Ali Khan Updated",
       "description": "Updated Regional Sales Manager",
       "other": {
         "type": "Salesman Only",
-        "salesCommissionInPercent": 6,
-        "title": "Mr.",
-        "email": "ali.khan.updated@example.com",
-        "extension": "201",
-        "mobile": "9650000010"
+        "salesCommissionInPercent": 10,
+        "title": null,
+        "email": null,
+        "extension": null,
+        "mobile": null
       }
     }
   ],

@@ -70,7 +70,7 @@ export default class SummaryHelper {
     body { font-family: Arial; padding: 20px; }
     h1 { color: #000; }
     .success { color: green; }
-    .failed { color: orange; }
+    .failed { color: red; }
     ol { margin-left: 20px; }
   </style>
 </head>
@@ -80,7 +80,7 @@ export default class SummaryHelper {
   <p><b>Total Records Attempted:</b> ${summary.totalRecordsAttempted}</p>
   <p class="success"><b>Success:</b> ${summary.successCount}</p>
 
-  <h3 class="success">✅ Successful Records</h3>
+  <h3 class="success">✅ ${summary.action}d Records</h3>
   <ol>
     ${summary.successRecords.map(r => `<li>${r}</li>`).join('')}
   </ol>
