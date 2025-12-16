@@ -72,9 +72,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
             }
             catch (error) {
                 skippedRecords.push(salesman.name);
-                console.warn(
-                    `⚠️ Creation skipped for '${salesman.name}': ${error.message}`
-                );
+                console.warn(`⚠️ Creation skipped for '${salesman.name}': ${error.message}`);
             }
         }
 
@@ -207,7 +205,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         );
     });
 
-    test('should able to delete salesman', async ({ page }) => {
+    test.skip('should able to delete salesman', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

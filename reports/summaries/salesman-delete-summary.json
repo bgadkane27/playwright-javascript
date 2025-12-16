@@ -2,12 +2,12 @@
   "module": "Salesman",
   "action": "Delete",
   "totalRecordsAttempted": 2,
-  "successCount": 2,
-  "skippedCount": 0,
-  "successRecords": [
+  "successCount": 0,
+  "skippedCount": 2,
+  "successRecords": [],
+  "skippedRecords": [
     "Ali Khan",
     "Adil Tamer"
   ],
-  "skippedRecords": [],
-  "executedAt": "16/12/2025, 10:07:45 pm"
+  "executedAt": "16/12/2025, 11:19:15 pm"
 }

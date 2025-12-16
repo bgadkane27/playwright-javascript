@@ -45,7 +45,7 @@ export class CommonAction {
      */
     async clickOnListingItem(itemName) {
         await this.page.locator(`li[title="${itemName}"]`).click();
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForTimeout(3000);
     }
 
     async fillField(label, value) {
@@ -116,6 +116,16 @@ export class CommonAction {
 
     async clickOnOk() {
         await this.page.getByText('Ok', { exact: true }).click();
+        await this.page.waitForTimeout(500);
+    }
+
+    async clickOnBankAccount() {
+        await this.page.locator("//td[contains(@id, '.BankAccountIdLookup_B-1')]").click();
+        await this.page.waitForTimeout(500);
+    }
+
+    async clickOnMainAccount() {
+        await this.page.locator("//td[contains(@id, '.MainAccountIdLookup_B-1')]").click();
         await this.page.waitForTimeout(500);
     }
 }

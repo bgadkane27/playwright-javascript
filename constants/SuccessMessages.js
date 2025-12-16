@@ -5,6 +5,12 @@ const SuccessMessages = {
         Delete: 'Record deleted successfully!'
     },
 
+    PaymentMethod: {
+        Create: 'Payment Method created successfully!',
+        Update: 'Payment Method updated successfully',
+        Delete: 'Record deleted successfully!'
+    },
+
     Customer: {
         Create: 'Customer created successfully',
         Update: 'Customer updated successfully',

@@ -1,0 +1,63 @@
+{
+    "feature": {
+        "allowCodeManual": false
+    },
+    "create": [
+        {
+            "code": "PM001",
+            "name": "Debit Card",
+            "nameArabic": "بطاقة الائتمان",
+            "type": "Debit Card",
+            "bankAccount": "Cash-in-Hand",
+            "description": "Payment by Visa / MasterCard"
+        },
+        {
+            "code": "PM002",
+            "name": "Credit Card",
+            "nameArabic": "بطاقة الائتمان",
+            "type": "Credit Card",
+            "bankAccount": "Cash-in-Hand",
+            "description": "Payment by Visa / MasterCard"
+        },
+        {
+            "code": "PM003",
+            "name": "Loyalty Card",
+            "nameArabic": "التحويل المصرفي",
+            "type": "Loyalty",
+            "mainAccount": "11110 | Cash-in-Hand",
+            "description": "Payment by Loyalty Card"
+        },
+        {
+            "code": "PM004",
+            "name": "Credit Note",
+            "nameArabic": "التحويل المصرفي",
+            "type": "Credit Note",
+            "mainAccount": "11110 | Cash-in-Hand",
+            "description": "Payment by Credit Note"
+        }
+    ],
+    "update": [
+        {
+            "code": "PM004",
+            "name": "Credit Note - Updated",
+            "nameArabic": "بطاقة الائتمان - محدثة",
+            "type": "Credit Note",
+            "mainAccount": "11110 | Cash-in-Hand",
+            "description": "Updated: Payment by Credit Note"
+        }
+    ],
+    "delete": [
+        {
+            "name": "Credit Note"
+        },
+        {
+            "name": "Loyalty Card"
+        },
+        {
+            "name": "Credit Card"
+        },
+        {
+            "name": "Debit Card"
+        }
+    ]
+}
