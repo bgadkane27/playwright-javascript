@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { SalesmanPage } from '../../pages/sales/SalesmanPage';
 import { CommonAction } from '../../utilities/CommonAction';
-import salesmanData from '../../testdata/sales/salesmanData.json';
+import salesmanData from '../../testdata/sales/salesman-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
