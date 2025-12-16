@@ -45,6 +45,7 @@ export class CommonAction {
      */
     async clickOnListingItem(itemName) {
         await this.page.locator(`li[title="${itemName}"]`).click();
+        await this.page.waitForTimeout(2000);
     }
 
     async fillField(label, value) {
@@ -75,20 +76,9 @@ export class CommonAction {
     async clickOnTopMenuOption(optionName) {
         await this.page.getByText(optionName, { exact: true }).click();
     }
-
-    // async provideMasterNameOnList(masterName) {
-    //     await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
-    //     await this.page.waitForTimeout(1000);
-    // }
+    
     async provideMasterNameOnList(masterName) {
-        const searchInput = this.page.locator('input[aria-describedby="dx-col-3"]');
-
-        // 🧹 Clear existing value
-        await searchInput.fill('');
-
-        // ✍️ Type new master name
-        await searchInput.fill(masterName);
-
+        await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
         // ⏳ Small wait for grid refresh (if required)
         await this.page.waitForTimeout(1000);
     }
@@ -98,6 +88,11 @@ export class CommonAction {
         await this.page.locator('.salesman-column').filter({ hasText: masterName }).click();
         await this.page.waitForTimeout(500);
     }
+
+    async clearMasterNameFilter() {
+    // Option 1: Clear the search input
+    await this.page.locator('input[aria-describedby="dx-col-3"]').clear(); 
+}
 
     /**
  * Select grid row by any identifying text

@@ -19,7 +19,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create new salesman', async ({ page }) => {
+    test('should able to create salesman', async ({ page }) => {
 
         await commonAction.clickOnLeftMenuOption('Setups');
         await salesSetupPage.clickOnSalesman();
@@ -51,7 +51,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
 
             await salesmanPage.clickOnSalesman();
         }
-    });
+    });    
 
     test('should able to delete salesman', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
@@ -64,7 +64,18 @@ test.describe.serial('Salesman CRUD Operations', () => {
         // Iterate through each salesman to delete
         for (const salesman of salesmanData.delete) {
             try {
+                // provide master name on List to search record
                 await commonAction.provideMasterNameOnList(salesman.name);
+
+                // Check if the record exists before proceeding with deletion
+                const recordExists = await page.locator(`text=${salesman.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                if (!recordExists) {
+                    console.warn(`⚠️ Record '${salesman.name}' not found - deletion skipped.`);
+                    skippedRecords.push(salesman.name);
+                    continue;
+                }
+
+                // Proceed with deletion if record exists
                 await commonAction.selectMasterFromList(salesman.name);
                 await commonAction.clickOnMenu();
                 await commonAction.clickOnDelete();
@@ -72,46 +83,26 @@ test.describe.serial('Salesman CRUD Operations', () => {
 
                 // ✅ Validate deleted message
                 await expect(page.getByText('Record deleted successfully!').first()).toBeVisible();
+
+                // Track successful deletion
                 deletedRecords.push(salesman.name);
 
-                await commonAction.clickOnListingItem('Refresh');
+                // Refresh the list to reflect deletion
+                // await commonAction.clickOnListingItem('Refresh');
+
             } catch (error) {
                 skippedRecords.push(salesman.name);
-                console.warn(`⚠️ Deletion skipped for '${salesman.name}': ${error.message}`);
+                console.warn(`⚠️ Deletion failed for '${salesman.name}': ${error.message}`);
+
+                // Clear the search filter before continuing to next record
+                try {
+                    await commonAction.clearMasterNameFilter(); // Or reset the filter
+                } catch (clearError) {
+                    console.warn(`⚠️ Could not clear filter: ${clearError.message}`);
+                }
                 continue;
-            }            
+            }
         }
-        // for (const salesman of salesmanData.delete) {
-        //     try {
-        //         // 🔍 Step 1: Search & select record
-        //         try {
-        //             await commonAction.provideMasterNameOnList(salesman.name);
-        //             await commonAction.selectMasterFromList(salesman.name);
-        //         } catch (error) {
-        //             skippedRecords.push(salesman.name);
-        //             console.warn(`🚫 Record not found: '${salesman.name}'`);
-        //             continue; // ⏭️ move to next record
-        //         }
-
-        //         // 🗑️ Step 2: Delete
-        //         await commonAction.clickOnMenu();
-        //         await commonAction.clickOnDelete();
-        //         await commonAction.clickOnOk();
-
-        //         // ✅ Validate success
-        //         await expect(
-        //             page.getByText('Record deleted successfully!').first()
-        //         ).toBeVisible();
-
-        //         deletedRecords.push(salesman.name);
-
-        //         await commonAction.clickOnListingItem('Refresh');
-        //     } catch (error) {
-        //         skippedRecords.push(salesman.name);
-        //         console.warn(`⚠️ Deletion failed for '${salesman.name}': ${error.message}`);
-        //         continue;
-        //     }
-        // }
 
         // 📊 Summary Report
         console.log('==========🧾 Salesman Delete Summary ==========');
@@ -128,7 +119,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportDeleteSummary(
-            'salesman',
+            'Salesman',
             deletedRecords,
             skippedRecords
         );
