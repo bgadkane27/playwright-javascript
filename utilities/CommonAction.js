@@ -54,23 +54,27 @@ export class CommonAction {
     }
 
     async fillCode(value) {
-        const input = this.page.getByRole('textbox', { name: 'Code', exact: true })
-        await input.fill(value);
+        // const input = this.page.getByRole('textbox', { name: 'Code', exact: true })
+        // await input.fill(value);
+        await this.page.locator('input[id*="Code"]').fill(value);        
     }
 
     async fillName(value) {
-        const input = this.page.getByRole('textbox', { name: 'Name', exact: true })
-        await input.fill(value);
+        // const input = this.page.getByRole('textbox', { name: 'Name', exact: true })
+        // await input.fill(value);
+        await this.page.locator('input[id*="Name"]').first().fill(value);
     }
 
     async fillNameArabic(value) {
-        const input = this.page.getByRole('textbox', { name: 'Name (Arabic)', exact: true })
-        await input.fill(value);
+        // const input = this.page.getByRole('textbox', { name: 'Name (Arabic)', exact: true })
+        // await input.fill(value);
+        await this.page.locator('input[id*="NameL2"]').fill(value);
     }
 
     async fillDescription(value) {
-        const input = this.page.getByRole('textbox', { name: 'Description', exact: true })
-        await input.fill(value);
+        // const input = this.page.getByRole('textbox', { name: 'Description', exact: true })
+        // await input.fill(value);
+        await this.page.locator('textarea[id*="Description"]').fill(value);
     }
 
     async clickOnTopMenuOption(optionName) {
@@ -120,5 +124,18 @@ export class CommonAction {
 
     async clickOnBankAccount() {
         await this.page.locator("[id*='BankAccountIdLookup_B']").click();
+    }
+
+    async clickOnCurrency() {
+        await this.page.locator("[id*='CurrencyId']").click();
+        await this.page.waitForTimeout(500);
+    }
+
+    async clickOnSave(){
+        await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+    }
+
+    async clickOnCancel(){
+        await this.page.getByRole('button', { name: 'Cancel', exact: true }).click();
     }
 }

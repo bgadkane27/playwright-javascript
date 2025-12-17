@@ -1,85 +1,77 @@
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
-import { PaymentMethodPage } from '../../pages/sales/PaymentMethodPage';
+import { PriceListPage } from '../../pages/sales/PriceListPage.js';
 import { CommonAction } from '../../utilities/CommonAction';
-import paymentmethodData from '../../testdata/sales/payment-method-data.json';
+import priceListData from '../../testdata/sales/price-list-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
 import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
 
-test.describe.serial('Payment Method CRUD Operations', () => {
+test.describe.serial('Price List CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
-    let paymentMethodPage;
+    let priceListPage;
 
     test.beforeEach(async ({ page }) => {
         commonAction = new CommonAction(page);
         salesSetupPage = new SalesSetupPage(page);
-        paymentMethodPage = new PaymentMethodPage(page);
+        priceListPage = new PriceListPage(page);
         await commonAction.navigateToApp('/');
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create payment method', async ({ page }) => {
+    test('should able to create price list with manual', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
 
-        await commonAction.clickOnLeftMenuOption('Setups');
-        await salesSetupPage.clickOnPaymentMethod();
+        try {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnPriceList();
 
-        for (const paymentMethod of paymentmethodData.create) {
-            try {
-                // Start creating a new salesman
-                await commonAction.clickOnListingItem('New');
 
-                // fill payment method basic details
-                if (paymentmethodData.feature?.allowCodeManual && paymentMethod.code) {
-                    await commonAction.fillCode(paymentMethod.code);
-                }
+            // Start creating a new price list and fill basic details
+            await commonAction.clickOnListingItem('New');
+            var priceList = priceListData.manual;
 
-                await commonAction.fillName(paymentMethod.name);
-
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.nameArabic)) {
-                    await commonAction.fillNameArabic(paymentMethod.nameArabic);
-                }
-
-                await paymentMethodPage.clickOnType();
-                await LookupHelper.selectLookupBoxItemRow(page, paymentMethod.type);
-
-                if (paymentMethod.type === 'Debit Card' || paymentMethod.type === 'Credit Card') {
-                    await paymentMethodPage.clickOnBankAccount();
-                    await LookupHelper.selectLookupText(page, paymentMethod.bankAccount);
-                }
-                else {
-                    await paymentMethodPage.clickOnMainAccount();
-                    await LookupHelper.selectLookupText(page, paymentMethod.mainAccount);
-                }
-
-                await commonAction.fillDescription(paymentMethod.description);
-
-                // Save the payment method
-                await commonAction.clickOnTopMenuOption('Save');
-
-                // Verify success message
-                await SuccessMessageHelper.assert(page, 'PaymentMethod', 'Create');
-
-                // Track successful creation
-                createdRecords.push(paymentMethod.name);
-
-                // Return to payment method list for next iteration
-                await paymentMethodPage.clickOnPaymentMethod();
+            if (priceListData.feature?.allowCodeManual && priceList.code) {
+                await commonAction.fillCode(priceList.code);
             }
-            catch (error) {
-                skippedRecords.push(paymentMethod.name);
-                console.warn(`⚠️ Creation skipped for '${paymentMethod.name}': ${error.message}`);
+
+            await commonAction.fillName(priceList.name);
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+                await commonAction.fillNameArabic(priceList.nameArabic);
             }
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+                await commonAction.clickOnCurrency();
+                await LookupHelper.selectListItem(page, priceList.currency)
+            }
+
+            await commonAction.fillDescription(priceList.description);
+
+            // Save the price list record       
+            await commonAction.clickOnTopMenuOption('Save');
+
+            // Verify success message
+            await expect(page.locator("input[name='Name']")).toHaveValue(priceList.name, { timeout: 5000 });
+
+            // Track successful creation
+            createdRecords.push(priceList.name);
+
+            // Return to price list for next iteration
+            await priceListPage.clickOnPriceList();
+        } catch (error) {
+            skippedRecords.push(priceList?.name);
+            throw error;
         }
 
+        
         // 📊 Summary Report
-        console.log('==========🧾 Payment Method Create Summary ==========');
-        console.log(`📄 Total Records Attempted: ${paymentmethodData.create.length}`);
+        console.log('==========🧾 Price List Create Summary ==========');
+        console.log(`📄 Total Records Attempted: 1`);
         console.log(`✅ Successfully Created: ${createdRecords.length}`);
         if (createdRecords.length) {
             console.log('✅ Created Records: ' + createdRecords.join(', '));
@@ -92,13 +84,13 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Payment Method',
+            'Price List',
             createdRecords,
             skippedRecords
         );
     });
 
-    test.skip('should able to update payment method', async ({ page }) => {
+    test.skip('should able to update price list', async ({ page }) => {
         // ✏️ Update Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];
@@ -191,7 +183,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete payment method', async ({ page }) => {
+    test.skip('should able to delete price list', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

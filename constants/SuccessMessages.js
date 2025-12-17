@@ -11,6 +11,12 @@ const SuccessMessages = {
         Delete: 'Record deleted successfully!'
     },
 
+    PriceList: {
+        Create: 'Record created successfully',
+        Update: 'Price List updated successfully',
+        Delete: 'Record deleted successfully!'
+    },
+
     Customer: {
         Create: 'Customer created successfully',
         Update: 'Customer updated successfully',
