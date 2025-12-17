@@ -22,7 +22,7 @@ export class PaymentMethodPage {
     }
 
     async clickOnMainAccount() {
-        await this.mainAccount.click();
+        await this.mainAccount.first().click();
         await this.page.waitForTimeout(500);
     }
 }

@@ -2,15 +2,14 @@
   "module": "Payment Method",
   "action": "Delete",
   "totalRecordsAttempted": 4,
-  "successCount": 2,
-  "skippedCount": 2,
+  "successCount": 4,
+  "skippedCount": 0,
   "successRecords": [
+    "Credit Note",
+    "Loyalty Card",
     "Credit Card",
     "Debit Card"
   ],
-  "skippedRecords": [
-    "Credit Note",
-    "Loyalty Card"
-  ],
-  "executedAt": "17/12/2025, 8:37:50 am"
+  "skippedRecords": [],
+  "executedAt": "17/12/2025, 11:28:20 am"
 }

@@ -4,7 +4,7 @@
     },
     "create": [
         {
-            "code": "PM001",
+            "code": "003",
             "name": "Debit Card",
             "nameArabic": "بطاقة الائتمان",
             "type": "Debit Card",
@@ -12,7 +12,7 @@
             "description": "Payment by Visa / MasterCard"
         },
         {
-            "code": "PM002",
+            "code": "004",
             "name": "Credit Card",
             "nameArabic": "بطاقة الائتمان",
             "type": "Credit Card",
@@ -20,7 +20,7 @@
             "description": "Payment by Visa / MasterCard"
         },
         {
-            "code": "PM003",
+            "code": "005",
             "name": "Loyalty Card",
             "nameArabic": "التحويل المصرفي",
             "type": "Loyalty",
@@ -28,7 +28,7 @@
             "description": "Payment by Loyalty Card"
         },
         {
-            "code": "PM004",
+            "code": "006",
             "name": "Credit Note",
             "nameArabic": "التحويل المصرفي",
             "type": "Credit Note",
@@ -38,12 +38,13 @@
     ],
     "update": [
         {
-            "code": "PM004",
-            "name": "Credit Note - Updated",
-            "nameArabic": "بطاقة الائتمان - محدثة",
-            "type": "Credit Note",
-            "mainAccount": "11110 | Cash-in-Hand",
-            "description": "Updated: Payment by Credit Note"
+            "code": "006",
+            "name": "Credit Note",
+            "updatedName": null,
+            "nameArabic":"Credit Note Updated",
+            "type": null,
+            "mainAccount": "11150 | National Bank of Kuwait - KWD",
+            "description": "Payment by Credit Note updated"
         }
     ],
     "delete": [
