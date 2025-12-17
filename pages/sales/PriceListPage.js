@@ -14,7 +14,8 @@ export class PriceListPage {
     this.maxDiscountPercent = page.locator("input[id*='PriceRuleMaximumDiscountInPercent']");
     this.allItemsWithBaseUOM = page.getByText("All Items With Base UOM");
     this.selectedItems = page.getByText("Selected Items");
-    this.selectedBox = page.locator("input[id*='SelectedItems']");
+    this.selectedBox = page.locator("input[id*='SelectedItemIds']");
+    // this.selectedBox = page.locator("div.dx-texteditor-input-container.dx-tag-container");
     this.byItemCategory = page.getByText("By Item Category");
     this.byBrand = page.getByText("By Brand");
     this.selectAll = page.getByText("Select All");
@@ -43,7 +44,7 @@ export class PriceListPage {
 
     // Enter Percentage value
     async fillPercentage(value) {
-        await this.percentage.fill(value);
+        await this.percentage.fill(String(value));
     }
 
     // Click on Apply Minimum and Maximum limit checkbox
@@ -53,12 +54,12 @@ export class PriceListPage {
 
     // Enter Minimum Unit Price value
     async fillMinUnitPricePercent(value) {
-        await this.minUnitPricePercent.fill(value);
+        await this.minUnitPricePercent.fill(String(value));
     }
 
     // Enter Maximum Unit Price value
     async fillMaxUnitPricePercent(value) {
-        await this.maxUnitPricePercent.fill(value);
+        await this.maxUnitPricePercent.fill(String(value));
     }
 
     // Click on Apply Discount Percent checkbox
@@ -68,12 +69,12 @@ export class PriceListPage {
 
     // Enter Default Percent value
     async fillDefaultPercent(value) {
-        await this.defaultPercent.fill(value);
+        await this.defaultPercent.fill(String(value));
     }   
 
     // Enter Maximum Discount Percent value
     async fillMaxDiscountPercent(value) {
-        await this.maxDiscountPercent.fill(value);
+        await this.maxDiscountPercent.fill(String(value));
     }
 
     // Click on All Items With Base UOM option
@@ -84,11 +85,13 @@ export class PriceListPage {
     // Click on Selected Items option
     async clickOnSelectedItems() {
         await this.selectedItems.click();
+        await this.page.waitForTimeout(1000);
     }
 
     // Click on Selected checkbox
     async clickOnSelectedBox() {
         await this.selectedBox.click();
+        await this.page.waitForTimeout(1000);
     }   
 
     // Click on By Item Category option
@@ -99,11 +102,13 @@ export class PriceListPage {
     // Click on By Brand option
     async clickOnByBrand() {
         await this.byBrand.click();
+        await this.page.waitForTimeout(1000);
     }
 
     // Click on Select All option
     async clickOnSelectAll() {
         await this.selectAll.click();
+        await this.page.waitForTimeout(1000);
     }
 
     // Click on Add Item button

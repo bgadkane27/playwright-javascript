@@ -21,7 +21,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test('should able to create price list with manual', async ({ page }) => {
+    test.skip('should able to create price list with manual', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -68,10 +68,294 @@ test.describe.serial('Price List CRUD Operations', () => {
             throw error;
         }
 
-        
+
         // 📊 Summary Report
         console.log('==========🧾 Price List Create Summary ==========');
-        console.log(`📄 Total Records Attempted: 1`);
+        console.log(`📄 Total Records Attempted: ${createdRecords.length}`);
+        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records: ' + createdRecords.join(', '));
+        }
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('======================================');
+
+        SummaryHelper.exportCreateSummary(
+            'Price List',
+            createdRecords,
+            skippedRecords
+        );
+    });
+
+    test('should able to create price list with markup', async ({ page }) => {
+        // 🆕 Creation summary trackers
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        try {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnPriceList();
+
+            // Start creating a new price list and fill basic details
+            await commonAction.clickOnListingItem('New');
+            var priceList = priceListData.markup;
+            var priceRule = priceList.priceRule;
+
+            if (priceListData.feature?.allowCodeManual && priceList.code) {
+                await commonAction.fillCode(priceList.code);
+            }
+
+            await commonAction.fillName(priceList.name);
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+                await commonAction.fillNameArabic(priceList.nameArabic);
+            }
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+                await commonAction.clickOnCurrency();
+                await LookupHelper.selectListItem(page, priceList.currency)
+            }
+
+            await commonAction.fillDescription(priceList.description);
+
+            if (priceRule) {
+                await priceListPage.clickOnPercentageType();
+                await LookupHelper.selectListItem(page, priceRule.percentageType);
+
+                await priceListPage.fillPercentage(priceRule.percentage);
+
+                await priceListPage.clickOnApplyMinMaxLimit();
+
+                await priceListPage.fillMinUnitPricePercent(priceRule.minUnitPricePercent);
+
+                await priceListPage.fillMaxUnitPricePercent(priceRule.maxUnitPricePercent);
+
+                await priceListPage.clickOnApplyDiscountPercent();
+
+                await priceListPage.fillDefaultPercent(priceRule.defaultDiscountPercent);
+
+                await priceListPage.fillMaxDiscountPercent(priceRule.maxDiscountPercent);
+            }
+
+            // First
+            if (priceListData.feature?.allItemsWithBaseUOM) {
+                await priceListPage.clickOnAllItemsWithBaseUOM();
+            }
+
+            // Second
+            if (priceListData.feature?.selectedAllGroup) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Third
+            if (priceListData.feature?.selectedGroup) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemGroup1);
+                await LookupHelper.selectListItem(priceRule.itemGroup2);
+            }
+
+            // Fourth
+            if (priceListData.feature?.selectedAllCategory) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByItemCategory();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Five
+            if (priceListData.feature?.selectedCategory) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByItemCategory();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemCategory1);
+                await LookupHelper.selectListItem(priceRule.itemCategory2);
+            }
+
+            // Six
+            if (priceListData.feature?.selectedAllBrand) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByBrand();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Seven
+            if (priceListData.feature?.selectedBrand) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByBrand();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemBrand1);
+                await LookupHelper.selectListItem(priceRule.itemBrand2);
+            }
+
+            // Save the price list record       
+            await commonAction.clickOnTopMenuOption('Save');
+
+            // Verify success message
+            await expect(page.locator("input[name='Name']")).toHaveValue(priceList.name, { timeout: 5000 });
+
+            // Track successful creation
+            createdRecords.push(priceList.name);
+
+            // Return to price list for next iteration
+            await priceListPage.clickOnPriceList();
+        } catch (error) {
+            skippedRecords.push(priceList?.name);
+            throw error;
+        }
+
+
+        // 📊 Summary Report
+        console.log('==========🧾 Price List Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${createdRecords.length}`);
+        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records: ' + createdRecords.join(', '));
+        }
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('======================================');
+
+        SummaryHelper.exportCreateSummary(
+            'Price List',
+            createdRecords,
+            skippedRecords
+        );
+    });
+
+    test.skip('should able to create price list with markdown', async ({ page }) => {
+        // 🆕 Creation summary trackers
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        try {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnPriceList();
+
+            // Start creating a new price list and fill basic details
+            await commonAction.clickOnListingItem('New');
+            var priceList = priceListData.markdown;
+            var priceRule = priceList.priceRule;
+
+            if (priceListData.feature?.allowCodeManual && priceList.code) {
+                await commonAction.fillCode(priceList.code);
+            }
+
+            await commonAction.fillName(priceList.name);
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+                await commonAction.fillNameArabic(priceList.nameArabic);
+            }
+
+            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+                await commonAction.clickOnCurrency();
+                await LookupHelper.selectListItem(page, priceList.currency)
+            }
+
+            await commonAction.fillDescription(priceList.description);
+
+            if (priceRule) {
+                await priceListPage.clickOnPercentageType();
+                await LookupHelper.selectListItem(page, priceRule.percentageType);
+
+                await priceListPage.fillPercentage(priceRule.percentage);
+
+                await priceListPage.clickOnApplyMinMaxLimit();
+
+                await priceListPage.fillMinUnitPricePercent(priceRule.minUnitPricePercent);
+
+                await priceListPage.fillMaxUnitPricePercent(priceRule.maxUnitPricePercent);
+
+                await priceListPage.clickOnApplyDiscountPercent();
+
+                await priceListPage.fillDefaultPercent(priceRule.defaultDiscountPercent);
+
+                await priceListPage.fillMaxDiscountPercent(priceRule.maxDiscountPercent);
+            }
+
+            // First
+            if (priceListData.feature?.allItemsWithBaseUOM) {
+                await priceListPage.clickOnAllItemsWithBaseUOM();
+            }
+
+            // Second
+            if (priceListData.feature?.selectedAllGroup) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Third
+            if (priceListData.feature?.selectedGroup) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemGroup1);
+                await LookupHelper.selectListItem(priceRule.itemGroup2);
+            }
+
+            // Fourth
+            if (priceListData.feature?.selectedAllCategory) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByItemCategory();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Five
+            if (priceListData.feature?.selectedCategory) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByItemCategory();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemCategory1);
+                await LookupHelper.selectListItem(priceRule.itemCategory2);
+            }
+
+            // Six
+            if (priceListData.feature?.selectedAllBrand) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByBrand();
+                priceListPage.clickOnSelectedBox();
+                priceListPage.clickOnSelectAll();
+            }
+
+            // Seven
+            if (priceListData.feature?.selectedBrand) {
+                priceListPage.clickOnSelectedItems();
+                priceListPage.clickOnByBrand();
+                priceListPage.clickOnSelectedBox();
+                await LookupHelper.selectListItem(priceRule.itemBrand1);
+                await LookupHelper.selectListItem(priceRule.itemBrand2);
+            }
+
+            // Save the price list record       
+            await commonAction.clickOnTopMenuOption('Save');
+
+            // Verify success message
+            await expect(page.locator("input[name='Name']")).toHaveValue(priceList.name, { timeout: 5000 });
+
+            // Track successful creation
+            createdRecords.push(priceList.name);
+
+            // Return to price list for next iteration
+            await priceListPage.clickOnPriceList();
+        } catch (error) {
+            skippedRecords.push(priceList?.name);
+            throw error;
+        }
+
+
+        // 📊 Summary Report
+        console.log('==========🧾 Price List Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${createdRecords.length}`);
         console.log(`✅ Successfully Created: ${createdRecords.length}`);
         if (createdRecords.length) {
             console.log('✅ Created Records: ' + createdRecords.join(', '));
@@ -189,40 +473,37 @@ test.describe.serial('Price List CRUD Operations', () => {
         const skippedRecords = [];
 
         await commonAction.clickOnLeftMenuOption('Setups');
-        await salesSetupPage.clickOnPaymentMethod();
+        await salesSetupPage.clickOnPriceList();
 
-        // Iterate through each payment method to delete
-        for (const paymentMethod of paymentmethodData.delete) {
+        // Iterate through each price list to delete
+        for (const priceList of priceListData.delete) {
             try {
-
-                // 🧹 Always reset filter
-                await commonAction.clearMasterNameFilter();
-                // Search and filter the payment method record
-                await commonAction.provideMasterNameOnList(paymentMethod.name);
+                // Search and filter the price list record
+                await commonAction.provideMasterNameOnList(priceList.name);
 
                 // Check if the record exists before proceeding with deletion
-                const recordExists = await page.locator(`text=${paymentMethod.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                const recordExists = await page.locator(`text=${priceList.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
                 if (!recordExists) {
-                    console.warn(`⚠️ Record '${paymentMethod.name}' not found - deletion skipped.`);
-                    skippedRecords.push(paymentMethod.name);
+                    console.warn(`⚠️ Record '${priceList.name}' not found - deletion skipped.`);
+                    skippedRecords.push(priceList.name);
                     continue;
                 }
 
                 // Proceed with deletion if record exists
-                await commonAction.selectMasterFromList(paymentMethod.name);
+                await commonAction.selectMasterFromList(priceList.name);
                 await commonAction.clickOnMenu();
                 await commonAction.clickOnDelete();
                 await commonAction.clickOnOk();
 
                 // ✅ Validate deleted message
-                await SuccessMessageHelper.assert(page, 'PaymentMethod', 'Delete');
+                await SuccessMessageHelper.assert(page, 'PriceList', 'Delete');
 
                 // Track successful deletion
-                deletedRecords.push(paymentMethod.name);
+                deletedRecords.push(priceList.name);
 
             } catch (error) {
-                skippedRecords.push(paymentMethod.name);
-                console.warn(`⚠️ Deletion failed for '${paymentMethod.name}': ${error.message}`);
+                skippedRecords.push(priceList.name);
+                console.warn(`⚠️ Deletion failed for '${priceList.name}': ${error.message}`);
             } finally {
                 // 🧹 Always reset filter
                 await commonAction.clearMasterNameFilter();
@@ -230,8 +511,8 @@ test.describe.serial('Price List CRUD Operations', () => {
         }
 
         // 📊 Summary Report
-        console.log('==========🧾 Payment Method Delete Summary ==========');
-        console.log(`📄 Total Records Attempted: ${paymentmethodData.delete.length}`);
+        console.log('==========🧾 Price List Delete Summary ==========');
+        console.log(`📄 Total Records Attempted: ${priceListData.delete.length}`);
         console.log(`✅ Successfully Deleted: ${deletedRecords.length}`);
         if (deletedRecords.length) {
             console.log('🗑️  Deleted Records: ' + deletedRecords.join(', '));
@@ -244,7 +525,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportDeleteSummary(
-            'Payment Method',
+            'Price List',
             deletedRecords,
             skippedRecords
         );

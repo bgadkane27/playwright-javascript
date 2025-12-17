@@ -84,7 +84,7 @@ export class CommonAction {
     async provideMasterNameOnList(masterName) {
         await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
         // ⏳ Small wait for grid refresh (if required)
-        await this.page.waitForTimeout(1000);
+        await this.page.waitForTimeout(1500);
     }
 
     async selectMasterFromList(masterName) {

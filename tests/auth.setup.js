@@ -15,7 +15,7 @@ setup('Login', async ({ page }) => {
 
     // Click Sign In button
     await page.getByRole("button", { name: "Sign In", exact: true }).click();
-    await page.waitForLoadState("domcontentloaded");
+    await page.waitForLoadState("networkidle");
     
     // Save the login state to file
     await page.context().storageState({ path: authFile });
