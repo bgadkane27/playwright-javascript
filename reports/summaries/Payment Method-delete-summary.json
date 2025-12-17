@@ -1,16 +1,16 @@
 {
   "module": "Payment Method",
-  "action": "Create",
+  "action": "Delete",
   "totalRecordsAttempted": 4,
   "successCount": 2,
   "skippedCount": 2,
   "successRecords": [
-    "Debit Card",
-    "Credit Card"
+    "Credit Card",
+    "Debit Card"
   ],
   "skippedRecords": [
-    "Loyalty Card",
-    "Credit Note"
+    "Credit Note",
+    "Loyalty Card"
   ],
-  "executedAt": "17/12/2025, 8:37:27 am"
+  "executedAt": "17/12/2025, 8:37:50 am"
 }

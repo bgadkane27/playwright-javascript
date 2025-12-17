@@ -14,6 +14,9 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
+  // Global timeout for each test 60 seconds
+  timeout: 60000,
+
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -34,6 +37,11 @@ export default defineConfig({
 
     // Screenshot on failure
     screenshot: 'only-on-failure',
+
+    // max time for each action
+    actionTimeout: 15 * 1000,
+    // max time for navigation actions
+    navigationTimeout: 30 * 1000
   },
 
   /* Configure projects for major browsers */
@@ -47,7 +55,7 @@ export default defineConfig({
     // Chromium tests - depends on setup
     {
       name: 'chromium',
-      use: { 
+      use: {
         ...devices['Desktop Chrome'],
         // Use the saved authentication state
         storageState: '.auth/user.json',

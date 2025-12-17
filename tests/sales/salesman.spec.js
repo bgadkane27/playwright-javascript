@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { SalesmanPage } from '../../pages/sales/SalesmanPage';
 import { CommonAction } from '../../utilities/CommonAction';
@@ -22,7 +22,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create salesman', async ({ page }) => {
+    test('should able to create salesman', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -97,7 +97,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to update salesman', async ({ page }) => {
+    test('should able to update salesman', async ({ page }) => {
         // 🗑️ Updation Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];
@@ -205,7 +205,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete salesman', async ({ page }) => {
+    test('should able to delete salesman', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];
@@ -272,5 +272,5 @@ test.describe.serial('Salesman CRUD Operations', () => {
             skippedRecords
         );
     });
-    
+
 });

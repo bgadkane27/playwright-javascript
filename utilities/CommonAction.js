@@ -84,8 +84,7 @@ export class CommonAction {
     }
 
     async selectMasterFromList(masterName) {
-        // await this.page.getByText(masterName, { exact: true }).click();
-        await this.page.locator('.salesman-column').filter({ hasText: masterName }).click();
+        await this.page.getByRole('row').filter({ hasText: masterName }).click();
         await this.page.waitForTimeout(500);
     }
 
@@ -120,12 +119,6 @@ export class CommonAction {
     }
 
     async clickOnBankAccount() {
-        await this.page.locator("//td[contains(@id, '.BankAccountIdLookup_B-1')]").click();
-        await this.page.waitForTimeout(500);
-    }
-
-    async clickOnMainAccount() {
-        await this.page.locator("//td[contains(@id, '.MainAccountIdLookup_B-1')]").click();
-        await this.page.waitForTimeout(500);
+        await this.page.locator("[id*='BankAccountIdLookup_B']").click();
     }
 }

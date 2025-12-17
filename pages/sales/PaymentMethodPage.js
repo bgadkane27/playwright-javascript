@@ -9,19 +9,20 @@ export class PaymentMethodPage {
 
     async clickOnPaymentMethod() {
         await this.paymentMethod.click();
-        await this.page.waitForTimeout(2000);
+        await this.page.waitForLoadState('networkidle');
     }
 
     async clickOnType() {
         await this.type.click();
-        await this.page.waitForTimeout(1000);
     }
 
     async clickOnBankAccount() {
-        await this.bankAccount.click();
+        await this.bankAccount.first().click();
+        await this.page.waitForTimeout(500);
     }
 
     async clickOnMainAccount() {
         await this.mainAccount.click();
+        await this.page.waitForTimeout(500);
     }
 }

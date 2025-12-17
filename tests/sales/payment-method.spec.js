@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { PaymentMethodPage } from '../../pages/sales/PaymentMethodPage';
 import { CommonAction } from '../../utilities/CommonAction';
@@ -23,7 +23,6 @@ test.describe.serial('Payment Method CRUD Operations', () => {
     });
 
     test('should able to create payment method', async ({ page }) => {
-
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -36,22 +35,26 @@ test.describe.serial('Payment Method CRUD Operations', () => {
                 // Start creating a new salesman
                 await commonAction.clickOnListingItem('New');
 
-                // fill salesman basic details
-                if (paymentmethodData.feature.allowCodeManual && paymentMethod.code) {
-                    await commonAction.fillCode(salesman.code);
+                // fill payment method basic details
+                if (paymentmethodData.feature?.allowCodeManual && paymentMethod.code) {
+                    await commonAction.fillCode(paymentMethod.code);
                 }
 
                 await commonAction.fillName(paymentMethod.name);
-                await commonAction.fillNameArabic(paymentMethod.nameArabic);
+
+                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.nameArabic)) {
+                    await commonAction.fillNameArabic(paymentMethod.nameArabic);
+                }
+
                 await paymentMethodPage.clickOnType();
                 await LookupHelper.selectLookupBoxItemRow(page, paymentMethod.type);
 
                 if (paymentMethod.type === 'Debit Card' || paymentMethod.type === 'Credit Card') {
-                    await commonAction.clickOnBankAccount();
+                    await paymentMethodPage.clickOnBankAccount();
                     await LookupHelper.selectLookupText(page, paymentMethod.bankAccount);
                 }
                 else {
-                    await commonAction.clickOnMainAccount();
+                    await paymentMethodPage.clickOnMainAccount();
                     await LookupHelper.selectLookupText(page, paymentMethod.mainAccount);
                 }
 
@@ -76,15 +79,15 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         }
 
         // 📊 Summary Report
-        console.log('==========🧾 Salesman Create Summary ==========');
+        console.log('==========🧾 Payment Method Create Summary ==========');
         console.log(`📄 Total Records Attempted: ${paymentmethodData.create.length}`);
         console.log(`✅ Successfully Created: ${createdRecords.length}`);
         if (createdRecords.length) {
-            console.log('✅  Created Records: ' + createdRecords.join(', '));
+            console.log('✅ Created Records: ' + createdRecords.join(', '));
         }
-        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
         if (skippedRecords.length) {
-            console.log('🚫  Skipped Records: ' + skippedRecords.join(', '));
+            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
         }
         console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
         console.log('======================================');
@@ -96,8 +99,73 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to update payment method', async ({ page }) => { });
+    test('should able to update payment method', async ({ page }) => { });
 
-    test.skip('should able to delete payment method', async ({ page }) => { });
+    test('should able to delete payment method', async ({ page }) => {
+        // 🗑️ Deletion Summary Trackers
+        const deletedRecords = [];
+        const skippedRecords = [];
+
+        await commonAction.clickOnLeftMenuOption('Setups');
+        await salesSetupPage.clickOnPaymentMethod();
+
+        // Iterate through each payment method to delete
+        for (const paymentMethod of paymentmethodData.delete) {
+            try {
+
+                // 🧹 Always reset filter
+                await commonAction.clearMasterNameFilter();
+                // Search and filter the payment method record
+                await commonAction.provideMasterNameOnList(paymentMethod.name);
+
+                // Check if the record exists before proceeding with deletion
+                const recordExists = await page.locator(`text=${paymentMethod.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                if (!recordExists) {
+                    console.warn(`⚠️ Record '${paymentMethod.name}' not found - deletion skipped.`);
+                    skippedRecords.push(paymentMethod.name);
+                    continue;
+                }
+
+                // Proceed with deletion if record exists
+                await commonAction.selectMasterFromList(paymentMethod.name);
+                await commonAction.clickOnMenu();
+                await commonAction.clickOnDelete();
+                await commonAction.clickOnOk();
+
+                // ✅ Validate deleted message
+                await SuccessMessageHelper.assert(page, 'PaymentMethod', 'Delete');
+
+                // Track successful deletion
+                deletedRecords.push(paymentMethod.name);
+
+            } catch (error) {
+                skippedRecords.push(paymentMethod.name);
+                console.warn(`⚠️ Deletion failed for '${paymentMethod.name}': ${error.message}`);
+            } finally {
+                // 🧹 Always reset filter
+                await commonAction.clearMasterNameFilter();
+            }
+        }
+
+        // 📊 Summary Report
+        console.log('==========🧾 Payment Method Delete Summary ==========');
+        console.log(`📄 Total Records Attempted: ${paymentmethodData.delete.length}`);
+        console.log(`✅ Successfully Deleted: ${deletedRecords.length}`);
+        if (deletedRecords.length) {
+            console.log('🗑️  Deleted Records: ' + deletedRecords.join(', '));
+        }
+        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫  Skipped Records: ' + skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('======================================');
+
+        SummaryHelper.exportDeleteSummary(
+            'Payment Method',
+            deletedRecords,
+            skippedRecords
+        );
+    });
 
 });
