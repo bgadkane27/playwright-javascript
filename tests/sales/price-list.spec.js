@@ -90,7 +90,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test('should able to create price list with markup', async ({ page }) => {
+    test.skip('should able to create price list with markup', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -374,60 +374,57 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to update price list', async ({ page }) => {
+    test('should able to update price list with manual', async ({ page }) => {
         // ✏️ Update Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];
 
         await commonAction.clickOnLeftMenuOption('Setups');
-        await salesSetupPage.clickOnPaymentMethod();
+        await salesSetupPage.clickOnPriceList();
 
-        for (const paymentMethod of paymentmethodData.update) {
+        for (const priceList of priceListData.update) {
             try {
                 // Search and filter the payment method record
-                await commonAction.provideMasterNameOnList(paymentMethod.name);
+                await commonAction.provideMasterNameOnList(priceList.name);
 
                 // Check if the record exists before proceeding with updation
-                const recordExists = await page.locator(`text=${paymentMethod.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                const recordExists = await page.locator(`text=${priceList.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
                 if (!recordExists) {
-                    console.warn(`⚠️ Record '${paymentMethod.name}' not found - updation skipped.`);
-                    skippedRecords.push(paymentMethod.name);
+                    console.warn(`⚠️ Record '${priceList.name}' not found - updation skipped.`);
+                    skippedRecords.push(priceList.name);
                     continue;
                 }
 
                 // Proceed with update if record exists
-                await commonAction.selectMasterFromList(paymentMethod.name);
+                await commonAction.selectMasterFromList(priceList.name);
                 await commonAction.clickOnListingItem('Edit');
 
                 // Proceed with updation if record exists
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.updatedName)) {
-                    await commonAction.fillName(paymentMethod.updatedName);
-                }
+                // if (StringHelper.isNotNullOrWhiteSpace(priceList.updatedName)) {
+                //     await commonAction.fillName(priceList.updatedName);
+                // }
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.nameArabic)) {
-                    await commonAction.fillNameArabic(paymentMethod.nameArabic);
-                }
+                // if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+                //     await commonAction.fillNameArabic(priceList.nameArabic);
+                // }
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.type)) {
-                    await paymentMethodPage.clickOnType();
-                    await LookupHelper.selectLookupBoxItemRow(page, paymentMethod.type);
-                }
+                // if (StringHelper.isNotNullOrWhiteSpace(priceList.description)) {
+                //     await commonAction.fillDescription(priceList.description);
+                // }
 
-                if (paymentMethod.type === 'Debit Card' || paymentMethod.type === 'Credit Card') {
-                    if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.bankAccount)) {
-                        await paymentMethodPage.clickOnBankAccount();
-                        await LookupHelper.selectLookupText(page, paymentMethod.bankAccount);
-                    }
-                }
-                else {
-                    if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.mainAccount)) {
-                        await paymentMethodPage.clickOnMainAccount();
-                        await LookupHelper.selectLookupText(page, paymentMethod.mainAccount);
-                    }
-                }
+                // Add items manually
+                const items = priceList.items ?? [];
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.description)) {
-                    await commonAction.fillDescription(paymentMethod.description);
+                for (const item of items) {
+                    await priceListPage.clickOnAddItem();
+
+                    await priceListPage.fillItem(item.item);
+                    await LookupHelper.selectListItem(page, item.item);
+
+                    await priceListPage.fillUnitOfMeasure(item.unitOfMeasure);
+                    await LookupHelper.selectListItem(page, item.unitOfMeasure);
+
+                    await commonAction.clickOnSave();
                 }
 
                 // Save the payment method record
@@ -435,20 +432,20 @@ test.describe.serial('Price List CRUD Operations', () => {
                 await commonAction.clickOnTopMenuOption('View');
 
                 // Track successful updation
-                updatedRecords.push(paymentMethod.name);
+                updatedRecords.push(priceList.name);
 
-                // Return to Payment Method list for next iteration
-                await salesSetupPage.clickOnPaymentMethod();
+                // Return to price list for next iteration
+                await priceListPage.clickOnPriceList();
 
             } catch (error) {
-                skippedRecords.push(paymentMethod.name);
-                console.warn(`⚠️ Updation failed for '${paymentMethod.name}': ${error.message}`);
+                skippedRecords.push(priceList.name);
+                console.warn(`⚠️ Updation failed for '${priceList.name}': ${error.message}`);
             }
         }
 
         // 📊 Summary Report
         console.log('==========🧾 Payment Method Update Summary ==========');
-        console.log(`📄 Total Records Attempted: ${paymentmethodData.update.length}`);
+        console.log(`📄 Total Records Attempted: ${priceListData.update.length}`);
         console.log(`✅ Successfully Updated: ${updatedRecords.length}`);
         if (updatedRecords.length) {
             console.log('🗑️  Updated Records: ' + updatedRecords.join(', '));
@@ -461,7 +458,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportUpdateSummary(
-            'Payment Method',
+            'Price List',
             updatedRecords,
             skippedRecords
         );

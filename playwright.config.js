@@ -42,7 +42,11 @@ export default defineConfig({
     // max time for each action
     actionTimeout: 15 * 1000,
     // max time for navigation actions
-    navigationTimeout: 30 * 1000
+    navigationTimeout: 30 * 1000,
+
+    viewport: { width: 1920, height: 1080 },
+    deviceScaleFactor: 0.75, // ✅ 75% zoom-like effect
+    headless: false,
   },
 
   /* Configure projects for major browsers */

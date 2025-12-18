@@ -2,14 +2,14 @@
   "module": "Payment Method",
   "action": "Create",
   "totalRecordsAttempted": 4,
-  "successCount": 4,
-  "skippedCount": 0,
-  "successRecords": [
+  "successCount": 0,
+  "skippedCount": 4,
+  "successRecords": [],
+  "skippedRecords": [
     "Debit Card",
     "Credit Card",
     "Loyalty Card",
     "Credit Note"
   ],
-  "skippedRecords": [],
-  "executedAt": "17/12/2025, 11:27:45 am"
+  "executedAt": "18/12/2025, 10:36:53 am"
 }

@@ -64,40 +64,42 @@
       "itemBrand2": "HP"
     }
   },
-  "update": {
-    "name": "Retail Price List",
-    "code": "PL006",
-    "newName": "Retail Price List",
-    "nameArabic": null,
-    "effectiveToDate": null,
-    "description": "Updated description for retail price list",
-    "items": [
-      {
-        "item": "I0007 | Earphones",
-        "unitOfMeasure": "001 | Piece",
-        "minUnitPrice": "160",
-        "maxUnitPrice": "180",
-        "defaultDiscountPercent": "15",
-        "maximumDiscountPercent": "20"
-      },
-      {
-        "item": "I0001 | Screen Protectors",
-        "unitOfMeasure": "001 | Piece",
-        "minUnitPrice": "50",
-        "maxUnitPrice": "60",
-        "defaultDiscountPercent": "15",
-        "maximumDiscountPercent": "20"
-      },
-      {
-        "item": "I0002 | Phone Cases",
-        "unitOfMeasure": "001 | Piece",
-        "minUnitPrice": "100",
-        "maxUnitPrice": "120",
-        "defaultDiscountPercent": "15",
-        "maximumDiscountPercent": "20"
-      }
-    ]
-  },
+  "update": [
+    {
+      "code": "PL006",
+      "name": "Retail Price List",
+      "updatedName": null,
+      "nameArabic": null,
+      "effectiveToDate": null,
+      "description": null,
+      "items": [
+        {
+          "item": "I0007 | Earphones",
+          "unitOfMeasure": "001 | Piece",
+          "minUnitPrice": "160",
+          "maxUnitPrice": "180",
+          "defaultDiscountPercent": "15",
+          "maximumDiscountPercent": "20"
+        },
+        {
+          "item": "I0001 | Screen Protectors",
+          "unitOfMeasure": "001 | Piece",
+          "minUnitPrice": "50",
+          "maxUnitPrice": "60",
+          "defaultDiscountPercent": "15",
+          "maximumDiscountPercent": "20"
+        },
+        {
+          "item": "I0002 | Phone Cases",
+          "unitOfMeasure": "001 | Piece",
+          "minUnitPrice": "100",
+          "maxUnitPrice": "120",
+          "defaultDiscountPercent": "15",
+          "maximumDiscountPercent": "20"
+        }
+      ]
+    }
+  ],
   "delete": [
     {
       "name": "Markdown Price List"

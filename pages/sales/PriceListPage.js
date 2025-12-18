@@ -1,38 +1,44 @@
 export class PriceListPage {
-  constructor(page) {
-    this.page = page;
-    // Price List link locator
-    this.priceList = page.getByRole("link", { name: "Price List", exact: true }).first();
-    // Price Rule tab locators
-    this.percentageType = page.locator("input[id*='PercentageType']");
-    this.percentage = page.locator("input[id*='Percentage']").nth(1);
-    this.applyMinMaxLimit = page.getByText("Apply minimum and maximum limit");
-    this.minUnitPricePercent = page.locator("input[id*='PriceRuleMinimumUnitPrice']");
-    this.maxUnitPricePercent = page.locator("input[id*='PriceRuleMaximumUnitPrice']");
-    this.applyDiscountPercent = page.getByText("Apply discount percent");
-    this.defaultPercent= page.locator("input[id*='PriceRuleDefaultDiscountInPercent']");
-    this.maxDiscountPercent = page.locator("input[id*='PriceRuleMaximumDiscountInPercent']");
-    this.allItemsWithBaseUOM = page.getByText("All Items With Base UOM");
-    this.selectedItems = page.getByText("Selected Items");
-    this.selectedBox = page.locator("input[id*='SelectedItemIds']");
-    // this.selectedBox = page.locator("div.dx-texteditor-input-container.dx-tag-container");
-    this.byItemCategory = page.getByText("By Item Category");
-    this.byBrand = page.getByText("By Brand");
-    this.selectAll = page.getByText("Select All");
-    // Items tab locators
-    this.addItem = page.getByRole('button', { name: 'Add Item', exact: true });
-    this.item = page.locator("input[id*='ItemId']");
-    this.unitOfMeasure = page.locator("input[id*='UnitOfMeasureId']");
-    this.unitPrice = page.locator("input[id*='UnitPrice']");
-    this.minimumUnitPrice = page.locator("input[id*='MinimumUnitPrice']");
-    this.maximumUnitPrice = page.locator("input[id*='MaximumUnitPrice']");
-    this.defaultDiscountInPercent = page.locator("input[id*='DefaultDiscountInPercent']");
-    this.maximumDiscountInPercent = page.locator("input[id*='MaximumDiscountInPercent']");
-    this.default = page.locator("div[id*='Default']");
-  }
+    constructor(page) {
+        this.page = page;
+        // Price List link locator
+        this.priceList = page.getByRole("link", { name: "Price List", exact: true }).first();
+        // Price Rule tab locators
+        this.percentageType = page.locator("input[id*='PercentageType']");
+        this.percentage = page.locator("input[id*='Percentage']").nth(1);
+        this.applyMinMaxLimit = page.getByText("Apply minimum and maximum limit");
+        this.minUnitPricePercent = page.locator("input[id*='PriceRuleMinimumUnitPrice']");
+        this.maxUnitPricePercent = page.locator("input[id*='PriceRuleMaximumUnitPrice']");
+        this.applyDiscountPercent = page.getByText("Apply discount percent");
+        this.defaultPercent = page.locator("input[id*='PriceRuleDefaultDiscountInPercent']");
+        this.maxDiscountPercent = page.locator("input[id*='PriceRuleMaximumDiscountInPercent']");
+        this.allItemsWithBaseUOM = page.getByText("All Items With Base UOM");
+        this.selectedItems = page.locator("div.dx-item-content", { hasText: /^Selected Items$/ });
+        // this.selectedBox = page.locator("//input[id*='SelectedItemIds']");
+        this.selectedBox = page.locator("input.dx-texteditor-input[placeholder='Select...'][id*='_SelectedItemIds']");
+        this.byItemCategory = page.getByText("By Item Category");
+        this.byBrand = page.getByText("By Brand");
+        this.selectAll = page.getByRole('checkbox', { name: 'Select All' });
+        // Items tab locators
+        this.addItem = page.getByRole('button', { name: 'Add Item', exact: true });
+        this.item = page.locator("input[id*='ItemId']");
+        this.unitOfMeasure = page.locator("input[id*='UnitOfMeasureId']");
+        this.unitPrice = page.locator("input[id*='UnitPrice']");
+        this.minimumUnitPrice = page.locator("input[id*='MinimumUnitPrice']");
+        this.maximumUnitPrice = page.locator("input[id*='MaximumUnitPrice']");
+        this.defaultDiscountInPercent = page.locator("input[id*='DefaultDiscountInPercent']");
+        this.maximumDiscountInPercent = page.locator("input[id*='MaximumDiscountInPercent']");
+        this.default = page.locator("div[id*='Default']");
+    }
+
+    async scrollFormToBottom() {
+        await this.page.locator('.form-content').evaluate(el => {
+            el.scrollTop = el.scrollHeight;
+        });
+    }
 
     // Click on Price List link
-    async clickOnPriceList() {  
+    async clickOnPriceList() {
         await this.priceList.click();
         await this.page.waitForLoadState('networkidle');
     }
@@ -65,12 +71,12 @@ export class PriceListPage {
     // Click on Apply Discount Percent checkbox
     async clickOnApplyDiscountPercent() {
         await this.applyDiscountPercent.click();
-    }   
+    }
 
     // Enter Default Percent value
     async fillDefaultPercent(value) {
         await this.defaultPercent.fill(String(value));
-    }   
+    }
 
     // Enter Maximum Discount Percent value
     async fillMaxDiscountPercent(value) {
@@ -83,17 +89,29 @@ export class PriceListPage {
     }
 
     // Click on Selected Items option
+    // async clickOnSelectedItems() {
+    //     await this.selectedItems.click();
+    //     await this.page.waitForTimeout(1000);
+    // }
     async clickOnSelectedItems() {
+        await this.selectedItems.waitFor({ state: 'attached' });
         await this.selectedItems.click();
         await this.page.waitForTimeout(1000);
     }
 
     // Click on Selected checkbox
+    // async clickOnSelectedBox() {
+    //     await this.selectedBox.click({ force: true });
+    //     await this.page.waitForTimeout(1000);
+    // }
     async clickOnSelectedBox() {
-        await this.selectedBox.click();
+        await this.selectedBox.evaluate(element =>
+            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+        );
+        await this.page.waitForTimeout(500); // Wait for smooth scroll
+        await this.selectedBox.click({ force: true });
         await this.page.waitForTimeout(1000);
-    }   
-
+    }
     // Click on By Item Category option
     async clickOnByItemCategory() {
         await this.byItemCategory.click();
@@ -107,7 +125,11 @@ export class PriceListPage {
 
     // Click on Select All option
     async clickOnSelectAll() {
-        await this.selectAll.click();
+        await this.selectAll.evaluate(element =>
+            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+        );
+        await this.page.waitForTimeout(500); // Wait for smooth scroll
+        await this.selectAll.click({ force: true });
         await this.page.waitForTimeout(1000);
     }
 
