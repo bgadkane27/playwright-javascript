@@ -82,14 +82,14 @@ export default class SummaryHelper {
 
   <h3 class="success">✅ ${summary.action}d Records</h3>
   <ol>
-    ${summary.successRecords.map(r => `<li>${r}</li>`).join('')}
+    ${summary.successRecords.map(r => `<li>${r}</li><br />`).join('')}
   </ol>
 
   <p class="failed"><b>Skipped / Failed:</b> ${summary.skippedCount}</p>
 
   <h3 class="failed">🚫 Skipped/Failed Records</h3>
   <ol>
-    ${summary.skippedRecords.map(r => `<li>${r}</li>`).join('')}
+    ${summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')}
   </ol>
 
   <p><b>Executed At:</b> ${summary.executedAt}</p>

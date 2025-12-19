@@ -13,7 +13,7 @@ const SuccessMessages = {
 
     PriceList: {
         Create: 'Record created successfully',
-        Update: 'Price List updated successfully',
+        Update: 'Record updated successfully',
         Delete: 'Record deleted successfully!'
     },
 

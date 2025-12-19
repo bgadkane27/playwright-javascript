@@ -7,6 +7,7 @@ import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
 import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
+import NumberHelper from '../../helpers/NumberHelper.js';
 
 test.describe.serial('Price List CRUD Operations', () => {
     let commonAction;
@@ -21,7 +22,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create price list with manual', async ({ page }) => {
+    test('should able to create price list with manual', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -90,7 +91,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to create price list with markup', async ({ page }) => {
+    test('should able to create price list with markup', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -232,7 +233,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to create price list with markdown', async ({ page }) => {
+    test('should able to create price list with markdown', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -416,6 +417,7 @@ test.describe.serial('Price List CRUD Operations', () => {
                 const items = priceList.items ?? [];
 
                 for (const item of items) {
+                    await priceListPage.clickOnOverflowMenu();
                     await priceListPage.clickOnAddItem();
 
                     await priceListPage.fillItem(item.item);
@@ -424,12 +426,30 @@ test.describe.serial('Price List CRUD Operations', () => {
                     await priceListPage.fillUnitOfMeasure(item.unitOfMeasure);
                     await LookupHelper.selectListItem(page, item.unitOfMeasure);
 
+                    if (NumberHelper.isGreaterThanZero(item.minUnitPrice)) {
+                        await priceListPage.fillMinimumUnitPrice(item.minUnitPrice)
+                    }
+
+                    if (NumberHelper.isGreaterThanZero(item.maxUnitPrice)) {
+                        await priceListPage.fillMaximumUnitPrice(item.maxUnitPrice)
+                    }
+
+                    if (NumberHelper.isGreaterThanZero(item.defaultDiscountPercent)) {
+                        await priceListPage.fillDefaultDiscountInPercent(item.defaultDiscountPercent)
+                    }
+
+                    if (NumberHelper.isGreaterThanZero(item.maximumDiscountPercent)) {
+                        await priceListPage.fillMaximumDiscountInPercent(item.maximumDiscountPercent)
+                    }
+
                     await commonAction.clickOnSave();
                 }
 
                 // Save the payment method record
                 await commonAction.clickOnTopMenuOption('Save');
-                await commonAction.clickOnTopMenuOption('View');
+
+                // Validate update message
+                await SuccessMessageHelper.assert(page, 'PriceList', 'Update');
 
                 // Track successful updation
                 updatedRecords.push(priceList.name);
@@ -464,7 +484,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete price list', async ({ page }) => {
+    test('should able to delete price list', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

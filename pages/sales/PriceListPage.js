@@ -21,6 +21,7 @@ export class PriceListPage {
         this.selectAll = page.getByRole('checkbox', { name: 'Select All' });
         // Items tab locators
         this.addItem = page.getByRole('button', { name: 'Add Item', exact: true });
+        this.overflowMenu = page.getByRole('button', { name: 'overflow' });
         this.item = page.locator("input[id*='ItemId']");
         this.unitOfMeasure = page.locator("input[id*='UnitOfMeasureId']");
         this.unitPrice = page.locator("input[id*='UnitPrice']");
@@ -35,6 +36,12 @@ export class PriceListPage {
         await this.page.locator('.form-content').evaluate(el => {
             el.scrollTop = el.scrollHeight;
         });
+    }
+
+    async clickOnOverflowMenu() {
+        const element = this.overflowMenu;
+        await element.waitFor({ state: 'visible' });
+        await element.click();
     }
 
     // Click on Price List link
@@ -136,6 +143,7 @@ export class PriceListPage {
     // Click on Add Item button
     async clickOnAddItem() {
         await this.addItem.click();
+        await this.page.waitForTimeout(1000);
     }
 
     // Click on Item value
@@ -150,27 +158,27 @@ export class PriceListPage {
 
     // Enter Unit Price value
     async fillUnitPrice(value) {
-        await this.unitPrice.fill(value);
+        await this.unitPrice.fill(String(value));
     }
 
     // Enter Minimum Unit Price value in Items tab
     async fillMinimumUnitPrice(value) {
-        await this.minimumUnitPrice.fill(value);
+        await this.minimumUnitPrice.fill(String(value));
     }
 
     // Enter Maximum Unit Price value in Items tab
     async fillMaximumUnitPrice(value) {
-        await this.maximumUnitPrice.fill(value);
+        await this.maximumUnitPrice.fill(String(value));
     }
 
     // Enter Default Discount In Percent value in Items tab
     async fillDefaultDiscountInPercent(value) {
-        await this.defaultDiscountInPercent.fill(value);
+        await this.defaultDiscountInPercent.fill(String(value));
     }
 
     // Enter Maximum Discount In Percent value in Items tab
     async fillMaximumDiscountInPercent(value) {
-        await this.maximumDiscountInPercent.fill(value);
+        await this.maximumDiscountInPercent.fill(String(value));
     }
 
     // Click on Default tab

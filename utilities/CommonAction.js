@@ -56,7 +56,7 @@ export class CommonAction {
     async fillCode(value) {
         // const input = this.page.getByRole('textbox', { name: 'Code', exact: true })
         // await input.fill(value);
-        await this.page.locator('input[id*="Code"]').fill(value);        
+        await this.page.locator('input[id*="Code"]').fill(value);
     }
 
     async fillName(value) {
@@ -78,9 +78,12 @@ export class CommonAction {
     }
 
     async clickOnTopMenuOption(optionName) {
-        await this.page.getByText(optionName, { exact: true }).click();
+        // await this.page.getByText(optionName, { exact: true }).first().click();
+        const optionButton = this.page.locator('div.dxm-hasText', { hasText: optionName }).first();
+        await optionButton.waitFor({ state: 'visible' });
+        await optionButton.click();
     }
-    
+
     async provideMasterNameOnList(masterName) {
         await this.page.locator('input[aria-describedby="dx-col-3"]').fill(masterName);
         // ⏳ Small wait for grid refresh (if required)
@@ -93,9 +96,9 @@ export class CommonAction {
     }
 
     async clearMasterNameFilter() {
-    // Option 1: Clear the search input
-    await this.page.locator('input[aria-describedby="dx-col-3"]').clear(); 
-}
+        // Option 1: Clear the search input
+        await this.page.locator('input[aria-describedby="dx-col-3"]').clear();
+    }
 
     /**
  * Select grid row by any identifying text
@@ -131,11 +134,13 @@ export class CommonAction {
         await this.page.waitForTimeout(500);
     }
 
-    async clickOnSave(){
-        await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+    async clickOnSave() {
+        // await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+        await this.page.locator('span.dx-button-text', { hasText: 'Save' }).click();
+        await this.page.waitForTimeout(2000);
     }
 
-    async clickOnCancel(){
+    async clickOnCancel() {
         await this.page.getByRole('button', { name: 'Cancel', exact: true }).click();
     }
 }

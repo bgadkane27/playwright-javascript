@@ -76,26 +76,26 @@
         {
           "item": "I0007 | Earphones",
           "unitOfMeasure": "001 | Piece",
-          "minUnitPrice": "160",
-          "maxUnitPrice": "180",
-          "defaultDiscountPercent": "15",
-          "maximumDiscountPercent": "20"
+          "minUnitPrice": 160,
+          "maxUnitPrice": 180,
+          "defaultDiscountPercent": 15,
+          "maximumDiscountPercent": 20
         },
         {
           "item": "I0001 | Screen Protectors",
           "unitOfMeasure": "001 | Piece",
-          "minUnitPrice": "50",
-          "maxUnitPrice": "60",
-          "defaultDiscountPercent": "15",
-          "maximumDiscountPercent": "20"
+          "minUnitPrice": 50,
+          "maxUnitPrice": 60,
+          "defaultDiscountPercent": 15,
+          "maximumDiscountPercent": 20
         },
         {
           "item": "I0002 | Phone Cases",
           "unitOfMeasure": "001 | Piece",
-          "minUnitPrice": "100",
-          "maxUnitPrice": "120",
-          "defaultDiscountPercent": "15",
-          "maximumDiscountPercent": "20"
+          "minUnitPrice": 100,
+          "maxUnitPrice": 120,
+          "defaultDiscountPercent": 15,
+          "maximumDiscountPercent": 20
         }
       ]
     }
