@@ -143,4 +143,8 @@ export class CommonAction {
     async clickOnCancel() {
         await this.page.getByRole('button', { name: 'Cancel', exact: true }).click();
     }
+
+    async clickOnAdd(){
+        await this.page.getByRole('button', { name: 'Add a row' }).click();
+    }
 }

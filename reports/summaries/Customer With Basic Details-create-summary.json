@@ -1,0 +1,13 @@
+{
+  "module": "Customer With Basic Details",
+  "action": "Create",
+  "totalRecordsAttempted": 2,
+  "successCount": 2,
+  "skippedCount": 0,
+  "successRecords": [
+    "Customer - KWD",
+    "Customer - AED"
+  ],
+  "skippedRecords": [],
+  "executedAt": "21/12/2025, 6:41:18 pm"
+}
