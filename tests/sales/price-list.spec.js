@@ -85,7 +85,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Price List',
+            'Price List Manual',
             createdRecords,
             skippedRecords
         );
@@ -227,7 +227,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Price List',
+            'Price List Markup',
             createdRecords,
             skippedRecords
         );
@@ -369,7 +369,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Price List',
+            'Price List Markdown',
             createdRecords,
             skippedRecords
         );

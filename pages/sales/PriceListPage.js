@@ -44,6 +44,17 @@ export class PriceListPage {
         await element.click();
     }
 
+    async clickOnOverflowMenu1() {
+        // This selector will only match when dx-state-invisible is NOT present
+        const visibleMenu = this.page.locator('.dx-toolbar-menu-container:not(.dx-state-invisible)');
+
+        // Wait for element to be visible
+        await visibleMenu.waitFor({ state: 'visible' });
+
+        // Click the outer div
+        await visibleMenu.click();
+    }
+
     // Click on Price List link
     async clickOnPriceList() {
         await this.priceList.click();
@@ -148,11 +159,13 @@ export class PriceListPage {
 
     // Click on Item value
     async fillItem(value) {
+        await this.item.waitFor();
         await this.item.fill(value);
     }
 
     // Enter Unit Of Measure value
-    async fillUnitOfMeasure(value) {
+    async fillUnitOfMeasure(value) {        
+        await this.unitOfMeasure.waitFor();
         await this.unitOfMeasure.fill(value);
     }
 
