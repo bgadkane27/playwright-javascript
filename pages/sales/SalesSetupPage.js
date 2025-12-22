@@ -2,10 +2,10 @@ export class SalesSetupPage {
     constructor(page) {
         this.page = page;
 
-        this.customerLink = page.getByRole("link", { name: "Customer", exact: true }).first();
+        this.customerLink = page.getByRole("link", { name: "Customer", exact: true }).nth(1);
         this.paymentTermLink = page.getByRole("link", { name: "Payment Term", exact: true });
         this.salesmanLink = page.getByRole("link", { name: "Salesman", exact: true });
-        this.priceListLink = page.getByRole("link", { name: "Price List", exact: true }).first();
+        this.priceListLink = page.getByRole("link", { name: "Price List", exact: true }).nth(1);
         this.paymentMethodLink = page.getByRole("link", { name: "Payment Method", exact: true });
     }
 
