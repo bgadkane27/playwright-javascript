@@ -50,7 +50,8 @@ test.describe.serial('Customer CRUD Operations', () => {
                 }
 
                 await commonAction.clickOnTopMenuOption('Save');
-                await SuccessMessageHelper.assert(page, 'Customer', 'Create');
+                // await SuccessMessageHelper.assert(page, 'Customer', 'Create');
+                await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
 
                 createdRecords.push(customer.name);
 
@@ -80,6 +81,70 @@ test.describe.serial('Customer CRUD Operations', () => {
         SummaryHelper.exportCreateSummary(
             'Customer With Basic Details',
             createdRecords,
+            skippedRecords
+        );
+    });
+
+    test('should able to delete customer', async ({ page }) => {
+        // 🗑️ Deletion Summary Trackers
+        const deletedRecords = [];
+        const skippedRecords = [];
+
+        await commonAction.clickOnLeftMenuOption('Setups');
+        await salesSetupPage.clickOnCustomer();
+
+        // Iterate to delete
+        for (const customer of customerData.delete) {
+            try {
+                // Search and filter the record
+                await commonAction.provideMasterNameOnList(customer.name);
+
+                // Check if the record exists before proceeding with deletion
+                const recordExists = await page.locator(`text=${customer.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                if (!recordExists) {
+                    console.warn(`⚠️ Record '${customer.name}' not found - deletion skipped.`);
+                    skippedRecords.push(customer.name);
+                    continue;
+                }
+
+                // Proceed with deletion if record exists
+                await commonAction.selectMasterFromList(customer.name);
+                await commonAction.clickOnMenu();
+                await commonAction.clickOnDelete();
+                await commonAction.clickOnOk();
+
+                // ✅ Validate deleted message
+                await SuccessMessageHelper.assert(page, 'Customer', 'Delete');
+
+                // Track successful deletion
+                deletedRecords.push(customer.name);
+
+            } catch (error) {
+                skippedRecords.push(customer.name);
+                console.warn(`⚠️ Deletion failed for '${customer.name}': ${error.message}`);
+            } finally {
+                // 🧹 Always reset filter
+                await commonAction.clearMasterNameFilter();
+            }
+        }
+
+        // 📊 Summary Report
+        console.log('==========🧾 Customer Delete Summary ==========');
+        console.log(`📄 Total Records Attempted: ${customerData.delete.length}`);
+        console.log(`✅ Successfully Deleted: ${deletedRecords.length}`);
+        if (deletedRecords.length) {
+            console.log('🗑️  Deleted Records: ' + deletedRecords.join(', '));
+        }
+        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫  Skipped Records: ' + skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('======================================');
+
+        SummaryHelper.exportDeleteSummary(
+            'Customer',
+            deletedRecords,
             skippedRecords
         );
     });

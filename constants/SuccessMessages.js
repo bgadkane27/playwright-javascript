@@ -20,7 +20,7 @@ const SuccessMessages = {
     Customer: {
         Create: 'Customer created successfully',
         Update: 'Customer updated successfully',
-        Delete: 'Record deleted successfully!'
+        Delete: 'Customer deleted successfully'
     },
 
     Supplier: {

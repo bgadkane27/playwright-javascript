@@ -1,13 +1,13 @@
 {
-  "module": "Customer With Basic Details",
+  "module": "Salesman",
   "action": "Create",
   "totalRecordsAttempted": 2,
   "successCount": 2,
   "skippedCount": 0,
   "successRecords": [
-    "Customer - KWD",
-    "Customer - AED"
+    "Adil Tamer",
+    "Ali Khan"
   ],
   "skippedRecords": [],
-  "executedAt": "22/12/2025, 8:01:06 am"
+  "executedAt": "22/12/2025, 8:05:37 am"
 }

@@ -1,0 +1,12 @@
+{
+  "module": "Price List Markup",
+  "action": "Create",
+  "totalRecordsAttempted": 1,
+  "successCount": 1,
+  "skippedCount": 0,
+  "successRecords": [
+    "Markup Price List"
+  ],
+  "skippedRecords": [],
+  "executedAt": "22/12/2025, 8:03:46 am"
+}

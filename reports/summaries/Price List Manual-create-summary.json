@@ -1,0 +1,12 @@
+{
+  "module": "Price List Manual",
+  "action": "Create",
+  "totalRecordsAttempted": 1,
+  "successCount": 1,
+  "skippedCount": 0,
+  "successRecords": [
+    "Retail Price List"
+  ],
+  "skippedRecords": [],
+  "executedAt": "22/12/2025, 8:03:27 am"
+}

@@ -1,0 +1,14 @@
+{
+  "module": "Price List",
+  "action": "Delete",
+  "totalRecordsAttempted": 3,
+  "successCount": 3,
+  "skippedCount": 0,
+  "successRecords": [
+    "Markdown Price List",
+    "Markup Price List",
+    "Retail Price List"
+  ],
+  "skippedRecords": [],
+  "executedAt": "22/12/2025, 8:05:10 am"
+}
