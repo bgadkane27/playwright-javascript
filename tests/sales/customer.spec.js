@@ -122,17 +122,18 @@ test.describe.serial('Customer CRUD Operations', () => {
                 await customerPage.fillEmail(customer.email);
                 await customerPage.fillMobile(customer.mobile);
                 await customerPage.fillTelephone(customer.telephone);
-                await customerPage.fillDescription(customer.description);
+                await customerPage.fillDescription(customer.description);                
+                await customerPage.clickOnReceivableAccount();
+                await LookupHelper.selectListItem(page, customer.receivableAccount);
 
                 await customerPage.clickOnRestrictPaymentTerm();
                 await customerPage.clickOnSelectPaymentTerm();
-                await customerPage.clickOnSelectAllPaymentTerm();
+                await LookupHelper.selectListItem(page, customer.paymentTerm1);
+                // await customerPage.clickOnSelectAllPaymentTerm();
                 await customerPage.clickOnRestrictPriceList();
                 await customerPage.clickOnSelectPriceList();
-                await customerPage.clickOnSelectAllPriceList();
-
-                await customerPage.clickOnReceivableAccount();
-                await LookupHelper.selectListItem(page, customer.receivableAccount);
+                await LookupHelper.selectListItem(page, customer.priceList1);
+                // await customerPage.clickOnSelectAllPriceList();
 
                 //Credit Control
                 if (customer.enableCreditControl) {
@@ -160,9 +161,9 @@ test.describe.serial('Customer CRUD Operations', () => {
                     await LookupHelper.selectListItem(page, customer.shippingMethod);
                     await customerPage.clickOnShipmentPriority();                    
                     await LookupHelper.selectListItem(page, customer.shipmentPriority);
-                    await customerPage.clickOnPaymentTerm();
+                    await customerPage.clickOnPaymentTerm(customer.paymentTerm);
                     await LookupHelper.selectListItem(page, customer.paymentTerm);
-                    await customerPage.clickOnPriceList();
+                    await customerPage.clickOnPriceList(customer.priceList);
                     await LookupHelper.selectListItem(page, customer.priceList);
                 }
 
