@@ -111,7 +111,7 @@ export class CommonAction {
     }
 
     async clickOnMenu() {
-        await this.page.locator('img[alt="..."]').click();
+        await this.page.locator('.dxm-popOut:has(img[alt="..."])').click();
         await this.page.waitForTimeout(500);
     }
 

@@ -50,7 +50,6 @@ test.describe.serial('Customer CRUD Operations', () => {
                 }
 
                 await commonAction.clickOnTopMenuOption('Save');
-                // await SuccessMessageHelper.assert(page, 'Customer', 'Create');
                 await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
 
                 createdRecords.push(customer.name);
