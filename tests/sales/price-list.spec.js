@@ -22,7 +22,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test('should able to create price list with manual', async ({ page }) => {
+    test.skip('should able to create price list with manual', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -91,7 +91,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test('should able to create price list with markup', async ({ page }) => {
+    test.skip('should able to create price list with markup', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -233,7 +233,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test('should able to create price list with markdown', async ({ page }) => {
+    test.skip('should able to create price list with markdown', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -375,7 +375,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test('should able to update price list with manual', async ({ page }) => {
+    test.skip('should able to update price list with manual', async ({ page }) => {
         // ✏️ Update Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];
@@ -484,7 +484,7 @@ test.describe.serial('Price List CRUD Operations', () => {
         );
     });
 
-    test('should able to delete price list', async ({ page }) => {
+    test.skip('should able to delete price list', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

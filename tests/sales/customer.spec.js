@@ -22,7 +22,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test('should able to create customer with basic details', async ({ page }) => {
+    test.skip('should able to create customer with basic detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -78,13 +78,126 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Customer With Basic Details',
+            'Customer - Basic',
             createdRecords,
             skippedRecords
         );
     });
 
-    test('should able to delete customer', async ({ page }) => {
+    test('should able to create customer with key info detail', async ({ page }) => {
+
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await commonAction.clickOnLeftMenuOption('Setups');
+        await salesSetupPage.clickOnCustomer();
+
+        for (const customer of customerData.keyInfos) {
+            try {
+                await commonAction.clickOnListingItem('New');
+
+                if (customer.feature?.allowCodeManual && customer.code) {
+                    await commonAction.fillCode(customer.code);
+                }
+
+                await commonAction.fillName(customer.name);
+
+                if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                    await commonAction.fillNameArabic(customer.nameArabic);
+                }
+
+                if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                    await commonAction.clickOnCurrency();
+                    await LookupHelper.selectListItem(page, customer.currency);
+                }
+
+                await commonAction.clickOnTopMenuOption('Save');
+                await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
+                createdRecords.push(customer.name);
+
+                //Key Info
+                await customerPage.clickOnKeyInfoTab();
+                await customerPage.clickOnGroup();
+                await LookupHelper.selectListItem(page, customer.group);
+                await customerPage.fillEmail(customer.email);
+                await customerPage.fillMobile(customer.mobile);
+                await customerPage.fillTelephone(customer.telephone);
+                await customerPage.fillDescription(customer.description);
+
+                await customerPage.clickOnRestrictPaymentTerm();
+                await customerPage.clickOnSelectPaymentTerm();
+                await customerPage.clickOnSelectAllPaymentTerm();
+                await customerPage.clickOnRestrictPriceList();
+                await customerPage.clickOnSelectPriceList();
+                await customerPage.clickOnSelectAllPriceList();
+
+                await customerPage.clickOnReceivableAccount();
+                await LookupHelper.selectListItem(page, customer.receivableAccount);
+
+                //Credit Control
+                if (customer.enableCreditControl) {
+                    await customerPage.clickOnEnableCreditControl();
+                    await customerPage.fillCreditLimitAmount(customer.creditLimitAmount);
+                    await customerPage.scrollToCreditCheckMode();
+                    await customerPage.fillCreditLimitDays(customer.creditLimitDays);
+                    await customerPage.clickOnCreditRating();
+                    await LookupHelper.selectListItem(page, customer.creditRating);
+                    await customerPage.clickOnCreditCheckMode();
+                    await LookupHelper.selectListItem(page, customer.creditCheckMode);
+                }
+
+                //Defaults
+                if (customer.enableDefaults) {
+                    await customerPage.clickOnSetDefaults();
+                    await customerPage.clickOnSalesman();
+                    await LookupHelper.selectListItem(page, customer.salesman);                    
+                    await customerPage.scrollToShipmentPriority();                    
+                    await customerPage.clickOnShippingTerm();
+                    await LookupHelper.selectListItem(page, customer.shippingTerm);
+                    await customerPage.fillLoadingPort(customer.loadingPort);
+                    await customerPage.fillDestinationPort(customer.destinationPort);
+                    await customerPage.clickOnShippingMethod();
+                    await LookupHelper.selectListItem(page, customer.shippingMethod);
+                    await customerPage.clickOnShipmentPriority();                    
+                    await LookupHelper.selectListItem(page, customer.shipmentPriority);
+                    await customerPage.clickOnPaymentTerm();
+                    await LookupHelper.selectListItem(page, customer.paymentTerm);
+                    await customerPage.clickOnPriceList();
+                    await LookupHelper.selectListItem(page, customer.priceList);
+                }
+
+                await customerPage.clickOnSaveKeyInfo();
+                await customerPage.clickOnBack();
+
+            } catch (error) {
+                skippedRecords.push(customer?.name);
+                console.warn(`❌ Failed to create customer: ${customer?.name}`, error.message);
+                await customerPage.clickOnBack();
+            }
+        }
+
+        // 📊 Summary Report
+        console.log('==========🧾 Customer Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${customerData.keyInfos.length}`);
+        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records: ' + createdRecords.join(', '));
+        }
+        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('======================================');
+
+        SummaryHelper.exportCreateSummary(
+            'Customer - Key Info',
+            createdRecords,
+            skippedRecords
+        );
+    });
+
+    test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

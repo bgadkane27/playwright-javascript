@@ -35,14 +35,30 @@ export default class LookupHelper {
     throw new Error(`Lookup value not found: ${optionText}`);
   }
 
+  static async selectLookupItem(page, optionText) {
+    const option = page
+        .locator('.dx-item-content.dx-list-item-content')
+        .filter({ hasText: optionText })
+        .first();
+
+    await option.waitFor({ state: 'attached', timeout: 5000 });
+    await option.scrollIntoViewIfNeeded();
+    await option.click({ force: true });
+}
+
   static async selectListItem(page, optionText) {
     const option = page
       .locator('[role="option"]')
       .filter({ hasText: optionText })
       .first();
 
-    await option.waitFor({ state: 'visible', timeout: 5000 });
-    await option.click();
+    await option.waitFor({ state: 'attached', timeout: 5000 });
+    const isSelected = await option.getAttribute('aria-selected');
+    if (isSelected === 'true') {
+        return;
+    }
+    await option.scrollIntoViewIfNeeded();
+    await option.click({ force: true });
   }
 
 }

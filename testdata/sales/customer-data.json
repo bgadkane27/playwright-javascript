@@ -1,9 +1,12 @@
 {
+  "feature": {
+    "allowCodeManual": false
+  },
   "basics": [
     {
       "code": "C0016",
       "name": "Customer - KWD",
-      "arabicName": "Customer - KWD",
+      "nameArabic": "Customer - KWD",
       "currency": null
     },
     {
@@ -17,21 +20,25 @@
     {
       "code": "C0018",
       "name": "Customer - Key Info Tab",
-      "arabicName": "Customer - Key Info Tab",
-      "currency": "KWD | Kuwaiti Dinar",
+      "nameArabic": "Customer - Key Info Tab",
+      "currency": null,
       "group": "CG01 | National",
       "email": "key@gmail.com",
       "mobile": "98652545",
       "telephone": "96522543",
-      "description": "KeyInfoCustomer",
+      "paymentTerm1": "PT01 | Net 30",
+      "paymentTerm2" : "PT02 | Net 50",
+      "description": "Customer - Key Info Tab",
       "receivableAccount": "11210 | Receivables",
-      "creditLimitAmount": "500",
-      "creditLimitDays": "50",
-      "creditRating": "Good",
+      "enableCreditControl": true,
+      "creditLimitAmount": 500,
+      "creditLimitDays": 50,
+      "creditRating": "Average",
       "creditCheckMode": "Notify Only",
+      "enableDefaults": true,
       "salesman": "SM02 | Habid Eid",
-      "paymentTerm": "PT01 | Net 30",
-      "priceList": "PL001 | Standard",
+      "paymentTerm": "PT02 | Net 50",
+      "priceList": "PL002 | Discounted",
       "shippingTerm": "Factory",
       "loadingPort": "1001",
       "destinationPort": "2001",
@@ -43,7 +50,7 @@
     {
       "code": "C0019",
       "name": "Customer - Address Tab",
-      "arabicName": "Customer - Address Tab",
+      "nameArabic": "Customer - Address Tab",
       "currency": "KWD | Kuwaiti Dinar",
       "billingAddress1": "3021 Nyasia Shore",
       "billingAddress2": "Fort Wayne",
@@ -65,7 +72,7 @@
     {
       "code": "C0020",
       "name": "Customer - Contact Person Tab",
-      "arabicName": "Customer - Contact Person Tab",
+      "nameArabic": "Customer - Contact Person Tab",
       "currency": "KWD | Kuwaiti Dinar",
       "persons": [
         {
@@ -95,7 +102,7 @@
     {
       "code": "C0021",
       "name": "Customer - Documents Tab",
-      "arabicName": "Customer - Documents Tab",
+      "nameArabic": "Customer - Documents Tab",
       "documents": [
         {
           "documentType": "Civil Id",
@@ -125,7 +132,7 @@
       "name":"Customer - Key Info Tab",
       "updatedCode" : null,
       "updatedName" : null,
-      "arabicName": "Customer - Key Info Tab Updated",
+      "nameArabic": "Customer - Key Info Tab Updated",
       "currency": "KWD | Kuwaiti Dinar",
       "group": "CG02 | International",
       "email": "key.update@gmail.com",

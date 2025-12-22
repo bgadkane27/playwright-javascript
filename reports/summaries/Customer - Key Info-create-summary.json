@@ -1,0 +1,14 @@
+{
+  "module": "Customer - Key Info",
+  "action": "Create",
+  "totalRecordsAttempted": 2,
+  "successCount": 1,
+  "skippedCount": 1,
+  "successRecords": [
+    "Customer - Key Info Tab"
+  ],
+  "skippedRecords": [
+    "Customer - Key Info Tab"
+  ],
+  "executedAt": "22/12/2025, 6:55:30 pm"
+}
