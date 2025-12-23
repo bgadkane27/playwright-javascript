@@ -22,7 +22,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create customer with basic detail', async ({ page }) => {
+    test('should able to create customer with basic detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -84,7 +84,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with key info detail', async ({ page }) => {
+    test('should be able to create customer with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -294,10 +294,10 @@ test.describe.serial('Customer CRUD Operations', () => {
                     await customerPage.fillBillingAddress2(customer.billingAddress2);
 
                     await customerPage.clickOnBillingCountry();
-                    await LookupHelper.selectLookupOption(page, customer.billingCountry);
+                    await LookupHelper.selectListItem(page, customer.billingCountry);
 
                     await customerPage.clickOnBillingState();
-                    await LookupHelper.selectLookupOption(page, customer.billingState);
+                    await LookupHelper.selectListItem(page, customer.billingState);
 
                     await customerPage.scrollToContactPerson();
 
@@ -315,10 +315,10 @@ test.describe.serial('Customer CRUD Operations', () => {
                         await customerPage.fillShippingAddress2(customer.shippingAddress2);
 
                         await customerPage.clickOnShippingCountry();
-                        await LookupHelper.selectListItem(page, customer.shippingCountry);
+                        await LookupHelper.selectLookupOption(page, customer.shippingCountry);
 
                         await customerPage.clickOnShippingState();
-                        await LookupHelper.selectListItem(page, customer.shippingState);
+                        await LookupHelper.selectLookupOption(page, customer.shippingState);
 
                         await customerPage.scrollToContactPerson();
 
@@ -365,7 +365,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete customer', async ({ page }) => {
+    test('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

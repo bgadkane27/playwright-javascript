@@ -1,12 +1,12 @@
 {
-  "module": "Customer - Address",
+  "module": "Price List Manual",
   "action": "Create",
   "totalRecordsAttempted": 1,
   "successCount": 1,
   "skippedCount": 0,
   "successRecords": [
-    "Customer - Address Tab"
+    "Retail Price List"
   ],
   "skippedRecords": [],
-  "executedAt": "23/12/2025, 10:01:37 pm"
+  "executedAt": "23/12/2025, 10:04:05 pm"
 }

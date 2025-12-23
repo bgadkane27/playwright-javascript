@@ -1,0 +1,12 @@
+{
+  "module": "Price List",
+  "action": "Update",
+  "totalRecordsAttempted": 1,
+  "successCount": 0,
+  "skippedCount": 1,
+  "successRecords": [],
+  "skippedRecords": [
+    "Retail Price List"
+  ],
+  "executedAt": "23/12/2025, 10:05:22 pm"
+}

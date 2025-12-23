@@ -1,0 +1,18 @@
+{
+  "module": "Customer",
+  "action": "Delete",
+  "totalRecordsAttempted": 6,
+  "successCount": 3,
+  "skippedCount": 3,
+  "successRecords": [
+    "Customer - Address Tab",
+    "Customer - AED",
+    "Customer - KWD"
+  ],
+  "skippedRecords": [
+    "Customer - Documents Tab",
+    "Customer - Contact Person Tab",
+    "Customer - Key Info Tab"
+  ],
+  "executedAt": "23/12/2025, 10:02:35 pm"
+}

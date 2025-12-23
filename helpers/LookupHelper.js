@@ -35,34 +35,22 @@ export default class LookupHelper {
     throw new Error(`Lookup value not found: ${optionText}`);
   }
 
-  static async selectLookupOption(page, optionText) {
-    const list = page.locator('div.dx-list-items');
-    const items = page.locator('div.dx-item.dx-list-item');
+  static async selectListItem(page, optionText) {
+    const option = page
+      .locator('div.dx-item.dx-list-item')
+      .filter({ hasText: optionText })
+      .first();
 
-    const maxScrolls = 15;
-    for (let scroll = 0; scroll < maxScrolls; scroll++) {
-      const count = await items.count();
-
-      for (let i = 0; i < count; i++) {
-        const item = items.nth(i);
-        const content = item.locator('.dx-item-content');
-
-        if (!(await content.isVisible())) continue;
-        const text = (await content.innerText()).trim();
-        if (text.includes(optionText)) {
-          await content.hover();
-          await content.click();
-          return;
-        }
-      }
-      // 🔽 Scroll the list container down (virtual scroll trigger)
-      await list.evaluate(el => el.scrollBy(0, 300));
-      await page.waitForTimeout(300);
+    await option.waitFor({ state: 'visible', timeout: 5000 });
+    const isSelected = await option.getAttribute('aria-selected');
+    if (isSelected === 'true') {
+      return;
     }
-    throw new Error(`Lookup value not found: ${optionText}`);
+    await option.scrollIntoViewIfNeeded();
+    await option.click();
   }
 
-  static async selectListItem(page, optionText) {
+  static async selectOption(page, optionText) {
     const option = page
       .locator('[role="option"]')
       .filter({ hasText: optionText })
@@ -73,19 +61,69 @@ export default class LookupHelper {
     if (isSelected === 'true') {
       return;
     }
-    // await option.scrollIntoViewIfNeeded();
-    await option.click({ force: true });
-  }
-
-  static async selectItem(page, optionText) {
-    const option = page
-      .locator('div.dx-item.dx-list-item')
-      .filter({ hasText: optionText })
-    // .first();
-
     await option.scrollIntoViewIfNeeded();
-    await option.waitFor({ state: 'visible' });
     await option.click();
+  }  
+
+  static async selectLookupOption(page, optionText) {
+
+    // Locate the lookup list container
+    // const list = page.locator('div.dx-list-items').nth(1);
+    const list = page.getByRole("listbox", { name: 'Items' }).nth(0);
+
+    // Locate all lookup list items
+    const items = page.locator('div.dx-item.dx-list-item');
+
+    // Maximum number of scroll attempts to load virtual items
+    const maxScrolls = 10;
+
+    // Loop through the list multiple times
+    for (let scroll = 0; scroll < maxScrolls; scroll++) {
+
+      // Get the count of currently rendered items
+      const count = await items.count();
+
+      // Iterate through each visible item
+      for (let i = 0; i < count; i++) {
+
+        // Get the individual lookup item
+        const item = items.nth(i);
+
+        // Get the text content container inside the item
+        const content = item.locator('.dx-item-content');
+
+        // Skip the item if it is not visible
+        if (!(await content.isVisible())) continue;
+
+        // Read and trim the displayed text
+        const text = (await content.innerText()).trim();
+
+        // Check if the item text matches
+        if (text.includes(optionText)) {
+
+          // Ensure the matched item is inside the viewport
+          await content.scrollIntoViewIfNeeded();
+
+          // Hover over the item
+          await content.hover();
+
+          // Click the matched lookup value
+          await content.click();
+
+          // Exit once the option is selected
+          return;
+        }
+      }
+
+      // Scroll the lookup list to load more items
+      await list.evaluate(el => el.scrollBy(0, 300));
+
+      // Small wait to allow new items to render
+      await page.waitForTimeout(300);
+    }
+
+    // Throw error if lookup value is not found after all scroll attempts
+    throw new Error(`Lookup value not found: ${optionText}`);
   }
 
 }

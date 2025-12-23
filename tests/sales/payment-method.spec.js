@@ -21,7 +21,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create payment method', async ({ page }) => {
+    test('should able to create payment method', async ({ page }) => {
         // 🆕 Creation summary trackers
         const createdRecords = [];
         const skippedRecords = [];
@@ -98,7 +98,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to update payment method', async ({ page }) => {
+    test('should able to update payment method', async ({ page }) => {
         // ✏️ Update Summary Trackers
         const updatedRecords = [];
         const skippedRecords = [];
@@ -191,7 +191,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete payment method', async ({ page }) => {
+    test('should able to delete payment method', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];
