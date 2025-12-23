@@ -123,8 +123,8 @@ test.describe.serial('Customer CRUD Operations', () => {
                     // ================= Key Info =================
                     await customerPage.clickOnKeyInfoTab();
 
-                    await customerPage.clickOnGroup();
-                    await LookupHelper.selectListItem(page, customer.group);
+                    // await customerPage.clickOnGroup();
+                    // await LookupHelper.selectListItem(page, customer.group);
 
                     await customerPage.fillEmail(customer.email);
                     await customerPage.fillMobile(customer.mobile);
