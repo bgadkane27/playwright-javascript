@@ -217,18 +217,14 @@ export class CustomerPage {
         await this.salesman.click();
     }
 
-    async clickOnPaymentTerm(value){
+    async clickOnPaymentTerm(){
         await this.paymentTerm.click();
-        await this.page.waitForTimeout(2000);
-        await this.paymentTerm.fill(value);
-        await this.page.waitForTimeout(2000);
+        // await this.paymentTerm.fill(value);
     }
 
-    async clickOnPriceList(value){
+    async clickOnPriceList(){
         await this.priceList.click();
-        await this.page.waitForTimeout(2000);
-        await this.priceList.fill(value);
-        await this.page.waitForTimeout(2000);
+        // await this.priceList.fill(value);
     }
 
     async clickOnShippingTerm(){

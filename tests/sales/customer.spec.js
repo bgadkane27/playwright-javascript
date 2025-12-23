@@ -122,18 +122,9 @@ test.describe.serial('Customer CRUD Operations', () => {
                 await customerPage.fillEmail(customer.email);
                 await customerPage.fillMobile(customer.mobile);
                 await customerPage.fillTelephone(customer.telephone);
-                await customerPage.fillDescription(customer.description);                
+                await customerPage.fillDescription(customer.description);
                 await customerPage.clickOnReceivableAccount();
                 await LookupHelper.selectListItem(page, customer.receivableAccount);
-
-                await customerPage.clickOnRestrictPaymentTerm();
-                await customerPage.clickOnSelectPaymentTerm();
-                await LookupHelper.selectListItem(page, customer.paymentTerm1);
-                // await customerPage.clickOnSelectAllPaymentTerm();
-                await customerPage.clickOnRestrictPriceList();
-                await customerPage.clickOnSelectPriceList();
-                await LookupHelper.selectListItem(page, customer.priceList1);
-                // await customerPage.clickOnSelectAllPriceList();
 
                 //Credit Control
                 if (customer.enableCreditControl) {
@@ -145,29 +136,57 @@ test.describe.serial('Customer CRUD Operations', () => {
                     await LookupHelper.selectListItem(page, customer.creditRating);
                     await customerPage.clickOnCreditCheckMode();
                     await LookupHelper.selectListItem(page, customer.creditCheckMode);
-                }
+                    await customerPage.clickOnSaveKeyInfo();
+                }                
 
                 //Defaults
                 if (customer.enableDefaults) {
                     await customerPage.clickOnSetDefaults();
                     await customerPage.clickOnSalesman();
-                    await LookupHelper.selectListItem(page, customer.salesman);                    
-                    await customerPage.scrollToShipmentPriority();                    
+                    await LookupHelper.selectListItem(page, customer.salesman);
+                    await customerPage.clickOnPaymentTerm();
+                    await LookupHelper.selectListItem(page, customer.paymentTerm);                    
+                    await customerPage.scrollToShipmentPriority();
+                    await customerPage.clickOnPriceList();
+                    await LookupHelper.selectListItem(page, customer.priceList);
                     await customerPage.clickOnShippingTerm();
                     await LookupHelper.selectListItem(page, customer.shippingTerm);
                     await customerPage.fillLoadingPort(customer.loadingPort);
                     await customerPage.fillDestinationPort(customer.destinationPort);
                     await customerPage.clickOnShippingMethod();
                     await LookupHelper.selectListItem(page, customer.shippingMethod);
-                    await customerPage.clickOnShipmentPriority();                    
+                    await customerPage.clickOnShipmentPriority();
                     await LookupHelper.selectListItem(page, customer.shipmentPriority);
-                    await customerPage.clickOnPaymentTerm(customer.paymentTerm);
-                    await LookupHelper.selectListItem(page, customer.paymentTerm);
-                    await customerPage.clickOnPriceList(customer.priceList);
-                    await LookupHelper.selectListItem(page, customer.priceList);
+                    await customerPage.clickOnSaveKeyInfo();
                 }
 
+                if (customer.restrictPaymentTerm) {
+                    await customerPage.clickOnRestrictPaymentTerm();
+                    await customerPage.clickOnSelectPaymentTerm();
+                    if (customer.selectAllPaymentTerms) {
+                        await customerPage.clickOnSelectAllPaymentTerm();
+                    }
+                    await LookupHelper.selectListItem(page, customer.paymentTerm1);
+                    // await LookupHelper.selectListItem(page, customer.paymentTerm2);
+                }
+
+                if (customer.restrictPriceList) {
+                    await customerPage.clickOnRestrictPriceList();
+                    await customerPage.clickOnSelectPriceList();
+                    if (customer.selectAllPriceLists) {
+                        await customerPage.clickOnSelectAllPriceList();
+                    }
+                    await LookupHelper.selectListItem(page, customer.priceList1);
+                    // await LookupHelper.selectListItem(page, customer.priceList2);
+                }
+
+                //Save Key Info
                 await customerPage.clickOnSaveKeyInfo();
+
+                // Verify update message
+                await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+
+                //Back to Listing
                 await customerPage.clickOnBack();
 
             } catch (error) {
