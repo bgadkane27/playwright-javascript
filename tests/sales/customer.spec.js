@@ -84,131 +84,165 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should able to create customer with key info detail', async ({ page }) => {
+    test('should be able to create customer with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
 
-        await commonAction.clickOnLeftMenuOption('Setups');
-        await salesSetupPage.clickOnCustomer();
+        await test.step('Navigate to Customer Master', async () => {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnCustomer();
+        });
 
         for (const customer of customerData.keyInfos) {
+
             try {
-                await commonAction.clickOnListingItem('New');
+                await test.step(`Create customer: ${customer.name}`, async () => {
 
-                if (customer.feature?.allowCodeManual && customer.code) {
-                    await commonAction.fillCode(customer.code);
-                }
+                    // ================= Create =================
+                    await commonAction.clickOnListingItem('New');
 
-                await commonAction.fillName(customer.name);
-
-                if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
-                    await commonAction.fillNameArabic(customer.nameArabic);
-                }
-
-                if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
-                    await commonAction.clickOnCurrency();
-                    await LookupHelper.selectListItem(page, customer.currency);
-                }
-
-                await commonAction.clickOnTopMenuOption('Save');
-                await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
-                createdRecords.push(customer.name);
-
-                //Key Info
-                await customerPage.clickOnKeyInfoTab();
-                await customerPage.clickOnGroup();
-                await LookupHelper.selectListItem(page, customer.group);
-                await customerPage.fillEmail(customer.email);
-                await customerPage.fillMobile(customer.mobile);
-                await customerPage.fillTelephone(customer.telephone);
-                await customerPage.fillDescription(customer.description);
-                await customerPage.clickOnReceivableAccount();
-                await LookupHelper.selectListItem(page, customer.receivableAccount);
-
-                //Credit Control
-                if (customer.enableCreditControl) {
-                    await customerPage.clickOnEnableCreditControl();
-                    await customerPage.fillCreditLimitAmount(customer.creditLimitAmount);
-                    await customerPage.scrollToCreditCheckMode();
-                    await customerPage.fillCreditLimitDays(customer.creditLimitDays);
-                    await customerPage.clickOnCreditRating();
-                    await LookupHelper.selectListItem(page, customer.creditRating);
-                    await customerPage.clickOnCreditCheckMode();
-                    await LookupHelper.selectListItem(page, customer.creditCheckMode);
-                    await customerPage.clickOnSaveKeyInfo();
-                }                
-
-                //Defaults
-                if (customer.enableDefaults) {
-                    await customerPage.clickOnSetDefaults();
-                    await customerPage.clickOnSalesman();
-                    await LookupHelper.selectListItem(page, customer.salesman);
-                    await customerPage.clickOnPaymentTerm();
-                    await LookupHelper.selectListItem(page, customer.paymentTerm);                    
-                    await customerPage.scrollToShipmentPriority();
-                    await customerPage.clickOnPriceList();
-                    await LookupHelper.selectListItem(page, customer.priceList);
-                    await customerPage.clickOnShippingTerm();
-                    await LookupHelper.selectListItem(page, customer.shippingTerm);
-                    await customerPage.fillLoadingPort(customer.loadingPort);
-                    await customerPage.fillDestinationPort(customer.destinationPort);
-                    await customerPage.clickOnShippingMethod();
-                    await LookupHelper.selectListItem(page, customer.shippingMethod);
-                    await customerPage.clickOnShipmentPriority();
-                    await LookupHelper.selectListItem(page, customer.shipmentPriority);
-                    await customerPage.clickOnSaveKeyInfo();
-                }
-
-                if (customer.restrictPaymentTerm) {
-                    await customerPage.clickOnRestrictPaymentTerm();
-                    await customerPage.clickOnSelectPaymentTerm();
-                    if (customer.selectAllPaymentTerms) {
-                        await customerPage.clickOnSelectAllPaymentTerm();
+                    if (customerData.feature?.allowCodeManual && customer.code) {
+                        await commonAction.fillCode(customer.code);
                     }
-                    await LookupHelper.selectListItem(page, customer.paymentTerm1);
-                    // await LookupHelper.selectListItem(page, customer.paymentTerm2);
-                }
 
-                if (customer.restrictPriceList) {
-                    await customerPage.clickOnRestrictPriceList();
-                    await customerPage.clickOnSelectPriceList();
-                    if (customer.selectAllPriceLists) {
-                        await customerPage.clickOnSelectAllPriceList();
+                    await commonAction.fillName(customer.name);
+
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                        await commonAction.fillNameArabic(customer.nameArabic);
                     }
-                    await LookupHelper.selectListItem(page, customer.priceList1);
-                    // await LookupHelper.selectListItem(page, customer.priceList2);
-                }
 
-                //Save Key Info
-                await customerPage.clickOnSaveKeyInfo();
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                        await commonAction.clickOnCurrency();
+                        await LookupHelper.selectListItem(page, customer.currency);
+                    }
 
-                // Verify update message
-                await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+                    await commonAction.clickOnTopMenuOption('Save');
+                    await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
 
-                //Back to Listing
-                await customerPage.clickOnBack();
+                    // ================= Key Info =================
+                    await customerPage.clickOnKeyInfoTab();
+
+                    await customerPage.clickOnGroup();
+                    await LookupHelper.selectListItem(page, customer.group);
+
+                    await customerPage.fillEmail(customer.email);
+                    await customerPage.fillMobile(customer.mobile);
+                    await customerPage.fillTelephone(customer.telephone);
+                    await customerPage.fillDescription(customer.description);
+
+                    await customerPage.clickOnReceivableAccount();
+                    await LookupHelper.selectListItem(page, customer.receivableAccount);
+
+                    await customerPage.clickOnSaveKeyInfo();
+
+                    await expect(customerPage.keyInfoEmail).toHaveValue(customer.email);
+
+                    // ================= Credit Control =================
+                    if (customer.enableCreditControl) {
+                        await customerPage.clickOnEnableCreditControl();
+                        await customerPage.fillCreditLimitAmount(customer.creditLimitAmount);
+                        await customerPage.fillCreditLimitDays(customer.creditLimitDays);
+
+                        await customerPage.scrollToCreditCheckMode();
+
+                        await customerPage.clickOnCreditRating();
+                        await LookupHelper.selectListItem(page, customer.creditRating);
+
+                        await customerPage.clickOnCreditCheckMode();
+                        await LookupHelper.selectListItem(page, customer.creditCheckMode);
+
+                        await customerPage.clickOnSaveKeyInfo();
+                    }
+
+                    // ================= Defaults =================
+                    if (customer.enableDefaults) {
+                        await customerPage.clickOnSetDefaults();
+
+                        await customerPage.clickOnSalesman();
+                        await LookupHelper.selectListItem(page, customer.salesman);
+
+                        await customerPage.clickOnPaymentTerm();
+                        await LookupHelper.selectListItem(page, customer.paymentTerm);
+
+                        await customerPage.scrollToShipmentPriority();
+                        
+                        await customerPage.clickOnPriceList();
+                        await LookupHelper.selectListItem(page, customer.priceList);
+
+                        await customerPage.clickOnShippingTerm();
+                        await LookupHelper.selectListItem(page, customer.shippingTerm);
+
+                        await customerPage.fillLoadingPort(customer.loadingPort);
+                        await customerPage.fillDestinationPort(customer.destinationPort);
+
+                        await customerPage.clickOnShippingMethod();
+                        await LookupHelper.selectListItem(page, customer.shippingMethod);
+
+                        await customerPage.clickOnShipmentPriority();
+                        await LookupHelper.selectListItem(page, customer.shipmentPriority);
+
+                        await customerPage.clickOnSaveKeyInfo();
+                    }
+
+                    // ================= Restrict Payment Term =================
+                    if (customer.restrictPaymentTerm) {
+                        await customerPage.clickOnRestrictPaymentTerm();
+                        await customerPage.clickOnSelectPaymentTerm();
+
+                        if (customer.selectAllPaymentTerms) {
+                            await customerPage.clickOnSelectAllPaymentTerm();
+                        } else {
+                            await LookupHelper.selectListItem(page, customer.paymentTerm1);                            
+                            // await LookupHelper.selectListItem(page, customer.paymentTerm2);
+                            
+                        }
+                        await customerPage.clickOnSaveKeyInfo();
+                    }
+
+                    // ================= Restrict Price List =================
+                    if (customer.restrictPriceList) {
+                        await customerPage.clickOnRestrictPriceList();
+                        await customerPage.clickOnSelectPriceList();
+
+                        if (customer.selectAllPriceLists) {
+                            await customerPage.clickOnSelectAllPriceList();
+                        } else {
+                            await LookupHelper.selectListItem(page, customer.priceList1);                            
+                            // await LookupHelper.selectListItem(page, customer.priceList2);
+                            
+                        }
+                        await customerPage.clickOnSaveKeyInfo();
+                    }
+
+                    // ================= Verify =================
+                    await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+
+                    createdRecords.push(customer.name);
+
+                    await customerPage.clickOnBack();
+                });
 
             } catch (error) {
                 skippedRecords.push(customer?.name);
-                console.warn(`❌ Failed to create customer: ${customer?.name}`, error.message);
-                await customerPage.clickOnBack();
+                console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
+                await customerPage.clickOnBack().catch(() => { });
             }
         }
 
-        // 📊 Summary Report
-        console.log('==========🧾 Customer Create Summary ==========');
+        // ================= Summary =================
+        console.log('========== 🧾 Customer Create Summary ==========');
         console.log(`📄 Total Records Attempted: ${customerData.keyInfos.length}`);
         console.log(`✅ Successfully Created: ${createdRecords.length}`);
         if (createdRecords.length) {
-            console.log('✅ Created Records: ' + createdRecords.join(', '));
+            console.log('✅ Created Records:', createdRecords.join(', '));
         }
-        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
         if (skippedRecords.length) {
-            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
+            console.log('🚫 Skipped Records:', skippedRecords.join(', '));
         }
-        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
-        console.log('======================================');
+        console.log(`🕒 Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('==============================================');
 
         SummaryHelper.exportCreateSummary(
             'Customer - Key Info',
@@ -216,6 +250,7 @@ test.describe.serial('Customer CRUD Operations', () => {
             skippedRecords
         );
     });
+
 
     test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers

@@ -26,7 +26,7 @@ export class CustomerPage {
         this.restrictPriceList = page.locator('#CustomRestrictPriceListCheck');
         this.selectPriceList = page.getByPlaceholder('Select price list...');
         this.selectAllPaymentTerm = page.getByRole('checkbox', { name: 'Select All' });
-        this.selectAllPriceList = page.getByRole('checkbox', { name: 'Select All' }).nth(1);
+        this.selectAllPriceList = page.getByRole('checkbox', { name: 'Select All', exact: true });
         this.receivableMainAccount = page.locator("input[id*='ReceivableMainAccountId']");
         this.description = page.locator("textarea[name='Description']");
         this.saveKeyInfo = page.locator('#InfoSave');
