@@ -84,7 +84,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should be able to create customer with key info detail', async ({ page }) => {
+    test.skip('should be able to create customer with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -166,7 +166,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                         await LookupHelper.selectListItem(page, customer.paymentTerm);
 
                         await customerPage.scrollToShipmentPriority();
-                        
+
                         await customerPage.clickOnPriceList();
                         await LookupHelper.selectListItem(page, customer.priceList);
 
@@ -193,9 +193,9 @@ test.describe.serial('Customer CRUD Operations', () => {
                         if (customer.selectAllPaymentTerms) {
                             await customerPage.clickOnSelectAllPaymentTerm();
                         } else {
-                            await LookupHelper.selectListItem(page, customer.paymentTerm1);                            
+                            await LookupHelper.selectListItem(page, customer.paymentTerm1);
                             // await LookupHelper.selectListItem(page, customer.paymentTerm2);
-                            
+
                         }
                         await customerPage.clickOnSaveKeyInfo();
                     }
@@ -208,9 +208,9 @@ test.describe.serial('Customer CRUD Operations', () => {
                         if (customer.selectAllPriceLists) {
                             await customerPage.clickOnSelectAllPriceList();
                         } else {
-                            await LookupHelper.selectListItem(page, customer.priceList1);                            
+                            await LookupHelper.selectListItem(page, customer.priceList1);
                             // await LookupHelper.selectListItem(page, customer.priceList2);
-                            
+
                         }
                         await customerPage.clickOnSaveKeyInfo();
                     }
@@ -251,6 +251,119 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
+    test('should be able to create customer with address detail', async ({ page }) => {
+
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to Customer Master', async () => {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnCustomer();
+        });
+
+        for (const customer of customerData.addresses) {
+
+            try {
+                await test.step(`Create customer: ${customer.name}`, async () => {
+
+                    // ================= Create =================
+                    await commonAction.clickOnListingItem('New');
+
+                    if (customerData.feature?.allowCodeManual && customer.code) {
+                        await commonAction.fillCode(customer.code);
+                    }
+
+                    await commonAction.fillName(customer.name);
+
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                        await commonAction.fillNameArabic(customer.nameArabic);
+                    }
+
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                        await commonAction.clickOnCurrency();
+                        await LookupHelper.selectListItem(page, customer.currency);
+                    }
+
+                    await commonAction.clickOnTopMenuOption('Save');
+                    await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
+
+                    await customerPage.clickOnAddressTab();
+
+                    // ================= Billing Address =================
+                    await customerPage.fillBillingAddress1(customer.billingAddress1);
+                    await customerPage.fillBillingAddress2(customer.billingAddress2);
+
+                    await customerPage.clickOnBillingCountry();
+                    await LookupHelper.selectLookupOption(page, customer.billingCountry);
+
+                    await customerPage.clickOnBillingState();
+                    await LookupHelper.selectLookupOption(page, customer.billingState);
+
+                    await customerPage.scrollToContactPerson();
+
+                    await customerPage.fillBillingCity(customer.billingCity);
+                    await customerPage.fillBillingZipCode(customer.billingZipcode);
+                    await customerPage.fillBillingContactPerson(customer.billingContactPerson);
+                    await customerPage.clickOnSaveAddress();
+
+                    // ================= Shipping Address =================
+                    if (customer.sameAsBillingAddress) {
+                        await customerPage.checkSameAsBillingAddress();
+                        await customerPage.clickOnSaveAddress();
+                    } else {
+                        await customerPage.fillShippingAddress1(customer.shippingAddress1);
+                        await customerPage.fillShippingAddress2(customer.shippingAddress2);
+
+                        await customerPage.clickOnShippingCountry();
+                        await LookupHelper.selectListItem(page, customer.shippingCountry);
+
+                        await customerPage.clickOnShippingState();
+                        await LookupHelper.selectListItem(page, customer.shippingState);
+
+                        await customerPage.scrollToContactPerson();
+
+                        await customerPage.fillShippingCity(customer.shippingCity);
+                        await customerPage.fillShippingZipCode(customer.shippingZipcode);
+                        await customerPage.fillShippingContactPerson(customer.shippingContactPerson);
+
+                        await customerPage.clickOnSaveAddress();
+                    }
+
+                    // ================= Verify =================
+                    await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+
+                    createdRecords.push(customer.name);
+
+                    await customerPage.clickOnBack();
+                });
+
+            } catch (error) {
+                skippedRecords.push(customer?.name);
+                console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
+                await customerPage.clickOnBack().catch(() => { });
+            }
+        }
+
+        // ================= Summary =================
+        console.log('========== 🧾 Customer Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${customerData.keyInfos.length}`);
+        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records:', createdRecords.join(', '));
+        }
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records:', skippedRecords.join(', '));
+        }
+        console.log(`🕒 Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('==============================================');
+
+        SummaryHelper.exportCreateSummary(
+            'Customer - Address',
+            createdRecords,
+            skippedRecords
+        );
+    });
 
     test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers

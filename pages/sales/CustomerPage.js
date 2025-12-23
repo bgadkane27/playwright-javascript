@@ -20,7 +20,7 @@ export class CustomerPage {
         this.group = page.locator("input[id*='CustomerGroupId']");
         this.keyInfoEmail = page.locator("input[name='Email']");
         this.keyInfoMobile = page.locator("input[id='phone']");
-        this.telephone = page.locator("input[id*='TelNumber']");        
+        this.telephone = page.locator("input[id*='TelNumber']");
         this.restrictPaymentTerm = page.locator('#CustomRestrictPaymentTermCheck');
         this.selectPaymentTerm = page.getByPlaceholder('Select payment term...');
         this.restrictPriceList = page.locator('#CustomRestrictPriceListCheck');
@@ -37,8 +37,6 @@ export class CustomerPage {
         this.creditLimitDays = page.getByLabel(/Credit Limit Days/i);
         this.creditRating = page.getByLabel(/Credit Rating/i);
         this.creditCheckMode = page.getByLabel(/Credit Check Mode/i);
-        // this.creditRating = page.locator("input[id*='CreditRating']");
-        // this.creditCheckMode = page.locator("input[id*='CreditCheckMode']");
 
         // Defaults
         this.setDefaults = page.locator('#EnableDefaults');
@@ -57,7 +55,7 @@ export class CustomerPage {
         this.billingCountry = page.locator("input[id*='BillingCountry']");
         this.billingState = page.locator("input[id*='BillingState']");
         this.billingCity = page.locator("input[id*='BillingCity']");
-        this.billingZipCode = page.locator("input[id*='BillingZipCode']");
+        this.billingZipCode = page.locator("input[name='BillingZipcode']");
         this.billingContactPerson = page.locator("input[id*='BillingContactPerson']");
         this.sameAsBillingAddress = page.getByRole('checkbox', { name: /Billing Address Same As Shipping Address/i });
         this.shippingAddress1 = page.locator("input[id*='ShippingAddress1']");
@@ -65,7 +63,7 @@ export class CustomerPage {
         this.shippingCountry = page.locator("input[id*='ShippingCountry']");
         this.shippingState = page.locator("input[id*='ShippingState']");
         this.shippingCity = page.locator("input[id*='ShippingCity']");
-        this.shippingZipCode = page.locator("input[id*='ShippingZipCode']");
+        this.shippingZipCode = page.locator("input[id*='ShippingZipcode']");
         this.shippingContactPerson = page.locator("input[id*='ShippingContactPerson']");
         this.saveAddress = page.locator('#InfoSaveAddress');
 
@@ -143,28 +141,28 @@ export class CustomerPage {
         await this.telephone.fill(value);
     }
 
-    async clickOnRestrictPaymentTerm(){
+    async clickOnRestrictPaymentTerm() {
         await this.restrictPaymentTerm.click();
     }
 
-    async clickOnSelectPaymentTerm(){
+    async clickOnSelectPaymentTerm() {
         await this.selectPaymentTerm.click();
     }
 
-    async clickOnRestrictPriceList(){
+    async clickOnRestrictPriceList() {
         await this.restrictPriceList.click();
     }
 
-    async clickOnSelectPriceList(){
+    async clickOnSelectPriceList() {
         await this.selectPriceList.click();
     }
 
-    async clickOnSelectAllPaymentTerm(){
+    async clickOnSelectAllPaymentTerm() {
         await this.selectAllPaymentTerm.click();
         await this.page.waitForTimeout(500);
     }
 
-    async clickOnSelectAllPriceList(){
+    async clickOnSelectAllPriceList() {
         await this.selectAllPriceList.click();
         await this.page.waitForTimeout(500);
     }
@@ -178,11 +176,11 @@ export class CustomerPage {
         await this.receivableMainAccount.click();
     }
 
-    async clickOnEnableCreditControl(){
+    async clickOnEnableCreditControl() {
         await this.enableCreditControl.click();
     }
 
-    async scrollToCreditCheckMode(){
+    async scrollToCreditCheckMode() {
         await this.creditCheckMode.scrollIntoViewIfNeeded();
     }
 
@@ -196,38 +194,36 @@ export class CustomerPage {
         await this.creditLimitDays.fill(String(value));
     }
 
-    async clickOnCreditRating(){
+    async clickOnCreditRating() {
         await this.creditRating.click();
         await this.page.waitForTimeout(500);
     }
 
-    async clickOnCreditCheckMode(){
+    async clickOnCreditCheckMode() {
         await this.creditCheckMode.click();
     }
 
-    async clickOnSetDefaults(){
+    async clickOnSetDefaults() {
         await this.setDefaults.click();
     }
 
-    async scrollToShipmentPriority(){
+    async scrollToShipmentPriority() {
         await this.shipmentPriority.scrollIntoViewIfNeeded();
     }
 
-    async clickOnSalesman(){
+    async clickOnSalesman() {
         await this.salesman.click();
     }
 
-    async clickOnPaymentTerm(){
+    async clickOnPaymentTerm() {
         await this.paymentTerm.click();
-        // await this.paymentTerm.fill(value);
     }
 
-    async clickOnPriceList(){
+    async clickOnPriceList() {
         await this.priceList.click();
-        // await this.priceList.fill(value);
     }
 
-    async clickOnShippingTerm(){
+    async clickOnShippingTerm() {
         await this.shippingTerm.click();
     }
 
@@ -241,11 +237,11 @@ export class CustomerPage {
         await this.destinationPort.fill(String(value));
     }
 
-    async clickOnShippingMethod(){
+    async clickOnShippingMethod() {
         await this.shippingMethod.click();
     }
 
-    async clickOnShipmentPriority(){
+    async clickOnShipmentPriority() {
         await this.shipmentPriority.click();
     }
 
@@ -255,4 +251,91 @@ export class CustomerPage {
         await this.saveKeyInfo.click();
         await this.page.waitForTimeout(1500);
     }
+
+    async fillBillingAddress1(value) {
+        await this.billingAddress1.click();
+        await this.billingAddress1.fill(value);
+    }
+
+    async fillBillingAddress2(value) {
+        await this.billingAddress2.click();
+        await this.billingAddress2.fill(value);
+    }
+
+    async clickOnBillingCountry() {
+        await this.billingCountry.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async clickOnBillingState() {
+        await this.billingState.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async scrollToContactPerson() {
+        await this.billingContactPerson.scrollIntoViewIfNeeded();
+    }
+
+    async fillBillingCity(value) {
+        await this.billingCity.click();
+        await this.billingCity.fill(value);
+    }
+
+    async fillBillingZipCode(value) {
+        await this.billingZipCode.click();
+        await this.page.waitForTimeout(500);
+        await this.billingZipCode.fill(value);
+    }
+
+    async fillBillingContactPerson(value) {
+        await this.billingContactPerson.click();
+        await this.billingContactPerson.fill(value);
+    }
+
+    async checkSameAsBillingAddress() {
+        if (!(await this.sameAsBillingAddress.isChecked())) {
+            await this.sameAsBillingAddress.check();
+        }
+    }
+
+    async fillShippingAddress1(value) {
+        await this.shippingAddress1.click();
+        await this.shippingAddress1.fill(value);
+    }
+
+    async fillShippingAddress2(value) {
+        await this.shippingAddress2.click();
+        await this.shippingAddress2.fill(value);
+    }
+
+    async clickOnShippingCountry() {
+        await this.shippingCountry.click();
+    }
+
+    async clickOnShippingState() {
+        await this.shippingState.click();
+    }
+
+    async fillShippingCity(value) {
+        await this.shippingCity.click();
+        await this.shippingCity.fill(value);
+    }
+
+    async fillShippingZipCode(value) {
+        await this.shippingZipCode.click();
+        await this.page.waitForTimeout(500);
+        await this.shippingZipCode.fill(value);
+    }
+
+    async fillShippingContactPerson(value) {
+        await this.shippingContactPerson.click();
+        await this.shippingContactPerson.fill(value);
+    }
+
+    async clickOnSaveAddress() {
+        await this.saveAddress.scrollIntoViewIfNeeded();
+        await this.saveAddress.click();
+        await this.page.waitForTimeout(1500);
+    }
+
 }

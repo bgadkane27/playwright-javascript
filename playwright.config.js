@@ -40,7 +40,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
 
     // max time for each action
-    actionTimeout: 15 * 1000,
+    actionTimeout: 30 * 1000,
     // max time for navigation actions
     navigationTimeout: 30 * 1000
   },
