@@ -69,17 +69,18 @@ export class CustomerPage {
 
         //Contact Person
         this.addRow = page.getByRole('button', { name: 'Add a row' });
-        this.prefix = page.getByLabel(/Prefix/i);
-        this.firstName = page.getByLabel(/First Name/i);
-        this.lastName = page.getByLabel(/Last Name/i);
-        this.jobTitle = page.getByLabel(/Job Title/i);
-        this.gender = page.getByLabel(/Gender/i);
-        this.contactMobile = page.getByLabel(/Mobile/i);
-        this.telephoneNumber = page.getByLabel(/Telephone/i);
-        this.contactEmail = page.getByLabel(/Email/i);
+        this.prefix = page.locator("input[id*='Prefix']");
+        this.firstName = page.getByRole('textbox', { name: 'First Name:', exact: true });
+        this.lastName = page.getByRole('textbox', { name: 'Last Name:', exact: true });
+        this.jobTitle = page.getByRole('textbox', { name: 'Job Title:', exact: true });
+        this.gender = page.getByRole('combobox', { name: 'Gender:', exact: true});
+        this.contactMobile = page.getByRole('textbox', { name: 'Mobile #:' });
+        this.telephoneNumber = page.getByRole('textbox', { name: 'Telephone #:' });
+        this.contactEmail = page.getByRole('textbox', { name: 'Email:' });
         this.isDefault = page.locator('[id*="Default"]');
         this.portalAccess = page.locator('[id*="PortalAccess"]');
         this.freezed = page.locator('[id*="Freezed"]');
+        this.saveContactPerson = page.getByRole('button', { name: 'Save', exact: true });
     }
 
     async clickOnCountry() {
@@ -267,13 +268,29 @@ export class CustomerPage {
         await this.page.waitForTimeout(1000);
     }
 
+    async fillBillingCountry(value) {
+        await this.billingCountry.click();
+        await this.billingCountry.fill(value);
+        // await this.page.waitForTimeout(1000);
+    }
+
     async clickOnBillingState() {
         await this.billingState.click();
         await this.page.waitForTimeout(1000);
     }
 
+    async fillBillingState(value) {
+        await this.billingState.click();
+        await this.billingState.fill(value);
+        // await this.page.waitForTimeout(1000);
+    }
+
     async scrollToContactPerson() {
         await this.billingContactPerson.scrollIntoViewIfNeeded();
+    }
+
+    async scrollToShippingContactPerson() {
+        await this.shippingContactPerson.scrollIntoViewIfNeeded();
     }
 
     async fillBillingCity(value) {
@@ -283,7 +300,7 @@ export class CustomerPage {
 
     async fillBillingZipCode(value) {
         await this.billingZipCode.click();
-        await this.page.waitForTimeout(500);
+        // await this.page.waitForTimeout(500);
         await this.billingZipCode.fill(value);
     }
 
@@ -312,8 +329,20 @@ export class CustomerPage {
         await this.shippingCountry.click();
     }
 
+    async fillShippingCountry(value) {
+        await this.shippingCountry.click();
+        await this.shippingCountry.fill(value);
+        // await this.page.waitForTimeout(1000);
+    }
+
     async clickOnShippingState() {
         await this.shippingState.click();
+    }
+
+    async fillShippingState(value) {
+        await this.shippingState.click();
+        await this.shippingState.fill(value);
+        // await this.page.waitForTimeout(1000);
     }
 
     async fillShippingCity(value) {
@@ -336,6 +365,71 @@ export class CustomerPage {
         await this.saveAddress.scrollIntoViewIfNeeded();
         await this.saveAddress.click();
         await this.page.waitForTimeout(1500);
+    }
+
+    async clickOnAddRow() {
+        await this.addRow.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async clickOnPrefix() {
+        await this.prefix.click();
+        // await this.prefix.fill(value);
+        // await this.page.waitForTimeout(500);
+    }
+
+    async fillFirstName(value) {
+        // await this.firstName.click();
+        await this.firstName.fill(value);
+    }
+
+    async fillLastName(value) {
+        // await this.lastName.click();
+        await this.lastName.fill(value);
+    }
+
+    async fillJobTitle(value) {
+        // await this.lastName.click();
+        await this.jobTitle.fill(value);
+    }
+
+    async clickOnGender() {
+        await this.gender.click();
+        await this.page.waitForTimeout(500);
+        // await this.gender.fill(value);
+    }
+
+    async fillContactPersonMobile(value) {
+        // await this.lastName.click();
+        await this.contactMobile.fill(value);
+    }
+
+    async fillContactPersonTelephone(value) {
+        // await this.lastName.click();
+        await this.telephoneNumber.fill(value);
+    }
+
+    async fillContactPersonEmail(value) {
+        // await this.lastName.click();
+        await this.contactEmail.fill(value);
+    } 
+    
+    async clickOnDefault(){
+        await this.isDefault.check();
+    }
+
+    async clickOnPortalAccess(){
+        await this.portalAccess.check();
+    }
+
+    async clickOnFreezed(){
+        await this.freezed.check();
+    }
+
+    async clickOnSaveContactPerson() {
+        await this.saveContactPerson.click();
+        // await this.page.locator('span.dx-button-text', { hasText: 'Save' }).click();
+        await this.page.waitForTimeout(2000);
     }
 
 }

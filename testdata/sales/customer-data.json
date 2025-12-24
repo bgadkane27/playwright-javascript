@@ -80,7 +80,7 @@
       "code": "C0020",
       "name": "Customer - Contact Person Tab",
       "nameArabic": "Customer - Contact Person Tab",
-      "currency": "KWD | Kuwaiti Dinar",
+      "currency": null,
       "persons": [
         {
           "prefix": "Mr.",
@@ -88,8 +88,8 @@
           "lastName": "Amiri",
           "jobTitle": "Salesman",
           "gender": "Male",
-          "mobile": "9865254245",
-          "telephone": "964-452415",
+          "mobile": "98652542",
+          "telephone": "964452415",
           "email": "kareem@grand.com"
         },
         {
@@ -98,8 +98,8 @@
           "lastName": "Tabatabai",
           "jobTitle": "Salesman",
           "gender": "Male",
-          "mobile": "9865254246",
-          "telephone": "964-452416",
+          "mobile": "98652545",
+          "telephone": "964452416",
           "email": "salim@grand.com"
         }
       ]

@@ -293,10 +293,10 @@ test.describe.serial('Customer CRUD Operations', () => {
                     await customerPage.fillBillingAddress1(customer.billingAddress1);
                     await customerPage.fillBillingAddress2(customer.billingAddress2);
 
-                    await customerPage.clickOnBillingCountry();
+                    await customerPage.fillBillingCountry(customer.billingCountry);
                     await LookupHelper.selectListItem(page, customer.billingCountry);
 
-                    await customerPage.clickOnBillingState();
+                    await customerPage.fillBillingState(customer.billingState);
                     await LookupHelper.selectListItem(page, customer.billingState);
 
                     await customerPage.scrollToContactPerson();
@@ -314,10 +314,10 @@ test.describe.serial('Customer CRUD Operations', () => {
                         await customerPage.fillShippingAddress1(customer.shippingAddress1);
                         await customerPage.fillShippingAddress2(customer.shippingAddress2);
 
-                        await customerPage.clickOnShippingCountry();
+                        await customerPage.fillShippingCountry(customer.shippingCountry);
                         await LookupHelper.selectLookupOption(page, customer.shippingCountry);
 
-                        await customerPage.clickOnShippingState();
+                        await customerPage.fillShippingState(customer.shippingState);
                         await LookupHelper.selectLookupOption(page, customer.shippingState);
 
                         await customerPage.scrollToContactPerson();
@@ -346,7 +346,7 @@ test.describe.serial('Customer CRUD Operations', () => {
 
         // ================= Summary =================
         console.log('========== 🧾 Customer Create Summary ==========');
-        console.log(`📄 Total Records Attempted: ${customerData.keyInfos.length}`);
+        console.log(`📄 Total Records Attempted: ${customerData.addresses.length}`);
         console.log(`✅ Successfully Created: ${createdRecords.length}`);
         if (createdRecords.length) {
             console.log('✅ Created Records:', createdRecords.join(', '));
@@ -365,7 +365,103 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should able to delete customer', async ({ page }) => {
+    test.skip('should be able to create customer with contact person detail', async ({ page }) => {
+
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to Customer Master', async () => {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnCustomer();
+        });
+
+        for (const customer of customerData.contactPersons) {
+
+            try {
+                await test.step(`Create customer: ${customer.name}`, async () => {
+
+                    // ================= Create =================
+                    await commonAction.clickOnListingItem('New');
+
+                    if (customerData.feature?.allowCodeManual && customer.code) {
+                        await commonAction.fillCode(customer.code);
+                    }
+
+                    await commonAction.fillName(customer.name);
+
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                        await commonAction.fillNameArabic(customer.nameArabic);
+                    }
+
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                        await commonAction.clickOnCurrency();
+                        await LookupHelper.selectListItem(page, customer.currency);
+                    }
+
+                    await commonAction.clickOnTopMenuOption('Save');
+                    await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
+
+                    await customerPage.clickOnContactPersonTab();
+
+                    // ================= Contact Person =================
+                    for (const person of customer.persons) {
+                        await customerPage.clickOnAddRow();
+
+                        await customerPage.clickOnPrefix();
+                        await LookupHelper.selectLookupOption(page, person.prefix);
+
+                        await customerPage.fillFirstName(person.firstName);
+                        await customerPage.fillLastName(person.lastName);
+                        await customerPage.fillJobTitle(person.jobTitle);
+
+                        await customerPage.clickOnGender();
+                        await LookupHelper.selectLookupOption(page, person.gender);
+
+                        await customerPage.fillContactPersonEmail(person.email);
+                        await customerPage.fillContactPersonMobile(person.mobile);
+                        await customerPage.fillContactPersonTelephone(person.telephone);
+
+                        await customerPage.clickOnSaveContactPerson();
+
+                        // ================= Validate =================
+                        const fullName = `${person.firstName} ${person.lastName}`;
+                        await expect(page.locator('tbody.dx-row.dx-data-row h2').filter({ hasText: fullName })).toContainText(person.firstName);
+                    }
+
+                    createdRecords.push(customer.name);
+
+                    await customerPage.clickOnBack();
+                });
+
+            } catch (error) {
+                skippedRecords.push(customer?.name);
+                console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
+                await customerPage.clickOnBack().catch(() => { });
+            }
+        }
+
+        // ================= Summary =================
+        console.log('========== 🧾 Customer Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${customerData.contactPersons.length}`);
+        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records:', createdRecords.join(', '));
+        }
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records:', skippedRecords.join(', '));
+        }
+        console.log(`🕒 Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('==============================================');
+
+        SummaryHelper.exportCreateSummary(
+            'Customer - Contact Person',
+            createdRecords,
+            skippedRecords
+        );
+    });
+
+    test('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

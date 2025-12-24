@@ -2,16 +2,17 @@
   "module": "Customer",
   "action": "Delete",
   "totalRecordsAttempted": 6,
-  "successCount": 0,
-  "skippedCount": 6,
-  "successRecords": [],
+  "successCount": 1,
+  "skippedCount": 5,
+  "successRecords": [
+    "Customer - Contact Person Tab"
+  ],
   "skippedRecords": [
     "Customer - Documents Tab",
-    "Customer - Contact Person Tab",
     "Customer - Address Tab",
     "Customer - Key Info Tab",
     "Customer - AED",
     "Customer - KWD"
   ],
-  "executedAt": "24/12/2025, 8:35:04 am"
+  "executedAt": "24/12/2025, 6:44:24 pm"
 }
