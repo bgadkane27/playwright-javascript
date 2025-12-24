@@ -91,7 +91,9 @@ export class CommonAction {
     }
 
     async selectMasterFromList(masterName) {
-        await this.page.getByRole('row').filter({ hasText: masterName }).click();
+        const row = this.page.getByRole('row').filter({ hasText: masterName });
+        await row.focus();
+        await row.click({ position: { x: 10, y: 10 } });
         await this.page.waitForTimeout(500);
     }
 
@@ -145,7 +147,7 @@ export class CommonAction {
         await this.page.getByRole('button', { name: 'Cancel', exact: true }).click();
     }
 
-    async clickOnAdd(){
+    async clickOnAdd() {
         await this.page.getByRole('button', { name: 'Add a row' }).click();
     }
 }

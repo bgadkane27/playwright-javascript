@@ -63,7 +63,7 @@ export default class LookupHelper {
     }
     await option.scrollIntoViewIfNeeded();
     await option.click();
-  }  
+  }
 
   static async selectLookupOption(page, optionText) {
 

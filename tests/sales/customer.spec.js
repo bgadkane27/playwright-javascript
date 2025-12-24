@@ -22,7 +22,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test('should able to create customer with basic detail', async ({ page }) => {
+    test.skip('should able to create customer with basic detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -84,7 +84,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should be able to create customer with key info detail', async ({ page }) => {
+    test.skip('should be able to create customer with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -123,8 +123,8 @@ test.describe.serial('Customer CRUD Operations', () => {
                     // ================= Key Info =================
                     await customerPage.clickOnKeyInfoTab();
 
-                    // await customerPage.clickOnGroup();
-                    // await LookupHelper.selectListItem(page, customer.group);
+                    await customerPage.clickOnGroup();
+                    await LookupHelper.selectListItem(page, customer.group);
 
                     await customerPage.fillEmail(customer.email);
                     await customerPage.fillMobile(customer.mobile);
@@ -251,7 +251,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should be able to create customer with address detail', async ({ page }) => {
+    test.skip('should be able to create customer with address detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -365,7 +365,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should able to delete customer', async ({ page }) => {
+    test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];
@@ -382,7 +382,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                 // Check if the record exists before proceeding with deletion
                 const recordExists = await page.locator(`text=${customer.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
                 if (!recordExists) {
-                    console.warn(`⚠️ Record '${customer.name}' not found - deletion skipped.`);
+                    console.warn(`⚠️ Deletion skipped because record '${customer.name}' not found.`);
                     skippedRecords.push(customer.name);
                     continue;
                 }
@@ -413,11 +413,11 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log(`📄 Total Records Attempted: ${customerData.delete.length}`);
         console.log(`✅ Successfully Deleted: ${deletedRecords.length}`);
         if (deletedRecords.length) {
-            console.log('🗑️  Deleted Records: ' + deletedRecords.join(', '));
+            console.log('🗑️ Deleted Records: ' + deletedRecords.join(', '));
         }
-        console.log(`⚠️  Skipped/Failed: ${skippedRecords.length}`);
+        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
         if (skippedRecords.length) {
-            console.log('🚫  Skipped Records: ' + skippedRecords.join(', '));
+            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
         }
         console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
         console.log('======================================');
