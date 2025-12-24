@@ -516,7 +516,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with document detail', async ({ page }) => {
+    test('should be able to create customer with document detail', async ({ page }) => {
 
         // Track successfully created records
         const createdRecords = [];
@@ -595,7 +595,8 @@ test.describe.serial('Customer CRUD Operations', () => {
 
                         // Attach file directly (bypasses OS file dialog)
                         await fileInput.setInputFiles(filePath);
-                        await page.waitForTimeout(2000);
+                        await expect(page.locator('.dx-fileuploader-file-status-message')).toContainText('Uploaded');
+                        // await page.waitForTimeout(2000);
 
                         // Save record
                         await commonAction.clickOnSaveButton();
