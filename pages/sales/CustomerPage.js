@@ -77,9 +77,9 @@ export class CustomerPage {
         this.contactMobile = page.getByRole('textbox', { name: 'Mobile #:' });
         this.telephoneNumber = page.getByRole('textbox', { name: 'Telephone #:' });
         this.contactEmail = page.getByRole('textbox', { name: 'Email:' });
-        this.isDefault = page.locator('[id*="Default"]');
-        this.portalAccess = page.locator('[id*="PortalAccess"]');
-        this.freezed = page.locator('[id*="Freezed"]');
+        this.isDefault = page.locator("div[id*='Default']").nth(1);
+        this.portalAccess = page.locator("div[id*='PortalAccess']");
+        this.freezed = page.locator("div[id*='Freezed']");
         this.saveContactPerson = page.getByRole('button', { name: 'Save', exact: true });
     }
 

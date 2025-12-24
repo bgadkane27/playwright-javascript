@@ -143,11 +143,42 @@ export class CommonAction {
         await this.page.waitForTimeout(2000);
     }
 
+    async clickOnSaveButton() {
+        // await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+        await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+        await this.page.waitForTimeout(2000);
+    }
+
     async clickOnCancel() {
         await this.page.getByRole('button', { name: 'Cancel', exact: true }).click();
     }
 
     async clickOnAdd() {
         await this.page.getByRole('button', { name: 'Add a row' }).click();
+    }
+
+    async clickOnDocumentType(){
+        await this.page.locator("[id*='DocumentTypeId']").click();
+        await this.page.waitForTimeout(500);
+    }
+
+    async fillDocumentNumber(value) {
+        await this.page.locator('input[id*="DocumentNumber"]').fill(value);
+    }
+
+    async fillDateOfIssue(value) {
+        await this.page.locator('input[id*="DateOfIssue"]').fill(value);
+    }
+
+    async fillPlaceOfIssue(value) {
+        await this.page.locator('input[id*="PlaceOfIssue"]').fill(value);
+    }
+
+    async fillDateOfExpiry(value) {
+        await this.page.locator('input[id*="DateOfExpiry"]').fill(value);
+    }
+
+    async clickOnAddAttachment() {
+        await this.page.getByRole('button', {name : 'Add Attachment…'}).click();
     }
 }

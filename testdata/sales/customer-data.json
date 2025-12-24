@@ -94,13 +94,13 @@
         },
         {
           "prefix": "Mr.",
-          "firstName": "Salim",
+          "firstName": "Salma",
           "lastName": "Tabatabai",
           "jobTitle": "Salesman",
-          "gender": "Male",
+          "gender": "Female",
           "mobile": "98652545",
           "telephone": "964452416",
-          "email": "salim@grand.com"
+          "email": "salma@grand.com"
         }
       ]
     }
@@ -110,6 +110,7 @@
       "code": "C0021",
       "name": "Customer - Documents Tab",
       "nameArabic": "Customer - Documents Tab",
+      "currency": null,
       "documents": [
         {
           "documentType": "Civil Id",
@@ -120,9 +121,9 @@
         },
         {
           "documentType": "Sponsor Contract",
-          "documentNumber": "C600017001",
+          "documentNumber": "SC600017001",
           "dateOfIssue": "01-Jan-2025",
-          "placeOfIssue": "Kuwait",
+          "placeOfIssue": "Salmiya",
           "dateOfExpiry": "31-Dec-2025"
         }
       ]

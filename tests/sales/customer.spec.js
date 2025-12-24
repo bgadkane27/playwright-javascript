@@ -8,6 +8,7 @@ import StringHelper from '../../helpers/StringHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
 import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
+import { getImportFile } from '../../helpers/getImportFile.js';
 
 test.describe.serial('Customer CRUD Operations', () => {
     let commonAction;
@@ -367,41 +368,38 @@ test.describe.serial('Customer CRUD Operations', () => {
 
     test.skip('should be able to create customer with contact person detail', async ({ page }) => {
 
-        // Track successfully created customer records
+        // Track successfully created records
         const createdRecords = [];
 
-        // Track skipped / failed customer records
+        // Track skipped / failed records
         const skippedRecords = [];
 
-        // ================= Navigation =================
+        // ================= Navigate to Master Listing =================
         await test.step('Navigate to Customer Master', async () => {
-            // Open Setups from left menu
             await commonAction.clickOnLeftMenuOption('Setups');
-
-            // Open Customer master screen
             await salesSetupPage.clickOnCustomer();
         });
 
-        // Loop through each customer test data
+        // Loop through each record
         for (const customer of customerData.contactPersons) {
 
             try {
-                await test.step(`Create customer: ${customer.name}`, async () => {
+                await test.step(`Create customer : ${customer.name}`, async () => {
 
                     // ================= Create Customer =================
 
                     // Click on New button from listing
                     await commonAction.clickOnListingItem('New');
 
-                    // Fill customer code if manual code feature is enabled
+                    // Fill record code if manual code feature is enabled
                     if (customerData.feature?.allowCodeManual && customer.code) {
                         await commonAction.fillCode(customer.code);
                     }
 
-                    // Fill customer name
+                    // Fill record name
                     await commonAction.fillName(customer.name);
 
-                    // Fill Arabic name if provided
+                    // Fill record Arabic name if provided
                     if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
                         await commonAction.fillNameArabic(customer.nameArabic);
                     }
@@ -412,19 +410,19 @@ test.describe.serial('Customer CRUD Operations', () => {
                         await LookupHelper.selectListItem(page, customer.currency);
                     }
 
-                    // Save customer master
+                    // Save master
                     await commonAction.clickOnTopMenuOption('Save');
 
-                    // ================= Validate Customer =================
+                    // ================= Validation =================
 
-                    // Validate customer name is saved correctly
+                    // Validate record name is saved correctly
                     await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
 
                     // Navigate to Contact Person tab
                     await customerPage.clickOnContactPersonTab();
 
-                    // ================= Create Contact Persons =================
-                    for (const person of customer.persons) {
+                    // ================= Add Contact Persons =================
+                    for (const [index, person] of customer.persons.entries()) {
 
                         // Add new contact person row
                         await customerPage.clickOnAddRow();
@@ -447,15 +445,28 @@ test.describe.serial('Customer CRUD Operations', () => {
                         await customerPage.fillContactPersonMobile(person.mobile);
                         await customerPage.fillContactPersonTelephone(person.telephone);
 
+                        // ================= Conditional Actions Based on Iteration =================
+
+                        // First contact person → set as Default and Portal Access
+                        if (index === 0) {
+                            await customerPage.clickOnDefault();
+                            await customerPage.clickOnPortalAccess();
+                        }
+
+                        // Second contact person → set as Freezed
+                        if (index === 1) {
+                            await customerPage.clickOnFreezed();
+                        }
+
                         // Save contact person
                         await customerPage.clickOnSaveContactPerson();
 
                         // ================= Validate Contact Person =================
 
-                        // Build full name as displayed in UI
+                        // Build full name as displayed on UI
                         const fullName = `${person.firstName} ${person.lastName}`.trim();
 
-                        // Validate contact person is displayed in grid
+                        // Validate contact person is displayed
                         await expect.soft(
                             page
                                 .locator('tbody.dx-row.dx-data-row h2')
@@ -463,20 +474,20 @@ test.describe.serial('Customer CRUD Operations', () => {
                         ).toContainText(person.firstName);
                     }
 
-                    // Track successfully created customer
+                    // Track successfully created record
                     createdRecords.push(customer.name);
 
-                    // Navigate back to listing page
+                    // Navigate back to listing
                     await customerPage.clickOnBack();
                 });
 
             } catch (error) {
 
-                // Track failed customer record
+                // Track skip/failed record
                 skippedRecords.push(customer?.name);
 
                 // Log failure details
-                console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
+                console.error(`Record creation failed: ${customer?.name}`, error.stack);
 
                 // Ensure navigation back even on failure
                 await customerPage.clickOnBack().catch(() => { });
@@ -486,15 +497,15 @@ test.describe.serial('Customer CRUD Operations', () => {
         // ================= Execution Summary =================
         console.log('========== 🧾 Customer Create Summary ==========');
         console.log(`📄 Total Records Attempted: ${customerData.contactPersons.length}`);
-        console.log(`✅ Successfully Created: ${createdRecords.length}`);
+        console.log(`✅ Record created successfully: ${createdRecords.length}`);
         if (createdRecords.length) {
-            console.log('✅ Created Records:', createdRecords.join(', '));
+            console.log('✅ Created Records Name:', createdRecords.join(', '));
         }
-        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
+        console.log(`⚠️ Record skipped/failed: ${skippedRecords.length}`);
         if (skippedRecords.length) {
-            console.log('🚫 Skipped Records:', skippedRecords.join(', '));
+            console.log('🚫 Skipped Records Name:', skippedRecords.join(', '));
         }
-        console.log(`🕒 Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
         console.log('==============================================');
 
         // Export execution summary for reporting
@@ -505,103 +516,144 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    // test.skip('should be able to create customer with contact person detail', async ({ page }) => {
+    test.skip('should be able to create customer with document detail', async ({ page }) => {
 
-    //     const createdRecords = [];
-    //     const skippedRecords = [];
+        // Track successfully created records
+        const createdRecords = [];
 
-    //     await test.step('Navigate to Customer Master', async () => {
-    //         await commonAction.clickOnLeftMenuOption('Setups');
-    //         await salesSetupPage.clickOnCustomer();
-    //     });
+        // Track skipped / failed records
+        const skippedRecords = [];
 
-    //     for (const customer of customerData.contactPersons) {
+        // ================= Navigate to Master Listing =================
+        await test.step('Navigate to Customer Master', async () => {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnCustomer();
+        });
 
-    //         try {
-    //             await test.step(`Create customer: ${customer.name}`, async () => {
+        // Loop through each record
+        for (const customer of customerData.documents) {
 
-    //                 // ================= Create =================
-    //                 await commonAction.clickOnListingItem('New');
+            try {
+                await test.step(`Create customer : ${customer.name}`, async () => {
 
-    //                 if (customerData.feature?.allowCodeManual && customer.code) {
-    //                     await commonAction.fillCode(customer.code);
-    //                 }
+                    // ================= Create Customer =================
 
-    //                 await commonAction.fillName(customer.name);
+                    // Click on New button from listing
+                    await commonAction.clickOnListingItem('New');
 
-    //                 if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
-    //                     await commonAction.fillNameArabic(customer.nameArabic);
-    //                 }
+                    // Fill record code if manual code feature is enabled
+                    if (customerData.feature?.allowCodeManual && customer.code) {
+                        await commonAction.fillCode(customer.code);
+                    }
 
-    //                 if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
-    //                     await commonAction.clickOnCurrency();
-    //                     await LookupHelper.selectListItem(page, customer.currency);
-    //                 }
+                    // Fill record name
+                    await commonAction.fillName(customer.name);
 
-    //                 await commonAction.clickOnTopMenuOption('Save');
+                    // Fill record Arabic name if provided
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                        await commonAction.fillNameArabic(customer.nameArabic);
+                    }
 
-    //                 // ================= Validate =================
-    //                 await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
+                    // Select currency if provided
+                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                        await commonAction.clickOnCurrency();
+                        await LookupHelper.selectListItem(page, customer.currency);
+                    }
 
-    //                 await customerPage.clickOnContactPersonTab();
+                    // Save master
+                    await commonAction.clickOnTopMenuOption('Save');
 
-    //                 // ================= Contact Person =================
-    //                 for (const person of customer.persons) {
-    //                     await customerPage.clickOnAddRow();
+                    // ================= Validation =================
 
-    //                     await customerPage.clickOnPrefix();
-    //                     await LookupHelper.selectLookupOption(page, person.prefix);
+                    // Validate record name is saved correctly
+                    await expect(page.locator("input[name='Name']")).toHaveValue(customer.name);
 
-    //                     await customerPage.fillFirstName(person.firstName);
-    //                     await customerPage.fillLastName(person.lastName);
-    //                     await customerPage.fillJobTitle(person.jobTitle);
+                    // Navigate to Documents tab
+                    await customerPage.clickOnDocumentsTab();
 
-    //                     await customerPage.clickOnGender();
-    //                     await LookupHelper.selectLookupOption(page, person.gender);
+                    // ================= Add Documents =================
+                    for (const document of customer.documents) {
 
-    //                     await customerPage.fillContactPersonEmail(person.email);
-    //                     await customerPage.fillContactPersonMobile(person.mobile);
-    //                     await customerPage.fillContactPersonTelephone(person.telephone);
+                        // Add new document
+                        await customerPage.clickOnAddRow();
 
-    //                     await customerPage.clickOnSaveContactPerson();
+                        // Select document type
+                        await commonAction.clickOnDocumentType();
+                        await LookupHelper.selectListItem(page, document.documentType);
+                        
+                        // Fill document details
+                        await commonAction.fillDocumentNumber(document.documentNumber);
+                        await commonAction.fillDateOfIssue(document.dateOfIssue);
+                        await commonAction.fillPlaceOfIssue(document.placeOfIssue);
+                        await commonAction.fillDateOfExpiry(document.dateOfExpiry);
 
-    //                     // ================= Validate =================
-    //                     const fullName = `${person.firstName} ${person.lastName}`.trim();
-    //                     await expect.soft(page.locator('tbody.dx-row.dx-data-row h2').filter({ hasText: fullName })).toContainText(person.firstName);
-    //                 }
+                        // File Path
+                        const filePath = getImportFile('Sales', 'Customer', '.pdf');
 
-    //                 createdRecords.push(customer.name);
+                        // Locate the file input
+                        const fileInput = page.getByLabel('', { exact: true });
 
-    //                 await customerPage.clickOnBack();
-    //             });
+                        // Attach file directly (bypasses OS file dialog)
+                        await fileInput.setInputFiles(filePath);
+                        await page.waitForTimeout(2000);
 
-    //         } catch (error) {
-    //             skippedRecords.push(customer?.name);
-    //             console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
-    //             await customerPage.clickOnBack().catch(() => { });
-    //         }
-    //     }
+                        // Save record
+                        await commonAction.clickOnSaveButton();
 
-    //     // ================= Summary =================
-    //     console.log('========== 🧾 Customer Create Summary ==========');
-    //     console.log(`📄 Total Records Attempted: ${customerData.contactPersons.length}`);
-    //     console.log(`✅ Successfully Created: ${createdRecords.length}`);
-    //     if (createdRecords.length) {
-    //         console.log('✅ Created Records:', createdRecords.join(', '));
-    //     }
-    //     console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
-    //     if (skippedRecords.length) {
-    //         console.log('🚫 Skipped Records:', skippedRecords.join(', '));
-    //     }
-    //     console.log(`🕒 Executed At: ${new Date().toLocaleString('en-IN')}`);
-    //     console.log('==============================================');
+                        // ================= Validate Document =================
 
-    //     SummaryHelper.exportCreateSummary(
-    //         'Customer - Contact Person',
-    //         createdRecords,
-    //         skippedRecords
-    //     );
-    // });
+                        // Document details displayed on UI
+                        const documentDetail = `${document.documentType} (${document.documentNumber})`.trim();
+
+                        // Validate document details
+                        await expect.soft(
+                            page
+                                .locator('tbody.dx-row.dx-data-row p')
+                                .filter({ hasText: documentDetail })
+                        ).toContainText(document.documentNumber);
+                    }
+
+                    // Track successfully created record
+                    createdRecords.push(customer.name);
+
+                    // Navigate back to listing
+                    await customerPage.clickOnBack();
+                });
+
+            } catch (error) {
+
+                // Track skip/failed record
+                skippedRecords.push(customer?.name);
+
+                // Log failure details
+                console.error(`Record creation failed: ${customer?.name}`, error.stack);
+
+                // Ensure navigation back even on failure
+                await customerPage.clickOnBack().catch(() => { });
+            }
+        }
+
+        // ================= Execution Summary =================
+        console.log('========== 🧾 Customer Create Summary ==========');
+        console.log(`📄 Total Records Attempted: ${customerData.documents.length}`);
+        console.log(`✅ Record created successfully: ${createdRecords.length}`);
+        if (createdRecords.length) {
+            console.log('✅ Created Records Name:', createdRecords.join(', '));
+        }
+        console.log(`⚠️ Record skipped/failed: ${skippedRecords.length}`);
+        if (skippedRecords.length) {
+            console.log('🚫 Skipped Records Name:', skippedRecords.join(', '));
+        }
+        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+        console.log('==============================================');
+
+        // Export execution summary for reporting
+        SummaryHelper.exportCreateSummary(
+            'Customer - Documents',
+            createdRecords,
+            skippedRecords
+        );
+    });
 
     test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
