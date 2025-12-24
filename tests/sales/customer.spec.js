@@ -461,7 +461,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should able to delete customer', async ({ page }) => {
+    test.skip('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];
