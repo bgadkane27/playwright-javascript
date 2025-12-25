@@ -764,7 +764,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportDeleteSummary(
-            'Delete Customer',
+            'Customer',
             deletedRecords,
             skippedRecords
         );
