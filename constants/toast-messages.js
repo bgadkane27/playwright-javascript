@@ -1,4 +1,4 @@
-const SuccessMessages = {
+const Messages = {
     Salesman: {
         Create: 'Salesman created successfully',
         Update: 'Salesman updated successfully',
@@ -30,4 +30,4 @@ const SuccessMessages = {
     }
 };
 
-export default SuccessMessages;
+export default Messages;

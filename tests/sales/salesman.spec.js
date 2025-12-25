@@ -7,7 +7,7 @@ import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
-import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
+import MessageHelper from '../../helpers/MessageHelper.js';
 
 test.describe.serial('Salesman CRUD Operations', () => {
     let commonAction;
@@ -62,7 +62,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
 
                 // ✅ Validate creation success message
                 // await expect(page.getByText('Salesman created successfully').first()).toBeVisible();
-                await SuccessMessageHelper.assert(page, 'Salesman', 'Create');
+                await MessageHelper.assert(page, 'Salesman', 'Create');
 
                 // Track successful creation
                 createdRecords.push(salesman.name);
@@ -238,7 +238,7 @@ test.describe.serial('Salesman CRUD Operations', () => {
 
                 // ✅ Validate deleted message
                 // await expect(page.getByText('Record deleted successfully!').first()).toBeVisible();
-                await SuccessMessageHelper.assert(page, 'Salesman', 'Delete');
+                await MessageHelper.assert(page, 'Salesman', 'Delete');
 
                 // Track successful deletion
                 deletedRecords.push(salesman.name);

@@ -6,7 +6,7 @@ import paymentmethodData from '../../testdata/sales/payment-method-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
-import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
+import MessageHelper from '../../helpers/MessageHelper.js';
 
 test.describe.serial('Payment Method CRUD Operations', () => {
     let commonAction;
@@ -63,7 +63,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
                 await commonAction.clickOnTopMenuOption('Save');
 
                 // Verify success message
-                await SuccessMessageHelper.assert(page, 'PaymentMethod', 'Create');
+                await MessageHelper.assert(page, 'PaymentMethod', 'Create');
 
                 // Track successful creation
                 createdRecords.push(paymentMethod.name);
@@ -223,7 +223,7 @@ test.describe.serial('Payment Method CRUD Operations', () => {
                 await commonAction.clickOnOk();
 
                 // ✅ Validate deleted message
-                await SuccessMessageHelper.assert(page, 'PaymentMethod', 'Delete');
+                await MessageHelper.assert(page, 'PaymentMethod', 'Delete');
 
                 // Track successful deletion
                 deletedRecords.push(paymentMethod.name);

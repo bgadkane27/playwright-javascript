@@ -5,7 +5,7 @@ import { CommonAction } from '../../utilities/CommonAction';
 import customerData from '../../testdata/sales/customer-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
-import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
+import MessageHelper from '../../helpers/MessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import { getImportFile } from '../../helpers/getImportFile.js';
 
@@ -216,7 +216,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                     }
 
                     // ================= Verify =================
-                    await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+                    await MessageHelper.assert(page, 'Customer', 'Update');
 
                     createdRecords.push(customer.name);
 
@@ -330,7 +330,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                     }
 
                     // ================= Verify =================
-                    await SuccessMessageHelper.assert(page, 'Customer', 'Update');
+                    await MessageHelper.assert(page, 'Customer', 'Update');
 
                     createdRecords.push(customer.name);
 
@@ -735,7 +735,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                 await commonAction.clickOnOk();
 
                 // Validate deleted message
-                await SuccessMessageHelper.assert(page, 'Customer', 'Delete');
+                await MessageHelper.assert(page, 'Customer', 'Delete');
 
                 // Track successful deletion
                 deletedRecords.push(customer.name);

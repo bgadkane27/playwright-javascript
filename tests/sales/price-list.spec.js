@@ -6,7 +6,7 @@ import priceListData from '../../testdata/sales/price-list-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
-import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
+import MessageHelper from '../../helpers/MessageHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
 
 test.describe.serial('Price List CRUD Operations', () => {
@@ -449,7 +449,7 @@ test.describe.serial('Price List CRUD Operations', () => {
                 await commonAction.clickOnTopMenuOption('Save');
 
                 // Validate update message
-                await SuccessMessageHelper.assert(page, 'PriceList', 'Update');
+                await MessageHelper.assert(page, 'PriceList', 'Update');
 
                 // Track successful updation
                 updatedRecords.push(priceList.name);
@@ -513,7 +513,7 @@ test.describe.serial('Price List CRUD Operations', () => {
                 await commonAction.clickOnOk();
 
                 // ✅ Validate deleted message
-                await SuccessMessageHelper.assert(page, 'PriceList', 'Delete');
+                await MessageHelper.assert(page, 'PriceList', 'Delete');
 
                 // Track successful deletion
                 deletedRecords.push(priceList.name);

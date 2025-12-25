@@ -1,3 +1,5 @@
+import { test } from '@playwright/test';
+
 export class MasterAction {
     constructor(page) {
         this.page = page;
@@ -12,9 +14,10 @@ export class MasterAction {
      * @param {string} option - The code value to be entered.
      */
     async fillCode(option) {
-        await this.page.locator('input[id*="Code"]').fill(option);
+        await test.step(`Fill Code field with value: ${option}`, async () => {
+            await this.page.locator('input[id*="Code"]').fill(option);
+        });
     }
-
 
     /**
      * Enters the given value into the name input field.
@@ -25,7 +28,9 @@ export class MasterAction {
      * @param {string} option - The name value to be entered.
      */
     async fillName(option) {
-        await this.page.locator('input[id*="Name"]').first().fill(option);
+        await test.step(`Fill Name field with value: ${option}`, async () => {
+            await this.page.locator('input[id*="Name"]').first().fill(option);
+        });
     }
 
     /**
@@ -37,7 +42,9 @@ export class MasterAction {
      * @param {string} option - The name arabic value to be entered.
      */
     async fillNameArabic(option) {
-        await this.page.locator('input[id*="NameL2"]').fill(option);
+        await test.step(`Fill Name Arabic field with value: ${option}`, async () => {
+            await this.page.locator('input[id*="NameL2"]').fill(option);
+        });
     }
 
     /**
@@ -49,6 +56,8 @@ export class MasterAction {
      * @param {string} option - The description value to be entered.
      */
     async fillDescription(option) {
-        await this.page.locator('textarea[id*="Description"]').fill(option);
+        await test.step(`Fill Description field with value: ${option}`, async () => {
+            await this.page.locator('textarea[id*="Description"]').fill(option);
+        });
     }
 }
