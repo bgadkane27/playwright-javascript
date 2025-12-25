@@ -1,0 +1,12 @@
+{
+  "module": "Customer With Address",
+  "action": "Create",
+  "totalRecordsAttempted": 1,
+  "successCount": 1,
+  "skippedCount": 0,
+  "successRecords": [
+    "Customer - Address Tab"
+  ],
+  "skippedRecords": [],
+  "executedAt": "25/12/2025, 6:54:04 am"
+}

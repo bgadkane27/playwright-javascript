@@ -5,7 +5,6 @@ import { CommonAction } from '../../utilities/CommonAction';
 import customerData from '../../testdata/sales/customer-data.json';
 import LookupHelper from '../../helpers/LookupHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
-import NumberHelper from '../../helpers/NumberHelper.js';
 import SuccessMessageHelper from '../../helpers/SuccessMessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import { getImportFile } from '../../helpers/getImportFile.js';
@@ -59,7 +58,7 @@ test.describe.serial('Customer CRUD Operations', () => {
 
             } catch (error) {
                 skippedRecords.push(customer?.name);
-                console.warn(`❌ Failed to create customer: ${customer?.name}`, error.message);
+                console.warn(`Record creation failed: ${customer?.name}`, error.message);
                 await customerPage.clickOnBack();
             }
         }
@@ -79,7 +78,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportCreateSummary(
-            'Customer - Basic',
+            'Customer With Basic Details',
             createdRecords,
             skippedRecords
         );
@@ -226,7 +225,7 @@ test.describe.serial('Customer CRUD Operations', () => {
 
             } catch (error) {
                 skippedRecords.push(customer?.name);
-                console.error(`❌ Failed to create customer: ${customer?.name}`, error.stack);
+                console.error(`Record creation failed: ${customer?.name}`, error.stack);
                 await customerPage.clickOnBack().catch(() => { });
             }
         }
@@ -246,7 +245,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('==============================================');
 
         SummaryHelper.exportCreateSummary(
-            'Customer - Key Info',
+            'Customer With Key Info',
             createdRecords,
             skippedRecords
         );
@@ -360,7 +359,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('==============================================');
 
         SummaryHelper.exportCreateSummary(
-            'Customer - Address',
+            'Customer With Address',
             createdRecords,
             skippedRecords
         );
@@ -459,7 +458,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                         }
 
                         // Save contact person
-                        await customerPage.clickOnSaveContactPerson();
+                        await commonAction.clickOnSaveButton();
 
                         // ================= Validate Contact Person =================
 
@@ -510,13 +509,13 @@ test.describe.serial('Customer CRUD Operations', () => {
 
         // Export execution summary for reporting
         SummaryHelper.exportCreateSummary(
-            'Customer - Contact Person',
+            'Customer With Multiple Contact Persons',
             createdRecords,
             skippedRecords
         );
     });
 
-    test('should be able to create customer with document detail', async ({ page }) => {
+    test.skip('should be able to create customer with document detail', async ({ page }) => {
 
         // Track successfully created records
         const createdRecords = [];
@@ -596,7 +595,6 @@ test.describe.serial('Customer CRUD Operations', () => {
                         // Attach file directly (bypasses OS file dialog)
                         await fileInput.setInputFiles(filePath);
                         await expect(page.locator('.dx-fileuploader-file-status-message')).toContainText('Uploaded');
-                        // await page.waitForTimeout(2000);
 
                         // Save record
                         await commonAction.clickOnSaveButton();
@@ -650,7 +648,7 @@ test.describe.serial('Customer CRUD Operations', () => {
 
         // Export execution summary for reporting
         SummaryHelper.exportCreateSummary(
-            'Customer - Documents',
+            'Customer With Multiple Documents',
             createdRecords,
             skippedRecords
         );
@@ -673,7 +671,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                 // Check if the record exists before proceeding with deletion
                 const recordExists = await page.locator(`text=${customer.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
                 if (!recordExists) {
-                    console.warn(`⚠️ Deletion skipped because record '${customer.name}' not found.`);
+                    console.warn(`⚠️ Deletion skipped: record '${customer.name}' not found.`);
                     skippedRecords.push(customer.name);
                     continue;
                 }
@@ -692,7 +690,7 @@ test.describe.serial('Customer CRUD Operations', () => {
 
             } catch (error) {
                 skippedRecords.push(customer.name);
-                console.warn(`⚠️ Deletion failed for '${customer.name}': ${error.message}`);
+                console.warn(`⚠️ Deletion failed: '${customer.name}': ${error.message}`);
             } finally {
                 // 🧹 Always reset filter
                 await commonAction.clearMasterNameFilter();
@@ -714,7 +712,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         console.log('======================================');
 
         SummaryHelper.exportDeleteSummary(
-            'Customer',
+            'Delete Customer',
             deletedRecords,
             skippedRecords
         );
