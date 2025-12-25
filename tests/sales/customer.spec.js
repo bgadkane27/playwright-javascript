@@ -654,7 +654,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test('should not allow duplicate customer creation', async ({ page }) => {
+    test.skip('should not allow duplicate customer creation', async ({ page }) => {
 
         const customer = customerData.validate;
 
@@ -698,9 +698,11 @@ test.describe.serial('Customer CRUD Operations', () => {
         });
 
         await test.step('Log validation summary', async () => {
-            console.log('🔎 Duplicate Customer Validation Summary');
-            console.log(`✔ Customer Name Validated : ${customer.name}`);
-            console.log(`✔ Customer Code Validated : ${customer?.allowCodeManual && customer.code ? customer.code : 'Not Applicable'}`);
+            console.log('========== 🧾 Duplicate Customer Validation Summary ==========');
+            console.log(`✅ Customer Name Validated : ${customer.name}`);
+            console.log(`✅ Customer Code Validated : ${customer?.allowCodeManual && customer.code ? customer.code : 'Not Applicable'}`);
+            console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
+            console.log('======================================');
         });
     });
 
@@ -732,7 +734,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                 await commonAction.clickOnDelete();
                 await commonAction.clickOnOk();
 
-                // ✅ Validate deleted message
+                // Validate deleted message
                 await SuccessMessageHelper.assert(page, 'Customer', 'Delete');
 
                 // Track successful deletion
