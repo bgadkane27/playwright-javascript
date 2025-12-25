@@ -579,7 +579,7 @@ test.describe.serial('Customer CRUD Operations', () => {
                         // Select document type
                         await commonAction.clickOnDocumentType();
                         await LookupHelper.selectListItem(page, document.documentType);
-                        
+
                         // Fill document details
                         await commonAction.fillDocumentNumber(document.documentNumber);
                         await commonAction.fillDateOfIssue(document.dateOfIssue);
@@ -652,6 +652,56 @@ test.describe.serial('Customer CRUD Operations', () => {
             createdRecords,
             skippedRecords
         );
+    });
+
+    test('should not allow duplicate customer creation', async ({ page }) => {
+
+        const customer = customerData.validate;
+
+        await test.step('Navigate to Customer Master', async () => {
+            await commonAction.clickOnLeftMenuOption('Setups');
+            await salesSetupPage.clickOnCustomer();
+        });
+
+        await test.step('Open new customer creation form', async () => {
+            await commonAction.clickOnListingItem('New');
+        });
+
+        await test.step('Attempt to save customer with duplicate name', async () => {
+            await commonAction.fillName(customer.name);
+            await commonAction.clickOnTopMenuOption('Save');
+        });
+
+        await test.step('Validate duplicate customer name message', async () => {
+            await expect(
+                page.getByText(
+                    `Customer with ${customer.name} name already exists.`,
+                    { exact: false }
+                )
+            ).toBeVisible();
+        });
+
+        await test.step('Attempt to save customer with duplicate code', async () => {
+            if (customer?.allowCodeManual && customer.code) {
+                await commonAction.fillCode(customer.code);
+            }
+            await commonAction.clickOnTopMenuOption('Save');
+        });
+
+        await test.step('Validate duplicate customer code message', async () => {
+            await expect(
+                page.getByText(
+                    `Duplicate code found. Code: ${customer.code} already exists!`,
+                    { exact: false }
+                )
+            ).toBeVisible();
+        });
+
+        await test.step('Log validation summary', async () => {
+            console.log('🔎 Duplicate Customer Validation Summary');
+            console.log(`✔ Customer Name Validated : ${customer.name}`);
+            console.log(`✔ Customer Code Validated : ${customer?.allowCodeManual && customer.code ? customer.code : 'Not Applicable'}`);
+        });
     });
 
     test.skip('should able to delete customer', async ({ page }) => {

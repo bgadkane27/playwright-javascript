@@ -29,11 +29,11 @@
       "restrictPaymentTerm": true,
       "selectAllPaymentTerms": true,
       "paymentTerm1": "PT01 | Net 30",
-      "paymentTerm2" : "PT02 | Net 50",
+      "paymentTerm2": "PT02 | Net 50",
       "restrictPriceList": true,
       "selectAllPriceLists": true,
       "priceList1": "PL001 | Standard",
-      "priceList2" : "PL002 | Discounted",
+      "priceList2": "PL002 | Discounted",
       "description": "Customer with Basic Informtion",
       "receivableAccount": "11210 | Receivables",
       "enableCreditControl": true,
@@ -65,7 +65,7 @@
       "billingCity": "Alabama",
       "billingZipcode": "43264",
       "billingContactPerson": "Ali Subha",
-      "sameAsBillingAddress" : false,
+      "sameAsBillingAddress": false,
       "shippingAddress1": "3021 Nyasia Shore",
       "shippingAddress2": "Fort Wayne",
       "shippingCountry": "Finland",
@@ -129,17 +129,16 @@
       ]
     }
   ],
-  "validate": [
+  "validate": {
+    "allowCodeManual": true,
+    "code": "C0001",
+    "name": "Rahim Jaber"
+  },
+  "update": [
     {
-      "code": "C0001",
-      "name": "Rahim Jaber"
-    }
-  ],
-  "update":[
-    {
-      "name":"Customer - Key Info Tab",
-      "updatedCode" : null,
-      "updatedName" : null,
+      "name": "Customer - Key Info Tab",
+      "updatedCode": null,
+      "updatedName": null,
       "nameArabic": "Customer - Key Info Tab Updated",
       "currency": "KWD | Kuwaiti Dinar",
       "group": "CG02 | International",
@@ -162,9 +161,9 @@
       "shipmentPriority": "Normal"
     },
     {
-      "name":"Customer - Address Tab Updated",
-      "updatedCode" : null,
-      "updatedName" : null,
+      "name": "Customer - Address Tab Updated",
+      "updatedCode": null,
+      "updatedName": null,
       "arabicName": "Customer - Address Tab",
       "currency": "KWD | Kuwaiti Dinar",
       "billingAddress1": "3022 Nyasia Shore",
