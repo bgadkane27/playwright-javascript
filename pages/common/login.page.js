@@ -6,7 +6,7 @@ export class LoginPage {
     this.signInButton = page.getByRole("button", { name: "Sign In", exact: true });
   }
 
-  async navigate(url) {
+  async navigateTo(url) {
     await this.page.goto(url);
   }
 
@@ -14,7 +14,6 @@ export class LoginPage {
     await this.usernameInput.fill(username);
     await this.passwordInput.fill(password);
     await this.signInButton.click();
-
     await this.page.waitForLoadState("networkidle");
   }
 }
