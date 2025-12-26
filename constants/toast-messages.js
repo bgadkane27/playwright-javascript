@@ -26,7 +26,7 @@ const Messages = {
     Supplier: {
         Create: 'Supplier created successfully',
         Update: 'Supplier updated successfully',
-        Delete: 'Record deleted successfully!'
+        Delete: 'Supplier deleted successfully'
     }
 };
 

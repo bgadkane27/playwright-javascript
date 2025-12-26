@@ -16,7 +16,7 @@ export class CommonAction {
     async navigateToApp(path = '/') {
         await test.step(`Navigate to application: ${path}`, async () => {
             await this.page.goto(path);
-            await this.page.waitForLoadState('domcontentloaded');
+            await this.page.waitForLoadState('networkidle');
         });
     }
 

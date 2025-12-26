@@ -1,0 +1,224 @@
+{
+    "validate": {
+        "code": "S0001",
+        "name": "Taraab Mansoor"
+    },
+    "suppliers": [
+        {
+            "code": "S0016",
+            "name": "Supplier - KWD",
+            "nameArabic": "Supplier - KWD",
+            "currency": null,
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": ""
+        },
+        {
+            "code": "S0017",
+            "name": "Supplier - AED",
+            "nameArabic": "Supplier - AED",
+            "currency": "AED | UAE Dirham",
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": ""
+        }
+    ],
+    "keyInfos": [
+        {
+            "code": "S0018",
+            "name": "Supplier - Key Info Tab",
+            "nameArabic": "Supplier - Key Info Tab",
+            "currency": null,
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": "",
+            "group": "National",
+            "contactPerson": "Sakib Al Hasan",
+            "mobile": "98652545",
+            "email": "key.info@gmail.com",
+            "payableAccount": "21110 | Payables",
+            "description": "Supplier - Key Info",
+            "creditLimitAmount": 500,
+            "creditLimitDays": 50,
+            "paymentTerm": "Net 30",
+            "shippingTerm": "Factory",
+            "loadingPort": "1001",
+            "destinationPort": "2001",
+            "shippingMethod": "Air",
+            "shipmentPriority": "High"
+        }
+    ],
+    "contactPersons": [
+        {
+            "code": "S0019",
+            "name": "Supplier - Contact Person Tab",
+            "nameArabic": "Supplier - Contact Person Tab",
+            "currency": "",
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": "",
+            "persons": [
+                {
+                    "prefix": "Mr.",
+                    "firstName": "Kareem",
+                    "middleName": "M",
+                    "lastName": "Amiri",
+                    "jobTitle": "Salesman",
+                    "gender": "Male",
+                    "mobile": "98652542",
+                    "telephone": "96445241",
+                    "fax": "964452415",
+                    "email": "kareem@grand.com"
+                },
+                {
+                    "prefix": "Ms.",
+                    "firstName": "Salma",
+                    "middleName": "R",
+                    "lastName": "Tabatabai",
+                    "jobTitle": "Salesman",
+                    "gender": "Female",
+                    "mobile": "98656598",
+                    "telephone": "96444564",
+                    "fax": "964452416",
+                    "email": "salma@grand.com"
+                }
+            ]
+        }
+    ],
+    "addresses": [
+        {
+            "code": "S0020",
+            "name": "Supplier - Address Tab",
+            "nameArabic": "Supplier - Address Tab",
+            "currency": "",
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": "",
+            "address": [
+                {
+                    "description": "Mailing Address",
+                    "address1": "123 Main Street",
+                    "address2": "Apartment: 2B",
+                    "address3": "15 Mubarak Al-Kabeer Street",
+                    "address4": "Sharq Area",
+                    "address5": "15458 Kuwait City",
+                    "city": "Kuwait",
+                    "addressState": "KUWAIT",
+                    "dialingCode": "965",
+                    "zipcode": "154858",
+                    "contactPerson": "Kareem Amiri",
+                    "email": "supplier.mail@gmail.com",
+                    "mobileNumber": "96563524",
+                    "telNumber": "98573524",
+                    "faxNumber": "98573524"
+                },
+                {
+                    "description": "Billing Address",
+                    "address1": "124 Main Street",
+                    "address2": "Apartment: 2D",
+                    "address3": "15 Mubarak Al-Kabeer Street",
+                    "address4": "Sharq Area",
+                    "address5": "15459 Kuwait City",
+                    "city": "Kuwait",
+                    "addressState": "KUWAIT",
+                    "dialingCode": "965",
+                    "zipcode": "154858",
+                    "contactPerson": "Salma Shah",
+                    "email": "supplier.bill@gmail.com",
+                    "mobileNumber": "96563525",
+                    "telNumber": "98573525",
+                    "faxNumber": "98573525"
+                }
+            ]
+        }
+    ],
+    "items": [
+        {
+            "code": "S0021",
+            "name": "Supplier - Items Tab",
+            "nameArabic": "Supplier - Items Tab",
+            "currency": "",
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": "",
+            "items": [
+                {
+                    "item": "Screen Protectors"
+                },
+                {
+                    "item": "Phone Cases"
+                }
+            ]
+        }
+    ],
+    "documents": [
+        {
+            "code": "S0022",
+            "name": "Supplier - Documents Tab",
+            "nameArabic": "Supplier - Documents Tab",
+            "currency": "",
+            "country": "",
+            "state": "",
+            "taxTreatment": "",
+            "taxRegistrationNumber": "",
+            "documents": [
+                {
+                    "documentType": "Civil Id",
+                    "documentNumber": "CID60017001",
+                    "dateOfIssue": "01-Jan-2025",
+                    "placeOfIssue": "Kuwait",
+                    "dateOfExpiry": "31-Dec-2025"
+                },
+                {
+                    "documentType": "Sponsor Contract",
+                    "documentNumber": "C600017001",
+                    "dateOfIssue": "01-Jan-2025",
+                    "placeOfIssue": "Kuwait",
+                    "dateOfExpiry": "31-Dec-2025"
+                }
+            ]
+        }
+    ],
+    "update": [
+        {
+            "code": "S0016",
+            "name": "Supplier - KWD",
+            "updatedName": "Supplier - KWD",
+            "nameArabic": "Supplier - KWD",
+            "email": "update@eliteimports.com",
+            "mobile": "98765432",
+            "telephone": "022123456",
+            "creditLimitAmount": 750,
+            "creditLimitDays": 45
+        }
+    ],
+    "delete": [
+        {
+            "name": "Supplier - Documents Tab"
+        },
+        {
+            "name": "Supplier - Items Tab"
+        },
+        {
+            "name": "Supplier - Address Tab"
+        },
+        {
+            "name": "Supplier - Contact Person Tab"
+        },
+        {
+            "name": "Supplier - Key Info Tab"
+        },
+        {
+            "name": "Supplier - AED"
+        },
+        {
+            "name": "Supplier - KWD"
+        }
+    ]
+}

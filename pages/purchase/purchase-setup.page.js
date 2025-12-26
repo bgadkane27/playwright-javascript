@@ -22,6 +22,22 @@ export class PurchaseSetupPage {
     }
 
     /**
+     * Navigates to the specified master.
+     *
+     * This method clicks on the navigation link
+     * that matches the provided master name.
+     *
+     * @param {string} masterName - The name of the master to navigate to.
+     */
+    async navigateToBase(masterName) {
+        await test.step(`Navigate to master: ${masterName}`, async () => {
+            await this.page
+                .getByRole("link", { name: masterName, exact: true }).nth(1)
+                .click();
+        });
+    }
+
+    /**
      * Opens a specific setting option under Purchase setup.
      *
      * This method clicks on the settings link based on

@@ -1,0 +1,18 @@
+{
+  "module": "Supplier",
+  "action": "Delete",
+  "totalRecordsAttempted": 7,
+  "successCount": 0,
+  "skippedCount": 7,
+  "successRecords": [],
+  "skippedRecords": [
+    "Supplier - Documents Tab",
+    "Supplier - Items Tab",
+    "Supplier - Address Tab",
+    "Supplier - Contact Person Tab",
+    "Supplier - Key Info Tab",
+    "Supplier - AED",
+    "Supplier - KWD"
+  ],
+  "executedAt": "26/12/2025, 5:52:30 pm"
+}

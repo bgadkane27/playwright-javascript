@@ -79,7 +79,7 @@ export class MenuAction {
   async clickMenuOptionByText(option) {
     await test.step(`Click menu option by text: ${option}`, async () => {
       await this.page.getByText(option, { exact: true }).click();
-      await this.page.waitForTimeout(500);
+      await this.page.waitForTimeout(1000);
     });
   }
 }
