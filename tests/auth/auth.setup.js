@@ -1,9 +1,9 @@
-import { test as setup, expect } from '@playwright/test';
+import { test as setup } from '@playwright/test';
 import path from 'path';
-import login from '../testdata/common/loginData.json'
+import login from '../../testdata/common/loginData.json'
 
 // Path where authentication state will be saved
-const authFile = path.join(__dirname, '../.auth/user.json');
+const authFile = path.join(__dirname, '../../.auth/user.json');
 
 setup('Login', async ({ page }) => {
     // Navigate to login page
