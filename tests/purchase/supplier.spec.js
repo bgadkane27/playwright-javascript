@@ -14,7 +14,7 @@ import supplierData from '../../testdata/purchase/supplier.json';
 import StringHelper from '../../helpers/StringHelper.js';
 import MessageHelper from '../../helpers/MessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
-import { SummaryUtil } from '../../utils/logger.util.js';
+import { SummaryUtil } from '../../utils/summary.util.js';
 
 test.describe.only('Supplier CRUD Operations', () => {
     let setupAction;
@@ -86,87 +86,9 @@ test.describe.only('Supplier CRUD Operations', () => {
         });
 
         await test.step('Log validation summary', async () => {
-            SummaryUtil.validationSummary(supplier.name, supplier.code);
+            SummaryUtil.logValidateSummary(supplier.name, supplier.code);
         });
 
-    });
-
-    test.skip('Purchase | Delete supplier1', async ({ page }) => {
-        // 🗑️ Deletion Summary Trackers
-        const deletedRecords = [];
-        const skippedRecords = [];
-
-        await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
-        });
-
-        // Iterate to delete
-        for (const supplier of supplierData.delete) {
-            try {
-                // Search and filter the record
-                await listingAction.filterMasterByName(supplier.name);
-
-                // Check if the record exists before proceeding with deletion
-                const row = page
-                    .locator('tbody.dx-row.dx-data-row')
-                    .filter({ hasText: supplier.name })
-                    .first();
-
-                const recordExists = await row.count() > 0;
-
-                if (!recordExists) {
-                    console.warn(`⚠️ Deletion skipped because record not found '${supplier.name}'.`);
-                    skippedRecords.push(supplier.name);
-                    continue;
-                }
-
-                // Proceed with deletion if record exists
-                // await test.step(`Delete supplier: ${supplier.name}`, async () => {
-                //     await listingAction.selectMasterRowByName(supplier.name);
-                //     await commonAction.clickMeatballMenu();
-                //     await menuAction.clickMenuOptionByText('Delete');
-                //     await menuAction.clickMenuOptionByText('Ok');
-                // });
-                await test.step(`Delete supplier: ${supplier.name}`, async () => {
-                    await deleteAction.deleteMasterByName('Supplier', supplier.name);
-                });
-
-                await test.step(`Validate supplier deleted messsage: ${supplier.name}`, async () => {
-                    await MessageHelper.assert(page, 'Supplier', 'Delete');
-                });
-
-                // Track successful deletion
-                deletedRecords.push(supplier.name);
-
-            } catch (error) {
-                skippedRecords.push(supplier.name);
-                console.warn(`⚠️ Deletion failed: '${supplier.name}': ${error.message}`);
-            } finally {
-                // 🧹 Always reset filter
-                await listingAction.clearMasterNameColumnFilter();
-            }
-        }
-
-        // 📊 Summary Report
-        console.log('==========🧾 Supplier Delete Summary ==========');
-        console.log(`📄 Total Records Attempted: ${supplierData.delete.length}`);
-        console.log(`✅ Successfully Deleted: ${deletedRecords.length}`);
-        if (deletedRecords.length) {
-            console.log('🗑️ Deleted Records: ' + deletedRecords.join(', '));
-        }
-        console.log(`⚠️ Skipped/Failed: ${skippedRecords.length}`);
-        if (skippedRecords.length) {
-            console.log('🚫 Skipped Records: ' + skippedRecords.join(', '));
-        }
-        console.log(`🕒 Test Executed At: ${new Date().toLocaleString('en-IN')}`);
-        console.log('======================================');
-
-        SummaryHelper.exportDeleteSummary(
-            'Supplier',
-            deletedRecords,
-            skippedRecords
-        );
     });
 
     test('Purchase | Delete supplier', async ({ page }) => {
@@ -179,23 +101,14 @@ test.describe.only('Supplier CRUD Operations', () => {
             await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
-        // ===== Iterate to delete =====
+        // ===== Iterate To Delete =====
         for (const supplier of supplierData.delete) {
             try {
                 await test.step(`Filter supplier record: ${supplier.name}`, async () => {
                     await listingAction.filterMasterByName(supplier.name);
                 });
 
-                let recordExists = false;
-
-                await test.step(`Check if record exists: ${supplier.name}`, async () => {
-                    const row = page
-                        .locator('tbody.dx-row.dx-data-row')
-                        .filter({ hasText: supplier.name })
-                        .first();
-
-                    recordExists = (await row.count()) > 0;
-                });
+                const recordExists = await page.locator(`text=${supplier.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
 
                 if (!recordExists) {
                     console.warn(`⚠️ Deletion skipped because record not found: '${supplier.name}'.`);
@@ -204,7 +117,7 @@ test.describe.only('Supplier CRUD Operations', () => {
                 }
 
                 await test.step(`Delete supplier: ${supplier.name}`, async () => {
-                    await deleteAction.deleteMasterByName('Supplier', supplier.name);
+                    await masterDeleteAction.deleteMasterByName('Supplier', supplier.name);
                 });
 
                 await test.step(`Validate supplier deleted message: ${supplier.name}`, async () => {
@@ -225,19 +138,22 @@ test.describe.only('Supplier CRUD Operations', () => {
             }
         }
 
-        await test.step('Print delete summary report', async () => {
-            SummaryUtil.printDeleteSummary('Supplier',
-                deletedRecords,
-                skippedRecords,
-                supplierData.delete.length);
+        await test.step('Log delete summary', async () => {
+            SummaryUtil.logCrudSummary({
+                entityName: 'Supplier',
+                action: 'Delete',
+                successRecords: deletedRecords, skippedRecords,
+                totalCount: supplierData.delete.length
+            });
         });
 
         await test.step('Export delete summary', async () => {
-            SummaryHelper.exportDeleteSummary(
-                'Supplier',
-                deletedRecords,
-                skippedRecords
-            );
+            SummaryUtil.exportCrudSummary({
+                entityName: 'Supplier',
+                action: 'Delete',
+                successRecords: deletedRecords, skippedRecords,
+                totalCount: supplierData.delete.length
+            });
         });
     });
 

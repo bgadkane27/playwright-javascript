@@ -1,7 +1,7 @@
 {
   "module": "Supplier",
   "action": "Delete",
-  "totalRecordsAttempted": 7,
+  "total": 7,
   "successCount": 0,
   "skippedCount": 7,
   "successRecords": [],
@@ -14,5 +14,5 @@
     "Supplier - AED",
     "Supplier - KWD"
   ],
-  "executedAt": "27/12/2025, 10:52:48 am"
+  "executedAt": "27/12/2025, 3:59:04 pm"
 }

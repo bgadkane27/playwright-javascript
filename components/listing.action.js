@@ -18,7 +18,6 @@ export class ListingAction {
             await this.page
                 .locator('input[aria-describedby="dx-col-3"]')
                 .fill(option);
-
             await this.page.waitForTimeout(2000);
         });
     }
@@ -39,7 +38,6 @@ export class ListingAction {
 
             await row.focus();
             await row.click({ position: { x: 10, y: 10 } });
-
             await this.page.waitForTimeout(500);
         });
     }
@@ -55,7 +53,6 @@ export class ListingAction {
             await this.page
                 .locator('input[aria-describedby="dx-col-3"]')
                 .clear();
-
             await this.page.waitForTimeout(500);
         });
     }
