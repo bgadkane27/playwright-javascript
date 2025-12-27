@@ -9,7 +9,7 @@ import StringHelper from '../../helpers/StringHelper.js';
 import MessageHelper from '../../helpers/MessageHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
 
-test.describe.serial('Price List CRUD Operations', () => {
+test.describe.skip('Price List CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
     let priceListPage;

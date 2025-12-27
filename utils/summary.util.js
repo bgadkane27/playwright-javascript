@@ -23,16 +23,16 @@ export class SummaryUtil {
     console.info(`\n========== ${entityName} ${action} Summary ==========`);
 
     console.info(`📄 Total records attempted: ${totalCount}`);
-    console.info(`✅ Successfully ${action}d records: ${successRecords.length}`);
+    console.info(`✅ Success records: ${successRecords.length}`);
 
     if (successRecords.length) {
-      console.info(`🟢 ${action}d record names: ${successRecords.join(', ')}`);
+      console.info(`🟢 ${action}d records: ${successRecords.join(', ')}`);
     }
 
     console.info(`⚠️ Skipped/Failed records: ${skippedRecords.length}`);
 
     if (skippedRecords.length) {
-      console.info(`🔴 Skipped record names: ${skippedRecords.join(', ')}`);
+      console.info(`🔴 Skipped/Failed records: ${skippedRecords.join(', ')}`);
     }
 
     console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}\n`);
@@ -111,7 +111,7 @@ export class SummaryUtil {
     <head>
       <title>${summary.module} ${summary.action} Summary</title>
       <style>
-        body { font-family: Arial; padding: 20px; }
+        body { font-family: Arial; padding: 20px; background: #ebebeb; }
         h1 { color: #000; }
         .success { color: green; }
         .failed { color: red; }
@@ -119,21 +119,21 @@ export class SummaryUtil {
       </style>
     </head>
     <body>
-      <h1>🧾 ${summary.module} ${summary.action} summary</h1>
+      <h1>${summary.module} ${summary.action} Summary</h1>
 
       <p><b>Total records attempted:</b> ${summary.total}</p>
-      <p class="success"><b>Success records: ${summary.successCount}</b></p>
+      <h3 class="success">✅ Success records: ${summary.successCount}</h3>
 
-      <h3 class="success">✅ ${summary.action}d record names</h3>
+      <h3 class="success">✅ ${summary.action}d records</h3>
       <ul>
         ${summary.successRecords.length
         ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
         : '<p>No record deleted</p>'}
       </ul>
 
-      <p class="failed"><b>Skipped / Failed records: ${summary.skippedCount}</b></p>
+      <h3 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h3>
 
-      <h3 class="failed">🚫 Skipped / Failed record names</h3>
+      <h3 class="failed">🚫 Skipped / Failed records</h3>
       <ul>
         ${summary.skippedRecords.length
         ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')

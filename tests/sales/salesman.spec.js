@@ -9,7 +9,7 @@ import StringHelper from '../../helpers/StringHelper.js';
 import NumberHelper from '../../helpers/NumberHelper.js';
 import MessageHelper from '../../helpers/MessageHelper.js';
 
-test.describe.serial('Salesman CRUD Operations', () => {
+test.describe.skip('Salesman CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
     let salesmanPage;

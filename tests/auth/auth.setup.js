@@ -25,7 +25,7 @@ setup('Login into system', async ({ page }) => {
     });
 
     await setup.step('Login Summary', async () => {
-        console.info('===== Sucessful Login Summary =====\n');
+        console.info('===== Successful Login Summary =====\n');
         console.info(`✅ Login with username: ${login.username}`);
         console.info(`🕒 Login Time: ${new Date().toLocaleString('en-IN')}\n`);
     });

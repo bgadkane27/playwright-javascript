@@ -1,4 +1,7 @@
 {
+    "feature": {
+        "allowCodeManual": false
+    },
     "validate": {
         "code": "S0001",
         "name": "Taraab Mansoor"

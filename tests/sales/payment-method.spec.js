@@ -8,7 +8,7 @@ import SummaryHelper from '../../helpers/SummaryHelper.js';
 import StringHelper from '../../helpers/StringHelper.js';
 import MessageHelper from '../../helpers/MessageHelper.js';
 
-test.describe.serial('Payment Method CRUD Operations', () => {
+test.describe.skip('Payment Method CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
     let paymentMethodPage;

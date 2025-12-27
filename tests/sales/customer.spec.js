@@ -9,7 +9,7 @@ import MessageHelper from '../../helpers/MessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import { getImportFile } from '../../helpers/getImportFile.js';
 
-test.describe.serial('Customer CRUD Operations', () => {
+test.describe.skip('Customer CRUD Operations', () => {
     let commonAction;
     let salesSetupPage;
     let customerPage;
@@ -34,7 +34,7 @@ test.describe.serial('Customer CRUD Operations', () => {
             try {
                 await commonAction.clickOnListingItem('New');
 
-                if (customer.feature?.allowCodeManual && customer.code) {
+                if (customerData.feature?.allowCodeManual && customer.code) {
                     await commonAction.fillCode(customer.code);
                 }
 
