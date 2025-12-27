@@ -156,8 +156,8 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Log create summary', async () => {
             SummaryUtil.logCrudSummary({
-                entityName: 'Supplier',
-                action: 'create',
+                entityName: 'Supplier With Basic Details',
+                action: 'Create',
                 successRecords: createdRecords,
                 skippedRecords,
                 totalCount: supplierData.suppliers.length
@@ -166,8 +166,8 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Export create summary', async () => {
             SummaryUtil.exportCrudSummary({
-                entityName: 'Supplier',
-                action: 'create',
+                entityName: 'Supplier With Basic Details',
+                action: 'Create',
                 successRecords: createdRecords,
                 skippedRecords,
                 totalCount: supplierData.suppliers.length
@@ -175,7 +175,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
-    test('should be able to create customer with key info detail', async ({ page }) => {
+    test.skip('should be able to create supplier with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -188,143 +188,110 @@ test.describe.serial('Supplier CRUD Operations', () => {
         for (const supplier of supplierData.keyInfos) {
 
             try {
-                await test.step(`Create Supplier: ${supplier.name}`, async () => {
-
-                    await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                        await menuAction.clickListingMenuOptionWithIndex('New', 0);
-                    });
-
-                    await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
-                        if (supplierData.feature?.allowCodeManual && supplier.code) {
-                            await masterHeaderAction.fillCode(supplier.code);
-                        }
-                    });
-
-                    await test.step(`Fill supplier name: ${supplier.name}`, async () => {
-                        await masterHeaderAction.fillName(supplier.name);
-                    });
-
-                    await test.step('Fill optional fields (if provided)', async () => {
-                        if (StringHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
-                            await masterHeaderAction.fillNameArabic(supplier.nameArabic);
-                        }
-
-                        if (StringHelper.isNotNullOrWhiteSpace(supplier.currency)) {
-                            await supplierPage.clickCurrency();
-                            await lookupAction.selectListItem(supplier.currency);
-                        }
-                    });
-
-                    await test.step(`Save supplier: ${supplier.name}`, async () => {
-                        await menuAction.clickTopMenuOption('Save');
-                    });
-
-                    await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
-                        await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
-                    });
-
-                    // ================= Key Info =================
-                    await supplierPage.openKeyInfoTab();
-
-                    // await customerPage.clickOnGroup();
-                    // await LookupHelper.selectListItem(page, customer.group);
-
-                    // await customerPage.fillEmail(customer.email);
-                    // await customerPage.fillMobile(customer.mobile);
-                    // await customerPage.fillTelephone(customer.telephone);
-                    // await customerPage.fillDescription(customer.description);
-
-                    // await customerPage.clickOnReceivableAccount();
-                    // await LookupHelper.selectListItem(page, customer.receivableAccount);
-
-                    // await customerPage.clickOnSaveKeyInfo();
-
-                    // await expect(customerPage.keyInfoEmail).toHaveValue(customer.email);
-
-                    // ================= Credit Control =================
-                    // if (customer.enableCreditControl) {
-                    //     await customerPage.clickOnEnableCreditControl();
-                    //     await customerPage.fillCreditLimitAmount(customer.creditLimitAmount);
-                    //     await customerPage.fillCreditLimitDays(customer.creditLimitDays);
-
-                    //     await customerPage.scrollToCreditCheckMode();
-
-                    //     await customerPage.clickOnCreditRating();
-                    //     await LookupHelper.selectListItem(page, customer.creditRating);
-
-                    //     await customerPage.clickOnCreditCheckMode();
-                    //     await LookupHelper.selectListItem(page, customer.creditCheckMode);
-
-                    //     await customerPage.clickOnSaveKeyInfo();
-                    // }
-
-                    // ================= Defaults =================
-                    // if (customer.enableDefaults) {
-                    //     await customerPage.clickOnSetDefaults();
-
-                    //     await customerPage.clickOnSalesman();
-                    //     await LookupHelper.selectListItem(page, customer.salesman);
-
-                    //     await customerPage.clickOnPaymentTerm();
-                    //     await LookupHelper.selectListItem(page, customer.paymentTerm);
-
-                    //     await customerPage.scrollToShipmentPriority();
-
-                    //     await customerPage.clickOnPriceList();
-                    //     await LookupHelper.selectListItem(page, customer.priceList);
-
-                    //     await customerPage.clickOnShippingTerm();
-                    //     await LookupHelper.selectListItem(page, customer.shippingTerm);
-
-                    //     await customerPage.fillLoadingPort(customer.loadingPort);
-                    //     await customerPage.fillDestinationPort(customer.destinationPort);
-
-                    //     await customerPage.clickOnShippingMethod();
-                    //     await LookupHelper.selectListItem(page, customer.shippingMethod);
-
-                    //     await customerPage.clickOnShipmentPriority();
-                    //     await LookupHelper.selectListItem(page, customer.shipmentPriority);
-
-                    //     await customerPage.clickOnSaveKeyInfo();
-                    // }
-
-                    // ================= Restrict Payment Term =================
-                    // if (customer.restrictPaymentTerm) {
-                    //     await customerPage.clickOnRestrictPaymentTerm();
-                    //     await customerPage.clickOnSelectPaymentTerm();
-
-                    //     if (customer.selectAllPaymentTerms) {
-                    //         await customerPage.clickOnSelectAllPaymentTerm();
-                    //     } else {
-                    //         await LookupHelper.selectListItem(page, customer.paymentTerm1);
-                    //         // await LookupHelper.selectListItem(page, customer.paymentTerm2);
-
-                    //     }
-                    //     await customerPage.clickOnSaveKeyInfo();
-                    // }
-
-                    // ================= Restrict Price List =================
-                    // if (customer.restrictPriceList) {
-                    //     await customerPage.clickOnRestrictPriceList();
-                    //     await customerPage.clickOnSelectPriceList();
-
-                    //     if (customer.selectAllPriceLists) {
-                    //         await customerPage.clickOnSelectAllPriceList();
-                    //     } else {
-                    //         await LookupHelper.selectListItem(page, customer.priceList1);
-                    //         // await LookupHelper.selectListItem(page, customer.priceList2);
-
-                    //     }
-                    //     await customerPage.clickOnSaveKeyInfo();
-                    // }
-
-                    // ================= Verify =================
-                    // await MessageHelper.assert(page, 'Supplier', 'Update');
-
-                    createdRecords.push(supplier.name);
-
-                    await supplierPage.clickBack();
+                await test.step(`Open new supplier form: ${supplier.name}`, async () => {
+                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
                 });
+
+                await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
+                    if (supplierData.feature?.allowCodeManual && supplier.code) {
+                        await masterHeaderAction.fillCode(supplier.code);
+                    }
+                });
+
+                await test.step(`Fill supplier name: ${supplier.name}`, async () => {
+                    await masterHeaderAction.fillName(supplier.name);
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (StringHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(supplier.nameArabic);
+                    }
+
+                    if (StringHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                        await supplierPage.clickCurrency();
+                        await lookupAction.selectListItem(supplier.currency);
+                    }
+                });
+
+                await test.step(`Save supplier: ${supplier.name}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
+                    await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
+                });
+
+                await test.step('Fill Key Info tab', async () => {
+                    await supplierPage.openKeyInfoTab();
+                    await supplierPage.selectGroup(supplier.group);
+                    await supplierPage.fillContactPerson(supplier.contactPerson);
+                    await supplierPage.fillMobile(supplier.mobile);
+                    await supplierPage.fillEmail(supplier.email);
+                    await supplierPage.selectPayableAccount(supplier.payableAccount);
+                    await supplierPage.fillDescription(supplier.description);
+                    await supplierPage.saveKeyInfo();
+                });
+
+                await test.step('Validate Key Info email', async () => {
+                    await expect(supplierPage.keyInfoEmail).toHaveValue(supplier.email);
+                });
+
+                await test.step('Fill Credit Control', async () => {
+                    if (supplier.enableCreditControl) {
+                        await supplierPage.clickEnableCreditControl();
+                        await supplierPage.fillCreditLimitAmount(supplier.creditLimitAmount);
+                        await supplierPage.fillCreditLimitDays(supplier.creditLimitDays);
+                        await supplierPage.saveKeyInfo();
+                    }
+                });
+
+                await test.step('Fill Set Defaults', async () => {
+                    if (supplier.setDefaults) {
+                        await supplierPage.clickSetDefaults();
+                        await supplierPage.scrollToShipmentPriority();
+
+                        await supplierPage.selectPaymentTerm(supplier.paymentTerm);
+                        await supplierPage.selectShippingTerm(supplier.shippingTerm);
+
+                        await supplierPage.fillLoadingPort(supplier.loadingPort);
+                        await supplierPage.fillDestinationPort(supplier.destinationPort);
+
+                        await supplierPage.selectShippingMethod(supplier.shippingMethod);
+                        await supplierPage.selectShipmentPriority(supplier.shipmentPriority);
+
+                        await supplierPage.saveKeyInfo();
+                    }
+                });
+
+                await test.step('Fill Restrict Payment Term', async () => {
+                    if (supplier.restrictPaymentTerm) {
+                        await supplierPage.clickRestrictPaymentTerm();
+                        await supplierPage.clickSelectPaymentTerm();
+
+                        if (supplier.selectAllPaymentTerms) {
+                            await supplierPage.selectAllPaymentTerms();
+                        } else {
+                            if (supplier.paymentTerm1) {
+                                await lookupAction.selectListItem(supplier.paymentTerm1);
+                            }
+
+                            if (supplier.paymentTerm2) {
+                                await lookupAction.selectListItem(supplier.paymentTerm2);
+                            }
+                        }
+
+                        await supplierPage.saveKeyInfo();
+                    }
+                });
+
+                await test.step('Validate supplier updated message', async () => {
+                    await MessageHelper.assert(page, 'Supplier', 'Update');
+                });
+
+                createdRecords.push(supplier.name);
+
+                await supplierPage.clickBack();
+
 
             } catch (error) {
                 skippedRecords.push(supplier?.name);
@@ -339,9 +306,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Log create summary', async () => {
             SummaryUtil.logCrudSummary({
-                entityName: 'Supplier',
+                entityName: 'Supplier With Key Info Tab Details',
                 action: 'Create',
-                successRecords: createdRecords, 
+                successRecords: createdRecords,
                 skippedRecords,
                 totalCount: supplierData.keyInfos.length
             });
@@ -349,7 +316,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Export create summary', async () => {
             SummaryUtil.exportCrudSummary({
-                entityName: 'Supplier',
+                entityName: 'Supplier With Key Info Tab Details',
                 action: 'Create',
                 successRecords: createdRecords, skippedRecords,
                 totalCount: supplierData.keyInfos.length

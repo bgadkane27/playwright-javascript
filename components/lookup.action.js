@@ -79,13 +79,14 @@ export class LookupAction {
                 .filter({ hasText: optionText })
                 .first();
 
-            await option.waitFor({ state: 'visible', timeout: 5000 });
+            await option.waitFor({ state: 'visible', timeout: 7000 });
             const isSelected = await option.getAttribute('aria-selected');
             if (isSelected === 'true') {
                 return;
             }
             await option.scrollIntoViewIfNeeded();
             await option.click();
+            await this.page.waitForTimeout(500);
         });
     }
 

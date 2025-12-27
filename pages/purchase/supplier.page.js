@@ -1,8 +1,11 @@
 import { test } from '@playwright/test';
+import { LookupAction } from '../../components/lookup.action';
 
 export class SupplierPage {
     constructor(page) {
         this.page = page;
+
+        this.lookup = new LookupAction(page);
 
         /* ================= TAX DETAILS ================= */
         this.country = page.locator("input[id*='CountryId']");
@@ -21,12 +24,12 @@ export class SupplierPage {
 
         /* ================= KEY INFO ================= */
         this.currency = page.locator("input[id*='CurrencyId']");
-        this.group = page.locator("input[id*='CustomerGroupId']");
-        this.keyInfoEmail = page.locator("input[name='Email']");
-        this.keyInfoMobile = page.locator("input[id='phone']");
+        this.group = page.locator("input[id*='SupplierGroupId']");
+        this.keyInfoEmail = page.locator("input[name='ContactPersonEmail']");
+        this.keyInfoMobile = page.locator("input[id*='ContactPersonMobile']");
         this.contactPerson = page.locator("input[id*='ContactPersonName']");
         this.restrictPaymentTerm = page.locator('#SupplierRestrictPaymentTermCheck');
-        this.selectPaymentTerm = page.getByPlaceholder('Select payment term...');
+        this.selectPaymentTermField = page.getByPlaceholder('Select payment term...');
         this.selectAllPaymentTerm = page.getByRole('checkbox', { name: 'Select All' });
         this.payableMainAccount = page.locator("input[id*='PayableMainAccountId']");
         this.description = page.locator("textarea[name='Description']");
@@ -177,6 +180,13 @@ export class SupplierPage {
         });
     }
 
+    async selectGroup(value) {
+        await test.step(`Select Supplier Group: ${value}`, async () => {
+            await this.group.click();
+            await this.lookup.selectListItem(value);
+        });
+    }
+
     async fillContactPerson(value) {
         await test.step(`Fill Contact Person Name: ${value}`, async () => {
             await this.contactPerson.click();
@@ -204,15 +214,17 @@ export class SupplierPage {
         });
     }
 
-    async selectSelectPaymentTerm() {
+    async clickSelectPaymentTerm() {
         await test.step('Click Select payment term', async () => {
-            await this.selectPaymentTerm.click();
+            await this.selectPaymentTermField.click();
+            await this.page.waitForTimeout(500);
         });
     }
 
     async selectAllPaymentTerms() {
         await test.step('Select all payment terms', async () => {
             await this.selectAllPaymentTerm.click();
+            await this.page.waitForTimeout(500);
         });
     }
 
@@ -222,8 +234,15 @@ export class SupplierPage {
         });
     }
 
+    async selectPayableAccount(value) {
+        await test.step(`Select payable account: ${value}`, async () => {
+            await this.payableMainAccount.click();
+            await this.lookup.selectLookupOption(value);
+        });
+    }
+
     async fillDescription(value) {
-        await test.step(`Fill Description`, async () => {
+        await test.step(`Fill Description: ${value}`, async () => {
             await this.description.click();
             await this.description.fill(value);
         });
@@ -265,9 +284,23 @@ export class SupplierPage {
         });
     }
 
+    async selectPaymentTerm(value) {
+        await test.step(`Select Payment Term: ${value}`, async () => {
+            await this.paymentTerm.click();
+            await this.lookup.selectLookupOption(value);
+        });
+    }
+
     async clickShippingTerm() {
         await test.step('Click Shipping Term', async () => {
             await this.shippingTerm.click();
+        });
+    }
+
+    async selectShippingTerm(value) {
+        await test.step(`Select Shipping Term: ${value}`, async () => {
+            await this.shippingTerm.click();
+            await this.lookup.selectListItem(value);
         });
     }
 
@@ -291,9 +324,23 @@ export class SupplierPage {
         });
     }
 
+    async selectShippingMethod(value) {
+        await test.step(`Select Shipping Method: ${value}`, async () => {
+            await this.shippingMethod.click();
+            await this.lookup.selectListItem(value);
+        });
+    }
+
     async clickShipmentPriority() {
         await test.step('Click Shipment Priority', async () => {
             await this.shipmentPriority.click();
+        });
+    }
+
+    async selectShipmentPriority(value) {
+        await test.step(`Select Shipment Priority: ${value}`, async () => {
+            await this.shipmentPriority.click();
+            await this.lookup.selectListItem(value);
         });
     }
 
