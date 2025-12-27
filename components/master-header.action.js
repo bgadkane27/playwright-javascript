@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 
-export class MasterAction {
+export class MasterHeaderAction {
     constructor(page) {
         this.page = page;
     }

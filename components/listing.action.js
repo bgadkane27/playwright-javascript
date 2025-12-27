@@ -6,25 +6,6 @@ export class ListingAction {
     }
 
     /**
-   * Clicks an option from the listing toolbar.
-   *
-   * This method clicks a toolbar option present
-   * on the listing page based on its title.
-   *
-   * @param {string} option - Name of the listing toolbar option.
-   */
-    async clickListingMenuOption(option) {
-        await test.step(`Click listing toolbar option: ${option}`, async () => {
-            const menuItem = this.page.locator(`li[title="${option}"]`).first();
-            await menuItem.waitFor({ state: 'visible' });
-            await menuItem.click();
-
-            // Wait for action to complete (better than fixed timeout)
-            await this.page.waitForLoadState('networkidle');
-        });
-    }
-
-    /**
      * Filters the master listing by the given name.
      *
      * This method enters the provided value into the

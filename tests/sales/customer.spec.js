@@ -22,7 +22,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         await commonAction.selectModule('Sales');
     });
 
-    test.skip('should able to create customer with basic detail', async ({ page }) => {
+    test('should able to create customer with basic detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -84,7 +84,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with key info detail', async ({ page }) => {
+    test('should be able to create customer with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -251,7 +251,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with address detail', async ({ page }) => {
+    test('should be able to create customer with address detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -365,7 +365,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with contact person detail', async ({ page }) => {
+    test('should be able to create customer with contact person detail', async ({ page }) => {
 
         // Track successfully created records
         const createdRecords = [];
@@ -515,7 +515,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should be able to create customer with document detail', async ({ page }) => {
+    test('should be able to create customer with document detail', async ({ page }) => {
 
         // Track successfully created records
         const createdRecords = [];
@@ -654,7 +654,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         );
     });
 
-    test.skip('should not allow duplicate customer creation', async ({ page }) => {
+    test('should not allow duplicate customer creation', async ({ page }) => {
 
         const customer = customerData.validate;
 
@@ -706,7 +706,7 @@ test.describe.serial('Customer CRUD Operations', () => {
         });
     });
 
-    test.skip('should able to delete customer', async ({ page }) => {
+    test('should able to delete customer', async ({ page }) => {
         // 🗑️ Deletion Summary Trackers
         const deletedRecords = [];
         const skippedRecords = [];

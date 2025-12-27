@@ -1,39 +1,40 @@
 import { test } from '@playwright/test';
 
-export class PurchaseSetupPage {
+export class SetupAction {
     constructor(page) {
         this.page = page;
     }
 
     /**
-     * Navigates to the specified master.
+     * Navigates to the specified master by visible link text.
      *
      * This method clicks on the navigation link
      * that matches the provided master name.
      *
      * @param {string} masterName - The name of the master to navigate to.
      */
-    async navigateToMaster(masterName) {
+    async navigateToMasterByText(masterName) {
         await test.step(`Navigate to master: ${masterName}`, async () => {
-            await this.page
-                .getByRole("link", { name: masterName, exact: true })
-                .click();
+            const link = this.page.getByRole('link', { name: masterName, exact: true });
+            await link.waitFor({ state: 'visible' });
+            await link.click();
         });
     }
 
     /**
-     * Navigates to the specified master.
+     * Navigates to the specified master by visible text and index.
      *
      * This method clicks on the navigation link
-     * that matches the provided master name.
+     * that matches the provided master name and index.
      *
-     * @param {string} masterName - The name of the master to navigate to.
+     * @param {string} masterName - The name of the master.
+     * @param {number} index - Index of the link to click.
      */
-    async navigateToBase(masterName) {
-        await test.step(`Navigate to master: ${masterName}`, async () => {
-            await this.page
-                .getByRole("link", { name: masterName, exact: true }).nth(1)
-                .click();
+    async navigateToMasterByTextWithIndex(masterName, index) {
+        await test.step(`Navigate to master '${masterName}' at index ${index}`, async () => {
+            const link = this.page.getByRole('link', { name: masterName, exact: true }).nth(index);
+            await link.waitFor({ state: 'visible' });
+            await link.click();
         });
     }
 
@@ -45,7 +46,7 @@ export class PurchaseSetupPage {
      *
      * @param {string} option - The setting option to open.
      */
-    async openSetting(option) {
+    async openSettingByText(option) {
         await test.step(`Open setting option: ${option}`, async () => {
             await this.page
                 .getByRole("link", { name: option, exact: true })

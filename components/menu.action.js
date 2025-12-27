@@ -42,12 +42,31 @@ export class MenuAction {
    *
    * @param {string} option - Name of the listing toolbar option.
    */
-  async clickListingMenuOption(option) {
+  async clickListingMenuOptionByTitle(option) {
     await test.step(`Click listing toolbar option: ${option}`, async () => {
       await this.page.locator(`li[title="${option}"]`).click();
-      await this.page.waitForTimeout(3000);
+      await this.page.waitForTimeout(2000);
     });
   }
+
+  /**
+   * Clicks an option from the listing toolbar with index.
+   *
+   * This method clicks a toolbar option present
+   * on the listing page based on its title with index.
+   *
+   * @param {string} option - Name of the listing toolbar option.
+   */
+    async clickListingMenuOptionWithIndex(option, index) {
+        await test.step(`Click listing toolbar option: ${option}`, async () => {
+            const menuItem = this.page.locator(`li[title="${option}"]`).nth(index);
+            await menuItem.waitFor({ state: 'visible' });
+            await menuItem.click();
+
+            // Wait for action to complete (better than fixed timeout)
+            await this.page.waitForLoadState('networkidle');
+        });
+    }
 
   /**
    * Clicks an option from the top master/transaction toolbar.
