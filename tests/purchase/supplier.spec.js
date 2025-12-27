@@ -16,7 +16,7 @@ import MessageHelper from '../../helpers/MessageHelper.js';
 import SummaryHelper from '../../helpers/SummaryHelper.js';
 import { SummaryUtil } from '../../utils/summary.util.js';
 
-test.describe.only('Supplier CRUD Operations', () => {
+test.describe.serial('Supplier CRUD Operations', () => {
     let setupAction;
     let supplierPage;
     let commonAction;
