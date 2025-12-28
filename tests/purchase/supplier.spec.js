@@ -44,7 +44,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test.skip('should not allow duplicate customer creation', async ({ page }) => {
+    test('should not be allow duplicate customer creation', async ({ page }) => {
 
         const supplier = supplierData.validate;
 
@@ -91,7 +91,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
     });
 
-    test.skip('should able to create supplier with basic detail', async ({ page }) => {
+    test('should be able to create supplier with basic detail', async ({ page }) => {
         // ===== Creation/Skipped Summary Trackers =====
         const createdRecords = [];
         const skippedRecords = [];
@@ -175,7 +175,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
-    test.skip('should be able to create supplier with key info detail', async ({ page }) => {
+    test('should be able to create supplier with key info detail', async ({ page }) => {
 
         const createdRecords = [];
         const skippedRecords = [];
@@ -324,7 +324,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
-    test('should able to delete customer', async ({ page }) => {
+    test('should be able to delete supplier', async ({ page }) => {
         // ===== Deletion/Skipped Summary Trackers =====
         const deletedRecords = [];
         const skippedRecords = [];
