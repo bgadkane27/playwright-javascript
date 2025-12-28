@@ -9,12 +9,11 @@ import { DocumentAction } from '../../components/document.action.js';
 import { LookupAction } from '../../components/lookup.action.js';
 import { UploadAction } from '../../components/upload.action.js';
 import { getUploadFile } from '../../utils/file.util.js';
+import { ValidationUtil } from '../../utils/validation.util.js';
+import { MessageUtil } from '../../utils/message.util.js';
+import { SummaryUtil } from '../../utils/summary.util.js';
 import { SupplierPage } from '../../pages/purchase/supplier.page.js';
 import supplierData from '../../testdata/purchase/supplier.json';
-import StringHelper from '../../helpers/StringHelper.js';
-import MessageHelper from '../../helpers/MessageHelper.js';
-import SummaryHelper from '../../helpers/SummaryHelper.js';
-import { SummaryUtil } from '../../utils/summary.util.js';
 
 test.describe.serial('Supplier CRUD Operations', () => {
     let setupAction;
@@ -118,11 +117,11 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (StringHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -145,12 +144,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
             } catch (error) {
                 skippedRecords.push(supplier?.name);
                 console.warn(`Record creation failed: ${supplier?.name}`, error);
-
-                try {
-                    await supplierPage.clickBack();
-                } catch {
-                    await page.reload();
-                }
+                await menuAction.clickListingMenuOptionByTitle('Refresh');
             }
         }
 
@@ -203,11 +197,11 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (StringHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -285,7 +279,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Validate supplier updated message', async () => {
-                    await MessageHelper.assert(page, 'Supplier', 'Update');
+                    await MessageUtil.assert(page, 'Supplier', 'Update');
                 });
 
                 createdRecords.push(supplier.name);

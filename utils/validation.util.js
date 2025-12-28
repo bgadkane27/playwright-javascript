@@ -1,140 +1,57 @@
 export class ValidationUtil {
 
-  /* =========================
-     STRING VALIDATIONS
-  ========================== */
-
   /**
-   * Checks whether the value is a non-empty, non-whitespace string.
+   * Checks whether the given value is a non-empty, non-whitespace string.
    *
-   * @param {*} value
-   * @returns {boolean}
+   * @param {*} value - Value to validate
+   * @returns {boolean} 
+   * true  → value is a string and contains non-whitespace characters  
+   * false → value is null, undefined, not a string, or only whitespace
+   *
+   * @example
+   * StringUtil.isNotNullOrWhiteSpace('ABC');   // true
+   * StringUtil.isNotNullOrWhiteSpace('   ');   // false
+   * StringUtil.isNotNullOrWhiteSpace(null);    // false
+   * StringUtil.isNotNullOrWhiteSpace(123);     // false
    */
   static isNotNullOrWhiteSpace(value) {
     return typeof value === 'string' && value.trim().length > 0;
   }
 
   /**
-   * Checks whether the value is a valid string.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isString(value) {
-    return typeof value === 'string';
-  }
-
-  /* =========================
-     NUMBER VALIDATIONS
-  ========================== */
-
-  /**
-   * Checks whether the value is a valid number.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isNumber(value) {
-    return typeof value === 'number' && !Number.isNaN(value);
+  * Checks if number is NOT null, NOT undefined, NOT NaN.
+  * Allows zero only if explicitly permitted.
+  *
+  * @param {number} value - Number to validate
+  * @param {boolean} allowZero - Whether zero is considered valid
+  * @returns {boolean}
+  */
+  static isNumberValid(value, allowZero = false) {
+    if (value === null || value === undefined) return false;
+    if (typeof value !== 'number') return false;
+    if (Number.isNaN(value)) return false;
+    if (!allowZero && value === 0) return false;
+    return true;
   }
 
   /**
-   * Checks whether the value is a positive number.
+   * Checks if number is greater than zero.
    *
-   * @param {*} value
+   * @param {number} value
    * @returns {boolean}
    */
-  static isPositiveNumber(value) {
-    return this.isNumber(value) && value > 0;
-  }
-
-  /* =========================
-     DATE VALIDATIONS
-  ========================== */
-
-  /**
-   * Checks whether the value is a valid Date object.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isValidDate(value) {
-    return value instanceof Date && !isNaN(value.getTime());
+  static isNumberGreaterThanZero(value) {
+    return this.isNumberValid(value) && value > 0;
   }
 
   /**
-   * Checks whether the value is a valid date string.
+   * Checks if number is zero or greater (>= 0).
    *
-   * @param {string} value
+   * @param {number} value
    * @returns {boolean}
    */
-  static isValidDateString(value) {
-    return typeof value === 'string' && !isNaN(Date.parse(value));
+  static isNumberZeroOrPositive(value) {
+    return this.isNumberValid(value, true) && value >= 0;
   }
 
-  /* =========================
-     BOOLEAN VALIDATIONS
-  ========================== */
-
-  /**
-   * Checks whether the value is a boolean.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isBoolean(value) {
-    return typeof value === 'boolean';
-  }
-
-  /* =========================
-     ARRAY VALIDATIONS
-  ========================== */
-
-  /**
-   * Checks whether the value is a non-empty array.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isNonEmptyArray(value) {
-    return Array.isArray(value) && value.length > 0;
-  }
-
-  /* =========================
-     OBJECT VALIDATIONS
-  ========================== */
-
-  /**
-   * Checks whether the value is a non-null object.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isObject(value) {
-    return value !== null && typeof value === 'object' && !Array.isArray(value);
-  }
-
-  /**
-   * Checks whether the object has at least one property.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static hasProperties(value) {
-    return this.isObject(value) && Object.keys(value).length > 0;
-  }
-
-  /* =========================
-     GENERIC UTILITIES
-  ========================== */
-
-  /**
-   * Checks whether the value is not null or undefined.
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  static isDefined(value) {
-    return value !== null && value !== undefined;
-  }
 }

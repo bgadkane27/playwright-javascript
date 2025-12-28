@@ -7,8 +7,8 @@ export class SummaryUtil {
    * Logs a generic CRUD summary report in console.
    *
    * @param {Object} options
-   * @param {string} options.entityName - Master name (Supplier, Customer, etc.)
-   * @param {'create'|'update'|'delete'} options.action - Action performed
+   * @param {string} options.entityName - Master name with description
+   * @param {'Create'|'Update'|'Delete'} options.action - Action performed
    * @param {Array<string>} options.successRecords - Successfully processed records
    * @param {Array<string>} options.skippedRecords - Skipped or failed records
    * @param {number} options.totalCount - Total records attempted
@@ -57,8 +57,8 @@ export class SummaryUtil {
    * Export a generic CRUD summary report in console.
    *
    * @param {Object} options
-   * @param {string} options.entityName - Master name (Supplier, Customer, etc.)
-   * @param {'create'|'update'|'delete'} options.action - Action performed
+   * @param {string} options.entityName - Master name with description
+   * @param {'Create'|'Update'|'Delete'} options.action - Action performed
    * @param {Array<string>} options.successRecords - Successfully processed records
    * @param {Array<string>} options.skippedRecords - Skipped or failed records
    * @param {number} options.totalCount - Total records attempted
@@ -86,7 +86,7 @@ export class SummaryUtil {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    const fileBaseName = `${entityName}-${action.toLowerCase()}-Summary`;
+    const fileBaseName = `${entityName} ${action} Summary`;
 
     // 📄 JSON
     fs.writeFileSync(
@@ -111,36 +111,35 @@ export class SummaryUtil {
     <head>
       <title>${summary.module} ${summary.action} Summary</title>
       <style>
-        body { font-family: Arial; padding: 20px; background: #ebebeb; }
-        h1 { color: #000; }
-        .success { color: green; }
-        .failed { color: red; }
-        ol { margin-left: 20px; }
+        body { font-family: Arial; padding: 20px; color: #d2d2d2; background: #1a1a1a; }
+        li { color: #1f9aff; }
+        p { color: #1f9aff;}
+        .success { color: #00ff00; }
+        .failed { color: #fff701; }
+        ul { margin-left: 20px; }
       </style>
     </head>
     <body>
-      <h1>${summary.module} ${summary.action} Summary</h1>
+      <h2>${summary.module} ${summary.action} Summary</h2>
 
-      <p><b>Total records attempted:</b> ${summary.total}</p>
-      <h3 class="success">✅ Success records: ${summary.successCount}</h3>
-
-      <h3 class="success">✅ ${summary.action}d records</h3>
+      <h3>Total records attempted: ${summary.total}</h3>
+      <h4 class="success">✅ Success records: ${summary.successCount}</h4>
+      <h4 class="success">✅ Success records</h4>
       <ul>
         ${summary.successRecords.length
         ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
-        : '<p>No record deleted</p>'}
+        : `<p>No Record ${summary.action}d</p>`}
       </ul>
 
-      <h3 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h3>
-
-      <h3 class="failed">🚫 Skipped / Failed records</h3>
+      <h4 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h4>
+      <h4 class="failed">🚫 Skipped / Failed records</h4>
       <ul>
         ${summary.skippedRecords.length
         ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
-        : '<p>No record skipped</p>'}
+        : '<p>No Record skipped / failed</p>'}
       </ul>
 
-      <p><b>Executed at:</b> ${summary.executedAt}</p>
+      <h3>Executed at: ${summary.executedAt}</h3>
     </body>
     </html>`;
   }
