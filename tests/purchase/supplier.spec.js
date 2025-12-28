@@ -300,7 +300,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Log create summary', async () => {
             SummaryUtil.logCrudSummary({
-                entityName: 'Supplier With Key Info Tab Details',
+                entityName: 'Supplier With Key Info Details',
                 action: 'Create',
                 successRecords: createdRecords,
                 skippedRecords,
@@ -310,10 +310,140 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
         await test.step('Export create summary', async () => {
             SummaryUtil.exportCrudSummary({
-                entityName: 'Supplier With Key Info Tab Details',
+                entityName: 'Supplier With Key Info Details',
                 action: 'Create',
                 successRecords: createdRecords, skippedRecords,
                 totalCount: supplierData.keyInfos.length
+            });
+        });
+    });
+
+    test('should be able to create supplier with document detail', async ({ page }) => {
+
+        // Track successfully created/skipped/failed records
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to supplier master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+        });
+
+        // Loop through each record
+        for (const supplier of supplierData.documents) {
+
+            try {
+                await test.step(`Open new supplier form: ${supplier.name}`, async () => {
+                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                });
+
+                await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
+                    if (supplierData.feature?.allowCodeManual && supplier.code) {
+                        await masterHeaderAction.fillCode(supplier.code);
+                    }
+                });
+
+                await test.step(`Fill supplier name: ${supplier.name}`, async () => {
+                    await masterHeaderAction.fillName(supplier.name);
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(supplier.nameArabic);
+                    }
+
+                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
+                        await supplierPage.clickCurrency();
+                        await lookupAction.selectListItem(supplier.currency);
+                    }
+                });
+
+                await test.step(`Save supplier: ${supplier.name}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
+                    await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
+                });
+
+                // Navigate to Documents tab
+                await supplierPage.openDocumentsTab();
+
+                // ================= Add Documents =================
+                for (const document of supplier.documents) {
+
+                    // Add new document
+                    await supplierPage.clickAddDocument();
+
+                    // Select document type
+                    await documentAction.clickDocumentType();
+                    await lookupAction.selectListItem(document.documentType);
+
+                    // Fill document details
+                    await documentAction.fillDocumentNumber(document.documentNumber);
+                    await documentAction.fillDateOfIssue(document.dateOfIssue);
+                    await documentAction.fillPlaceOfIssue(document.placeOfIssue);
+                    await documentAction.fillDateOfExpiry(document.dateOfExpiry);
+
+                    // File Path
+                    const filePath = getUploadFile('purchase', 'Supplier', '.pdf');                    
+
+                    // Attach file directly (bypasses OS file dialog)
+                    await uploadAction.uploadFile(filePath);
+                    await expect(page.locator('.dx-fileuploader-file-status-message')).toContainText('Uploaded');
+
+                    // Save record
+                    await commonAction.clickPopupSave();
+
+                    // ================= Validate Document =================
+
+                    // Document details displayed on UI
+                    const documentDetail = `${document.documentType} (${document.documentNumber})`.trim();
+
+                    // Validate document details
+                    await expect.soft(
+                        page
+                            .locator('tbody.dx-row.dx-data-row p')
+                            .filter({ hasText: documentDetail })
+                    ).toContainText(document.documentNumber);
+                }
+
+                // Track successfully created record
+                createdRecords.push(supplier.name);
+
+                // Navigate back to listing
+                await supplierPage.clickBack();
+
+
+            } catch (error) {
+
+                // Track skip/failed record
+                skippedRecords.push(supplier?.name);
+
+                // Log failure details
+                console.error(`Record creation failed: ${supplier?.name}`, error.stack);
+
+                // Ensure navigation back even on failure
+                await supplierPage.clickBack().catch(() => { });
+            }
+        }
+
+        await test.step('Log create summary', async () => {
+            SummaryUtil.logCrudSummary({
+                entityName: 'Supplier With Document Details',
+                action: 'Create',
+                successRecords: createdRecords,
+                skippedRecords,
+                totalCount: supplierData.documents.length
+            });
+        });
+
+        await test.step('Export create summary', async () => {
+            SummaryUtil.exportCrudSummary({
+                entityName: 'Supplier With Document Details',
+                action: 'Create',
+                successRecords: createdRecords, skippedRecords,
+                totalCount: supplierData.documents.length
             });
         });
     });
@@ -348,7 +478,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step(`Validate supplier deleted message: ${supplier.name}`, async () => {
-                    await MessageHelper.assert(page, 'Supplier', 'Delete');
+                    await MessageUtil.assert(page, 'Supplier', 'Delete');
                 });
 
                 // ===== Track record deletion =====
@@ -369,7 +499,8 @@ test.describe.serial('Supplier CRUD Operations', () => {
             SummaryUtil.logCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
-                successRecords: deletedRecords, skippedRecords,
+                successRecords: deletedRecords, 
+                skippedRecords,
                 totalCount: supplierData.delete.length
             });
         });
@@ -378,7 +509,8 @@ test.describe.serial('Supplier CRUD Operations', () => {
             SummaryUtil.exportCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
-                successRecords: deletedRecords, skippedRecords,
+                successRecords: deletedRecords, 
+                skippedRecords,
                 totalCount: supplierData.delete.length
             });
         });

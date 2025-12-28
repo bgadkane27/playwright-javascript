@@ -136,7 +136,7 @@ export class SummaryUtil {
       <ul>
         ${summary.skippedRecords.length
         ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
-        : '<p>No Record skipped / failed</p>'}
+        : '<p>No Record Skipped / Failed</p>'}
       </ul>
 
       <h3>Executed at: ${summary.executedAt}</h3>

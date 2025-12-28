@@ -31,8 +31,8 @@
     "keyInfos": [
         {
             "code": "S0018",
-            "name": "Supplier - Key Info Tab",
-            "nameArabic": "Supplier - Key Info Tab",
+            "name": "Supplier - Key Info Details",
+            "nameArabic": "Supplier - Key Info Details",
             "currency": null,
             "country": "",
             "state": "",
@@ -63,8 +63,8 @@
     "contactPersons": [
         {
             "code": "S0019",
-            "name": "Supplier - Contact Person Tab",
-            "nameArabic": "Supplier - Contact Person Tab",
+            "name": "Supplier - Contact Person Details",
+            "nameArabic": "Supplier - Contact Person Details",
             "currency": "",
             "country": "",
             "state": "",
@@ -101,8 +101,8 @@
     "addresses": [
         {
             "code": "S0020",
-            "name": "Supplier - Address Tab",
-            "nameArabic": "Supplier - Address Tab",
+            "name": "Supplier - Address Details",
+            "nameArabic": "Supplier - Address Details",
             "currency": "",
             "country": "",
             "state": "",
@@ -149,8 +149,8 @@
     "items": [
         {
             "code": "S0021",
-            "name": "Supplier - Items Tab",
-            "nameArabic": "Supplier - Items Tab",
+            "name": "Supplier - Items Details",
+            "nameArabic": "Supplier - Items Details",
             "currency": "",
             "country": "",
             "state": "",
@@ -169,8 +169,8 @@
     "documents": [
         {
             "code": "S0022",
-            "name": "Supplier - Documents Tab",
-            "nameArabic": "Supplier - Documents Tab",
+            "name": "Supplier - Document Details",
+            "nameArabic": "Supplier - Document Details",
             "currency": "",
             "country": "",
             "state": "",
@@ -209,19 +209,19 @@
     ],
     "delete": [
         {
-            "name": "Supplier - Documents Tab"
+            "name": "Supplier - Document Details"
         },
         {
-            "name": "Supplier - Items Tab"
+            "name": "Supplier - Items Details"
         },
         {
-            "name": "Supplier - Address Tab"
+            "name": "Supplier - Address Details"
         },
         {
-            "name": "Supplier - Contact Person Tab"
+            "name": "Supplier - Contact Person Details"
         },
         {
-            "name": "Supplier - Key Info Tab"
+            "name": "Supplier - Key Info Details"
         },
         {
             "name": "Supplier - AED"

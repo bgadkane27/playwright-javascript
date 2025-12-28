@@ -8,7 +8,7 @@ export class DocumentAction {
     /**
      * Clicks on the Document Type dropdown.
      */
-    async clickOnDocumentType() {
+    async clickDocumentType() {
         await test.step('Click on Document Type dropdown', async () => {
             await this.page.locator("[id*='DocumentTypeId']").click();
             await this.page.waitForTimeout(500);

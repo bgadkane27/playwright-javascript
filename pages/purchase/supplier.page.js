@@ -86,6 +86,9 @@ export class SupplierPage {
 
         /* ================= ITEMS ================= */
         this.item = page.locator("input[id*='ItemId']");
+
+         /* ================= ITEMS ================= */
+        this.addDocument = page.getByRole('button', { name: 'Add Document', exact: true });;
     }
 
     /* ================= TAX DETAILS ACTIONS ================= */
@@ -560,6 +563,13 @@ export class SupplierPage {
     async clickItem() {
         await test.step('Click Item Lookup', async () => {
             await this.item.click();
+        });
+    }
+
+    /* ================= DOCUMENTS ================= */
+    async clickAddDocument(){
+        await test.step('Click Add Document', async () => {
+            await this.addDocument.click();
         });
     }
 }
