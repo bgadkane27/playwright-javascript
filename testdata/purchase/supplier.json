@@ -9,8 +9,8 @@
     "suppliers": [
         {
             "code": "S0016",
-            "name": "Supplier - KWD",
-            "nameArabic": "Supplier - KWD",
+            "name": "Supplier - KWD Currency",
+            "nameArabic": "Supplier - KWD Currency",
             "currency": null,
             "country": "",
             "state": "",
@@ -19,8 +19,8 @@
         },
         {
             "code": "S0017",
-            "name": "Supplier - AED",
-            "nameArabic": "Supplier - AED",
+            "name": "Supplier - AED Currency",
+            "nameArabic": "Supplier - AED Currency",
             "currency": "AED | UAE Dirham",
             "country": "",
             "state": "",
@@ -224,10 +224,10 @@
             "name": "Supplier - Key Info Details"
         },
         {
-            "name": "Supplier - AED"
+            "name": "Supplier - AED Currency"
         },
         {
-            "name": "Supplier - KWD"
+            "name": "Supplier - KWD Currency"
         }
     ]
 }

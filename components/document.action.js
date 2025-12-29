@@ -1,8 +1,11 @@
 import { test } from '@playwright/test';
+import { LookupAction } from './lookup.action';
 
 export class DocumentAction {
     constructor(page) {
         this.page = page;
+
+        this.lookup = new LookupAction(page);
     }
 
     /**
@@ -12,6 +15,17 @@ export class DocumentAction {
         await test.step('Click on Document Type dropdown', async () => {
             await this.page.locator("[id*='DocumentTypeId']").click();
             await this.page.waitForTimeout(500);
+        });
+    }
+
+    /**
+     * Select the Document Type.
+     */
+    async selectDocumentType(value) {
+        await test.step(`Select Document Type: ${value}`, async () => {
+            await this.page.locator("[id*='DocumentTypeId']").click();
+            await this.page.waitForTimeout(500);
+            await this.lookup.selectListItem(value);
         });
     }
 

@@ -284,17 +284,14 @@ test.describe.serial('Supplier CRUD Operations', () => {
 
                 createdRecords.push(supplier.name);
 
-                await supplierPage.clickBack();
-
+                await test.step('Back to the listing', async () => {
+                    await supplierPage.clickBack();
+                });
 
             } catch (error) {
                 skippedRecords.push(supplier?.name);
                 console.error(`Record creation failed: ${supplier?.name}`, error.stack);
-                try {
-                    await supplierPage.clickBack();
-                } catch {
-                    await page.reload();
-                }
+                await menuAction.clickListingMenuOptionByTitle('Refresh');
             }
         }
 
@@ -366,65 +363,59 @@ test.describe.serial('Supplier CRUD Operations', () => {
                     await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
                 });
 
-                // Navigate to Documents tab
-                await supplierPage.openDocumentsTab();
+                await test.step('Open Documents tab', async () => {
+                    await supplierPage.openDocumentsTab();
+                });
 
                 // ================= Add Documents =================
                 for (const document of supplier.documents) {
 
-                    // Add new document
-                    await supplierPage.clickAddDocument();
+                    await test.step('Fill Document Details', async () => {
+                        await supplierPage.clickAddDocument();
+                        await documentAction.selectDocumentType(document.documentType);
+                        await documentAction.fillDocumentNumber(document.documentNumber);
+                        await documentAction.fillDateOfIssue(document.dateOfIssue);
+                        await documentAction.fillPlaceOfIssue(document.placeOfIssue);
+                        await documentAction.fillDateOfExpiry(document.dateOfExpiry);
+                    });
 
-                    // Select document type
-                    await documentAction.clickDocumentType();
-                    await lookupAction.selectListItem(document.documentType);
+                    await test.step(`Upload document file for ${document.documentType}`, async () => {
+                        const filePath = getUploadFile('purchase', 'Supplier', '.pdf');
+                        await uploadAction.uploadFile(filePath);
 
-                    // Fill document details
-                    await documentAction.fillDocumentNumber(document.documentNumber);
-                    await documentAction.fillDateOfIssue(document.dateOfIssue);
-                    await documentAction.fillPlaceOfIssue(document.placeOfIssue);
-                    await documentAction.fillDateOfExpiry(document.dateOfExpiry);
+                        await expect(
+                            page.locator('.dx-fileuploader-file-status-message')
+                        ).toContainText('Uploaded');
+                    });
 
-                    // File Path
-                    const filePath = getUploadFile('purchase', 'Supplier', '.pdf');                    
-
-                    // Attach file directly (bypasses OS file dialog)
-                    await uploadAction.uploadFile(filePath);
-                    await expect(page.locator('.dx-fileuploader-file-status-message')).toContainText('Uploaded');
-
-                    // Save record
-                    await commonAction.clickPopupSave();
+                    await test.step('Save document record', async () => {
+                        await commonAction.clickPopupSave();
+                    });
 
                     // ================= Validate Document =================
+                    await test.step(`Validate document added: ${document.documentType}`, async () => {
+                        const documentDetail = `${document.documentType} (${document.documentNumber})`.trim();
 
-                    // Document details displayed on UI
-                    const documentDetail = `${document.documentType} (${document.documentNumber})`.trim();
-
-                    // Validate document details
-                    await expect.soft(
-                        page
-                            .locator('tbody.dx-row.dx-data-row p')
-                            .filter({ hasText: documentDetail })
-                    ).toContainText(document.documentNumber);
+                        await expect.soft(
+                            page
+                                .locator('tbody.dx-row.dx-data-row p')
+                                .filter({ hasText: documentDetail })
+                        ).toContainText(document.documentNumber);
+                    });
                 }
 
                 // Track successfully created record
                 createdRecords.push(supplier.name);
 
-                // Navigate back to listing
-                await supplierPage.clickBack();
-
-
+                await test.step('Navigate back to listing', async () => {
+                    await supplierPage.clickBack();
+                });
             } catch (error) {
-
-                // Track skip/failed record
-                skippedRecords.push(supplier?.name);
-
-                // Log failure details
-                console.error(`Record creation failed: ${supplier?.name}`, error.stack);
-
-                // Ensure navigation back even on failure
-                await supplierPage.clickBack().catch(() => { });
+                await test.step(`Handle skip/failure: ${supplier?.name}`, async () => {
+                    skippedRecords.push(supplier?.name);
+                    console.error(`Record creation skipped/failed: ${supplier?.name}`, error.stack);
+                    await menuAction.clickListingMenuOptionByTitle('Refresh');
+                });
             }
         }
 
@@ -442,7 +433,8 @@ test.describe.serial('Supplier CRUD Operations', () => {
             SummaryUtil.exportCrudSummary({
                 entityName: 'Supplier With Document Details',
                 action: 'Create',
-                successRecords: createdRecords, skippedRecords,
+                successRecords: createdRecords,
+                skippedRecords,
                 totalCount: supplierData.documents.length
             });
         });
@@ -468,7 +460,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 const recordExists = await page.locator(`text=${supplier.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
 
                 if (!recordExists) {
-                    console.warn(`⚠️ Deletion skipped because record not found: '${supplier.name}'.`);
+                    console.warn(`⚠️ Deletion skipped because record not found: ${supplier.name}.`);
                     skippedRecords.push(supplier.name);
                     continue;
                 }
@@ -499,7 +491,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
             SummaryUtil.logCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
-                successRecords: deletedRecords, 
+                successRecords: deletedRecords,
                 skippedRecords,
                 totalCount: supplierData.delete.length
             });
@@ -509,7 +501,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
             SummaryUtil.exportCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
-                successRecords: deletedRecords, 
+                successRecords: deletedRecords,
                 skippedRecords,
                 totalCount: supplierData.delete.length
             });
