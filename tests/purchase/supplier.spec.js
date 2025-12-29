@@ -8,10 +8,10 @@ import { MasterDeleteAction } from '../../components/master-delete.action.js'
 import { DocumentAction } from '../../components/document.action.js';
 import { LookupAction } from '../../components/lookup.action.js';
 import { UploadAction } from '../../components/upload.action.js';
-import { getUploadFile } from '../../utils/file.util.js';
-import { ValidationUtil } from '../../utils/validation.util.js';
-import { MessageUtil } from '../../utils/message.util.js';
-import { SummaryUtil } from '../../utils/summary.util.js';
+import { FileHelper } from '../../helpers/fileHelper.js';
+import { ValidationHelper } from '../../helpers/validationHelper.js';
+import { ToastHelper } from '../../helpers/toastHelper.js';
+import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { SupplierPage } from '../../pages/purchase/supplier.page.js';
 import supplierData from '../../testdata/purchase/supplier.json';
 
@@ -26,6 +26,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
     let documentAction;
     let lookupAction;
     let uploadAction;
+    let toastHelper;
 
     test.beforeEach(async ({ page }) => {
         setupAction = new SetupAction(page);
@@ -38,6 +39,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         documentAction = new DocumentAction(page);
         lookupAction = new LookupAction(page);
         uploadAction = new UploadAction(page);
+        toastHelper = new ToastHelper(page);
 
         await commonAction.navigateToApp('/');
         await menuAction.selectModule('Purchase');
@@ -85,7 +87,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
 
         await test.step('Log validation summary', async () => {
-            SummaryUtil.logValidateSummary(supplier.name, supplier.code);
+            SummaryHelper.logValidationSummary(supplier.name, supplier.code);
         });
 
     });
@@ -117,11 +119,11 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -149,7 +151,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         }
 
         await test.step('Log create summary', async () => {
-            SummaryUtil.logCrudSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Supplier With Basic Details',
                 action: 'Create',
                 successRecords: createdRecords,
@@ -159,7 +161,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
 
         await test.step('Export create summary', async () => {
-            SummaryUtil.exportCrudSummary({
+            SummaryHelper.exportCrudSummary({
                 entityName: 'Supplier With Basic Details',
                 action: 'Create',
                 successRecords: createdRecords,
@@ -197,11 +199,11 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -279,7 +281,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Validate supplier updated message', async () => {
-                    await MessageUtil.assert(page, 'Supplier', 'Update');
+                    await toastHelper.assertByText('Supplier', 'Update');
                 });
 
                 createdRecords.push(supplier.name);
@@ -296,7 +298,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         }
 
         await test.step('Log create summary', async () => {
-            SummaryUtil.logCrudSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Supplier With Key Info Details',
                 action: 'Create',
                 successRecords: createdRecords,
@@ -306,7 +308,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
 
         await test.step('Export create summary', async () => {
-            SummaryUtil.exportCrudSummary({
+            SummaryHelper.exportCrudSummary({
                 entityName: 'Supplier With Key Info Details',
                 action: 'Create',
                 successRecords: createdRecords, skippedRecords,
@@ -345,11 +347,11 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationUtil.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -380,7 +382,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                     });
 
                     await test.step(`Upload document file for ${document.documentType}`, async () => {
-                        const filePath = getUploadFile('purchase', 'Supplier', '.pdf');
+                        const filePath = FileHelper.getUploadFile('purchase', 'Supplier', '.pdf');
                         await uploadAction.uploadFile(filePath);
 
                         await expect(
@@ -420,7 +422,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         }
 
         await test.step('Log create summary', async () => {
-            SummaryUtil.logCrudSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Supplier With Document Details',
                 action: 'Create',
                 successRecords: createdRecords,
@@ -430,7 +432,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
 
         await test.step('Export create summary', async () => {
-            SummaryUtil.exportCrudSummary({
+            SummaryHelper.exportCrudSummary({
                 entityName: 'Supplier With Document Details',
                 action: 'Create',
                 successRecords: createdRecords,
@@ -470,7 +472,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 });
 
                 await test.step(`Validate supplier deleted message: ${supplier.name}`, async () => {
-                    await MessageUtil.assert(page, 'Supplier', 'Delete');
+                    await toastHelper.assertByText('Supplier', 'Delete');
                 });
 
                 // ===== Track record deletion =====
@@ -488,7 +490,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         }
 
         await test.step('Log delete summary', async () => {
-            SummaryUtil.logCrudSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
                 successRecords: deletedRecords,
@@ -498,7 +500,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
 
         await test.step('Export delete summary', async () => {
-            SummaryUtil.exportCrudSummary({
+            SummaryHelper.exportCrudSummary({
                 entityName: 'Supplier',
                 action: 'Delete',
                 successRecords: deletedRecords,

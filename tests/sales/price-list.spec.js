@@ -3,11 +3,11 @@ import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { PriceListPage } from '../../pages/sales/PriceListPage.js';
 import { CommonAction } from '../../utilities/CommonAction';
 import priceListData from '../../testdata/sales/price-list-data.json';
-import LookupHelper from '../../helpers/LookupHelper.js';
-import SummaryHelper from '../../helpers/SummaryHelper.js';
-import StringHelper from '../../helpers/StringHelper.js';
-import MessageHelper from '../../helpers/MessageHelper.js';
-import NumberHelper from '../../helpers/NumberHelper.js';
+// import LookupHelper from '../../helpers/LookupHelper.js';
+// import SummaryHelper from '../../helpers/SummaryHelper.js';
+// import StringHelper from '../../helpers/StringHelper.js';
+// import MessageHelper from '../../helpers/MessageHelper.js';
+// import NumberHelper from '../../helpers/NumberHelper.js';
 
 test.describe.skip('Price List CRUD Operations', () => {
     let commonAction;

@@ -3,10 +3,10 @@ import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { PaymentMethodPage } from '../../pages/sales/PaymentMethodPage';
 import { CommonAction } from '../../utilities/CommonAction';
 import paymentmethodData from '../../testdata/sales/payment-method-data.json';
-import LookupHelper from '../../helpers/LookupHelper.js';
-import SummaryHelper from '../../helpers/SummaryHelper.js';
-import StringHelper from '../../helpers/StringHelper.js';
-import MessageHelper from '../../helpers/MessageHelper.js';
+// import LookupHelper from '../../helpers/LookupHelper.js';
+// import SummaryHelper from '../../helpers/SummaryHelper.js';
+// import StringHelper from '../../helpers/StringHelper.js';
+// import MessageHelper from '../../helpers/MessageHelper.js';
 
 test.describe.skip('Payment Method CRUD Operations', () => {
     let commonAction;

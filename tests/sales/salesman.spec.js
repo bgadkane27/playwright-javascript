@@ -3,11 +3,11 @@ import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { SalesmanPage } from '../../pages/sales/SalesmanPage';
 import { CommonAction } from '../../utilities/CommonAction';
 import salesmanData from '../../testdata/sales/salesman-data.json';
-import LookupHelper from '../../helpers/LookupHelper.js';
-import SummaryHelper from '../../helpers/SummaryHelper.js';
-import StringHelper from '../../helpers/StringHelper.js';
-import NumberHelper from '../../helpers/NumberHelper.js';
-import MessageHelper from '../../helpers/MessageHelper.js';
+// import LookupHelper from '../../helpers/LookupHelper.js';
+// import SummaryHelper from '../../helpers/SummaryHelper.js';
+// import StringHelper from '../../helpers/StringHelper.js';
+// import NumberHelper from '../../helpers/NumberHelper.js';
+// import MessageHelper from '../../helpers/MessageHelper.js';
 
 test.describe.skip('Salesman CRUD Operations', () => {
     let commonAction;

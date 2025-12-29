@@ -3,11 +3,11 @@ import { SalesSetupPage } from '../../pages/sales/SalesSetupPage';
 import { CustomerPage } from '../../pages/sales/CustomerPage.js';
 import { CommonAction } from '../../utilities/CommonAction';
 import customerData from '../../testdata/sales/customer-data.json';
-import LookupHelper from '../../helpers/LookupHelper.js';
-import StringHelper from '../../helpers/StringHelper.js';
-import MessageHelper from '../../helpers/MessageHelper.js';
-import SummaryHelper from '../../helpers/SummaryHelper.js';
-import { getImportFile } from '../../helpers/getImportFile.js';
+// import LookupHelper from '../../helpers/LookupHelper.js';
+// import StringHelper from '../../helpers/StringHelper.js';
+// import MessageHelper from '../../helpers/MessageHelper.js';
+// import SummaryHelper from '../../helpers/SummaryHelper.js';
+// import { getImportFile } from '../../helpers/getImportFile.js';
 
 test.describe.skip('Customer CRUD Operations', () => {
     let commonAction;
