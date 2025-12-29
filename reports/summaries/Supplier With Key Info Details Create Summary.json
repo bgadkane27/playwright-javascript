@@ -1,0 +1,12 @@
+{
+  "module": "Supplier With Key Info Details",
+  "action": "Create",
+  "total": 1,
+  "successCount": 1,
+  "skippedCount": 0,
+  "successRecords": [
+    "Supplier - Key Info Details"
+  ],
+  "skippedRecords": [],
+  "executedAt": "29/12/2025, 9:16:00 pm"
+}

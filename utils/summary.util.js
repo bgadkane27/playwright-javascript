@@ -114,8 +114,8 @@ export class SummaryUtil {
         body { font-family: Arial; padding: 20px; color: #d2d2d2; background: #1a1a1a; }
         li { color: #1f9aff; }
         p { color: #1f9aff;}
-        .success { color: #00ff00; }
-        .failed { color: #fff701; }
+        .success { color: #66ff66c1; }
+        .failed { color: #fff833d0; }
         ul { margin-left: 20px; }
       </style>
     </head>
@@ -139,7 +139,7 @@ export class SummaryUtil {
         : '<p>No Record Skipped / Failed</p>'}
       </ul>
 
-      <h3>Executed at: ${summary.executedAt}</h3>
+      <h5>Executed at: ${summary.executedAt}</h5>
     </body>
     </html>`;
   }

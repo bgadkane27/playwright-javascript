@@ -1,0 +1,13 @@
+{
+  "module": "Supplier With Basic Details",
+  "action": "Create",
+  "total": 2,
+  "successCount": 2,
+  "skippedCount": 0,
+  "successRecords": [
+    "Supplier - KWD Currency",
+    "Supplier - AED Currency"
+  ],
+  "skippedRecords": [],
+  "executedAt": "29/12/2025, 9:15:47 pm"
+}
