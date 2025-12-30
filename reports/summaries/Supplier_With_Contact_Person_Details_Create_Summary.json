@@ -1,0 +1,12 @@
+{
+  "module": "Supplier With Contact Person Details",
+  "action": "Create",
+  "total": 1,
+  "successCount": 1,
+  "skippedCount": 0,
+  "successRecords": [
+    "Supplier - Contact Person Details"
+  ],
+  "skippedRecords": [],
+  "executedAt": "30/12/2025, 2:06:18 pm"
+}

@@ -69,17 +69,17 @@ export class SupplierPage {
         this.addressFreezed = page.locator("div[id*='Freezed']");
 
         /* ================= CONTACT PERSON ================= */
-        this.addRow = page.getByRole('button', { name: 'Add a row' });
+        this.addContactPerson = page.getByRole('button', { name: 'Add Contact Person', exact: true });
         this.prefix = page.locator("input[id*='Prefix']");
         this.firstName = page.getByRole('textbox', { name: 'First Name:', exact: true });
         this.middleName = page.getByRole('textbox', { name: 'Middle Name:', exact: true });
         this.lastName = page.getByRole('textbox', { name: 'Last Name:', exact: true });
         this.jobTitle = page.getByRole('textbox', { name: 'Job Title:', exact: true });
         this.gender = page.getByRole('combobox', { name: 'Gender:', exact: true });
-        this.contactPersonMobileNumber = page.getByRole('textbox', { name: 'Mobile #:' });
-        this.contactPersonTelephoneNumber = page.getByRole('textbox', { name: 'Telephone #:' });
-        this.contactPersonFaxNumber = page.getByRole('textbox', { name: 'Fax:' });
-        this.contactPersonEmail = page.getByRole('textbox', { name: 'Email' });
+        this.contactPersonMobileNumber = page.getByLabel('Mobile #:');
+        this.contactPersonTelephoneNumber = page.getByLabel('Telephone #:');
+        this.contactPersonFaxNumber = page.getByLabel('Fax #:');
+        this.contactPersonEmail = page.getByLabel('Email:');
         this.contactPersonDefault = page.locator("div[id*='Default']").nth(1);
         this.contactPersonfreezed = page.locator("div[id*='Freezed']");
         this.saveContactPerson = page.getByRole('button', { name: 'Save', exact: true });
@@ -357,11 +357,11 @@ export class SupplierPage {
 
     /* ================= CONTACT PERSON ================= */
 
-    async addContactPersonRow() {
-        await test.step('Add Contact Person row', async () => {
-            await this.addRow.click();
+    async clickAddContactPerson(){
+        await test.step('Click Contact Person', async () => {
+            await this.addContactPerson.click();
         });
-    }
+    }    
 
     async clickPrefix() {
         await test.step('Click Prefix', async () => {
@@ -578,8 +578,8 @@ export class SupplierPage {
         await test.step(`Select Item: ${value}`, async () => {
             await this.item.click();
             await this.item.fill(value);
-            await this.page.waitForTimeout(500);
-            await this.lookup.selectLookupOption(value);
+            await this.page.waitForTimeout(1000);
+            await this.lookup.selectListItem(value);
         });
     }
 

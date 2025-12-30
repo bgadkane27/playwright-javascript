@@ -87,7 +87,7 @@ export class SummaryHelper {
         }
 
         // const fileBaseName = `${entityName}-${action}-Summary`;
-        const fileBaseName = `${entityName.replace(/[^a-z0-9]/gi, '_')}-${action}-Summary`;
+        const fileBaseName = `${entityName.replace(/[^a-z0-9]/gi, '_')}_${action}_Summary`;
 
         // 📄 JSON
         fs.writeFileSync(
