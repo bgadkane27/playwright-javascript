@@ -25,6 +25,10 @@ export class SupplierPage {
         /* ================= KEY INFO ================= */
         this.currency = page.locator("input[id*='CurrencyId']");
         this.group = page.locator("input[id*='SupplierGroupId']");
+        this.email = page.locator("input[id*='Email']");
+        this.mobile = page.locator("input[id*='Mobile']");
+        this.telNumber = page.locator("input[id*='TelNumber']");
+        this.faxNumber = page.locator("input[id*='faxNumber']");
         this.keyInfoEmail = page.locator("input[name='ContactPersonEmail']");
         this.keyInfoMobile = page.locator("input[id*='ContactPersonMobile']");
         this.contactPerson = page.locator("input[id*='ContactPersonName']");
@@ -83,6 +87,8 @@ export class SupplierPage {
         this.contactPersonDefault = page.locator("div[id*='Default']").nth(1);
         this.contactPersonfreezed = page.locator("div[id*='Freezed']");
         this.saveContactPerson = page.getByRole('button', { name: 'Save', exact: true });
+        this.personDefault = page.locator("div[id*='Default']").nth(2);
+        this.personFreezed = page.locator("div[id*='Freezed']");
 
         /* ================= ITEMS ================= */
         this.addItem = page.getByRole('button', { name: 'Add Item', exact: true });
@@ -404,7 +410,7 @@ export class SupplierPage {
         await test.step(`Fill Contact Mobile: ${value}`, async () => {
             await this.contactPersonMobileNumber.fill(value);
         });
-    }
+    }    
 
     async fillContactPersonTelephone(value) {
         await test.step(`Fill Contact Telephone: ${value}`, async () => {
@@ -422,7 +428,7 @@ export class SupplierPage {
         await test.step(`Fill Contact Person Email: ${value}`, async () => {
             await this.contactPersonEmail.fill(value);
         });
-    }
+    }    
 
     async clickContactPersonDefault() {
         await test.step('Click Contact Person Default', async () => {
@@ -430,7 +436,7 @@ export class SupplierPage {
         });
     }
 
-    async clickContactPersonfreezed() {
+    async clickContactPersonFreezed() {
         await test.step('Click Contact Person Freezed', async () => {
             await this.contactPersonfreezed.click();
         });

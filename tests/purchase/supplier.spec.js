@@ -317,6 +317,140 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
+    test('should be able to create supplier with contact person detail', async ({ page }) => {
+
+        // Track successfully created/skipped/failed records
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to supplier master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+        });
+
+        // Loop through each record
+        for (const supplier of supplierData.contactPersons) {
+
+            try {
+                await test.step(`Open new supplier form: ${supplier.name}`, async () => {
+                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                });
+
+                await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
+                    if (supplierData.feature?.allowCodeManual && supplier.code) {
+                        await masterHeaderAction.fillCode(supplier.code);
+                    }
+                });
+
+                await test.step(`Fill supplier name: ${supplier.name}`, async () => {
+                    await masterHeaderAction.fillName(supplier.name);
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(supplier.nameArabic);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                        await supplierPage.clickCurrency();
+                        await lookupAction.selectListItem(supplier.currency);
+                    }
+                });
+
+                await test.step(`Save supplier: ${supplier.name}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
+                    await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
+                });
+
+                await test.step('Open contact person tab', async () => {
+                    await supplierPage.openContactPersonTab();
+                });
+
+                // ================= Add Contact Person =================
+                for (const [index, person] of supplier.persons.entries()) {
+
+                    await test.step('Fill Contact Person Basic Details', async () => {
+                        await supplierPage.clickAddContactPerson();
+                        await supplierPage.clickPrefix();
+                        await lookupAction.selectListItem(person.prefix);
+                        await supplierPage.fillFirstName(person.firstName);
+                        await supplierPage.fillMiddleName(person.middleName);
+                        await supplierPage.fillLastName(person.lastName);
+                        await supplierPage.fillJobTitle(person.jobTitle);
+                        await supplierPage.clickGender();
+                        await lookupAction.selectLookupOption(person.gender);
+                        await commonAction.fillMobileByIndex(person.mobile, 1);
+                        await commonAction.fillTelephoneByIndex(person.telephone, 0);
+                        await commonAction.fillFaxByIndex(person.fax, 0);
+                        await commonAction.fillEmailByIndex(person.email, 1);
+
+                    });
+
+                    await test.step('Set contact person flags', async () => {
+                        if (index === 0) {
+                            await supplierPage.clickContactPersonDefault();
+                        }
+                        if (index === 1) {
+                            await supplierPage.clickContactPersonFreezed();
+                        }
+                    });
+
+                    await test.step('Save contact person record', async () => {
+                        await commonAction.clickPopupSave();
+                    });
+
+                    await test.step(`Validate contact person added: ${person.firstName}`, async () => {
+                        const fullName = `${person.firstName} ${person.middleName} ${person.lastName}`.trim();
+
+                        // Validate contact person is displayed
+                        await expect.soft(
+                            page
+                                .locator('tbody.dx-row.dx-data-row h2')
+                                .filter({ hasText: fullName })
+                        ).toContainText(person.firstName);
+                    });
+                }
+
+                // Track successfully created record
+                createdRecords.push(supplier.name);
+
+                await test.step('Navigate back to listing', async () => {
+                    await supplierPage.clickBack();
+                });
+
+            } catch (error) {
+                await test.step(`Handle skip/failure: ${supplier?.name}`, async () => {
+                    skippedRecords.push(supplier?.name);
+                    console.error(`Record creation skipped/failed: ${supplier?.name}`, error.stack);
+                    await menuAction.clickListingMenuOptionByTitle('Refresh');
+                });
+            }
+        }
+
+        await test.step('Log create summary', async () => {
+            SummaryHelper.logCrudSummary({
+                entityName: 'Supplier With Contact Person Details',
+                action: 'Create',
+                successRecords: createdRecords,
+                skippedRecords,
+                totalCount: supplierData.contactPersons.length
+            });
+        });
+
+        await test.step('Export create summary', async () => {
+            SummaryHelper.exportCrudSummary({
+                entityName: 'Supplier With Contact Person Details',
+                action: 'Create',
+                successRecords: createdRecords,
+                skippedRecords,
+                totalCount: supplierData.contactPersons.length
+            });
+        });
+    });
+
     test('should be able to create supplier with item detail', async ({ page }) => {
 
         // Track successfully created/skipped/failed records
@@ -550,137 +684,6 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 successRecords: createdRecords,
                 skippedRecords,
                 totalCount: supplierData.documents.length
-            });
-        });
-    });
-
-    test.only('should be able to create supplier with contact person detail', async ({ page }) => {
-
-        // Track successfully created/skipped/failed records
-        const createdRecords = [];
-        const skippedRecords = [];
-
-        await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
-        });
-
-        // Loop through each record
-        for (const supplier of supplierData.contactPersons) {
-
-            try {
-                await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
-                });
-
-                await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
-                    if (supplierData.feature?.allowCodeManual && supplier.code) {
-                        await masterHeaderAction.fillCode(supplier.code);
-                    }
-                });
-
-                await test.step(`Fill supplier name: ${supplier.name}`, async () => {
-                    await masterHeaderAction.fillName(supplier.name);
-                });
-
-                await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
-                        await masterHeaderAction.fillNameArabic(supplier.nameArabic);
-                    }
-
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
-                        await supplierPage.clickCurrency();
-                        await lookupAction.selectListItem(supplier.currency);
-                    }
-                });
-
-                await test.step(`Save supplier: ${supplier.name}`, async () => {
-                    await menuAction.clickTopMenuOption('Save');
-                });
-
-                await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
-                    await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
-                });
-
-                await test.step('Open contact person tab', async () => {
-                    await supplierPage.openContactPersonTab();
-                });
-
-                // ================= Add Documents =================
-                for (const person of supplier.persons) {
-
-                    await test.step('Fill Contact Person Details', async () => {
-                        await supplierPage.clickAddContactPerson();
-
-                        // Select prefix
-                        await supplierPage.clickPrefix();
-                        await lookupAction.selectListItem(person.prefix);
-
-                        // Fill contact person basic details
-                        await supplierPage.fillFirstName(person.firstName);
-                        await supplierPage.fillMiddleName(person.firstName);
-                        await supplierPage.fillLastName(person.lastName);
-                        await supplierPage.fillJobTitle(person.jobTitle);
-
-                        // Select gender
-                        await supplierPage.clickGender();
-                        await lookupAction.selectListItem(person.gender);
-
-                        // Fill contact details
-                        await supplierPage.fillContactEmail(person.email);
-                        await supplierPage.fillContactPersonMobile(person.mobile);
-                        await supplierPage.fillContactPersonTelephone(person.telephone);
-
-                        await test.step('Save contact person record', async () => {
-                            await commonAction.clickPopupSave();
-                        });
-
-                        // ================= Validate Document =================
-                        // await test.step(`Validate document added: ${document.documentType}`, async () => {
-                        //     const documentDetail = `${document.documentType} (${document.documentNumber})`.trim();
-
-                        //     await expect.soft(
-                        //         page
-                        //             .locator('tbody.dx-row.dx-data-row p')
-                        //             .filter({ hasText: documentDetail })
-                        //     ).toContainText(document.documentNumber);
-                        // });
-
-                    });
-                }
-
-                // Track successfully created record
-                createdRecords.push(supplier.name);
-
-                await test.step('Navigate back to listing', async () => {
-                    await supplierPage.clickBack();
-                });
-            } catch (error) {
-                await test.step(`Handle skip/failure: ${supplier?.name}`, async () => {
-                    skippedRecords.push(supplier?.name);
-                    console.error(`Record creation skipped/failed: ${supplier?.name}`, error.stack);
-                    await menuAction.clickListingMenuOptionByTitle('Refresh');
-                });
-            }
-        }
-
-        await test.step('Log create summary', async () => {
-            SummaryHelper.logCrudSummary({
-                entityName: 'Supplier With Contact Person Details',
-                action: 'Create',
-                successRecords: createdRecords,
-                skippedRecords,
-                totalCount: supplierData.contactPersons.length
-            });
-        });
-
-        await test.step('Export create summary', async () => {
-            SummaryHelper.exportCrudSummary({
-                entityName: 'Supplier With Contact Person Details',
-                action: 'Create',
-                successRecords: createdRecords,
-                skippedRecords,
-                totalCount: supplierData.contactPersons.length
             });
         });
     });

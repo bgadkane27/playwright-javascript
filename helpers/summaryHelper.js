@@ -125,14 +125,14 @@ export class SummaryHelper {
 
       <h3>Total records attempted: ${summary.total}</h3>
       <h4 class="success">✅ Success records: ${summary.successCount}</h4>
+      <h4 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h4>
       <h4 class="success">✅ Success records</h4>
       <ul>
         ${summary.successRecords.length
                 ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
                 : `<p>No Record ${summary.action}d</p>`}
       </ul>
-
-      <h4 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h4>
+      
       <h4 class="failed">🚫 Skipped / Failed records</h4>
       <ul>
         ${summary.skippedRecords.length

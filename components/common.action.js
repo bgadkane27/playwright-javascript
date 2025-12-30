@@ -58,4 +58,49 @@ export class CommonAction {
             await this.page.getByRole('button', { name: 'Add a row' }).click();
         });
     }
+
+    /**
+ * Fill email by position (first, second, etc.)
+ * @param {string} email - Email to fill
+ * @param {number} index - Index of the field (0-based)
+ */
+    async fillEmailByIndex(email, index = 0) {
+        await test.step(`Fill Email field ${index + 1}: ${email}`, async () => {
+            await this.page.locator("input[id*='Email']").nth(index).fill(email);
+        });
+    }
+
+    /**
+     * Fill mobile number by position (first, second, etc.)
+     * @param {string} mobile - Mobile number to fill
+     * @param {number} index - Index of the field (0-based)
+     */
+    async fillMobileByIndex(mobile, index = 0) {
+        await test.step(`Fill Mobile field ${index + 1}: ${mobile}`, async () => {
+            await this.page.locator("input[id*='Mobile']").nth(index).fill(mobile);
+        });
+    }
+
+    /**
+     * Fill telephone number by position (first, second, etc.)
+     * @param {string} telephone - Telephone number to fill
+     * @param {number} index - Index of the field (0-based)
+     */
+    async fillTelephoneByIndex(telephone, index = 0) {
+        await test.step(`Fill Telephone field ${index + 1}: ${telephone}`, async () => {
+            await this.page.locator("input[id*='TelNumber']").nth(index).fill(telephone);
+        });
+    }
+
+    /**
+     * Fill fax number by position (first, second, etc.)
+     * @param {string} fax - Fax number to fill
+     * @param {number} index - Index of the field (0-based)
+     */
+    async fillFaxByIndex(fax, index = 0) {
+        await test.step(`Fill Fax Number field ${index + 1}: ${fax}`, async () => {
+            await this.page.locator("input[id*='FaxNumber']").nth(index).fill(fax);
+        });
+    }
+
 }
