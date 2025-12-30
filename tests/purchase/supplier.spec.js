@@ -442,6 +442,118 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
+    test.only('should be able to create supplier with item detail', async ({ page }) => {
+
+        // Track successfully created/skipped/failed records
+        const createdRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to supplier master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+        });
+
+        // Loop through each record
+        for (const supplier of supplierData.items) {
+
+            try {
+                await test.step(`Open new supplier form: ${supplier.name}`, async () => {
+                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                });
+
+                await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
+                    if (supplierData.feature?.allowCodeManual && supplier.code) {
+                        await masterHeaderAction.fillCode(supplier.code);
+                    }
+                });
+
+                await test.step(`Fill supplier name: ${supplier.name}`, async () => {
+                    await masterHeaderAction.fillName(supplier.name);
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(supplier.nameArabic);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                        await supplierPage.clickCurrency();
+                        await lookupAction.selectListItem(supplier.currency);
+                    }
+                });
+
+                await test.step(`Save supplier: ${supplier.name}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate supplier saved: ${supplier.name}`, async () => {
+                    await expect(page.locator("input[name='Name']")).toHaveValue(supplier.name);
+                });
+
+                await test.step('Open Items tab', async () => {
+                    await supplierPage.openItemsTab();
+                });
+
+                // ================= Add Items =================
+                for (const item of supplier.items) {
+
+                    await test.step('Fill Item Details', async () => {
+                        await supplierPage.clickAddItem();
+                        await supplierPage.selectItem(item.item);
+                    });
+
+                    await test.step('Save item', async () => {
+                        await commonAction.clickPopupSave();
+                    });
+
+                    //================= Validate Item =================
+                    await test.step(`Validate item added: ${item.item}`, async () => {
+                        const itemDetail = `${item.item}`.trim();
+
+                        await expect.soft(
+                            page
+                                .locator('div.item-details p')
+                                .filter({ hasText: itemDetail })
+                        ).toContainText(item.item);
+                    });
+                }
+
+                // Track successfully created record
+                createdRecords.push(supplier.name);
+
+                await test.step('Navigate back to listing', async () => {
+                    await supplierPage.clickBack();
+                });
+            } catch (error) {
+                await test.step(`Handle skip/failure: ${supplier?.name}`, async () => {
+                    skippedRecords.push(supplier?.name);
+                    console.error(`Record creation skipped/failed: ${supplier?.name}`, error.stack);
+                    await menuAction.clickListingMenuOptionByTitle('Refresh');
+                });
+            }
+        }
+
+        await test.step('Log create summary', async () => {
+            SummaryHelper.logCrudSummary({
+                entityName: 'Supplier With Item Details',
+                action: 'Create',
+                successRecords: createdRecords,
+                skippedRecords,
+                totalCount: supplierData.items.length
+            });
+        });
+
+        await test.step('Export create summary', async () => {
+            SummaryHelper.exportCrudSummary({
+                entityName: 'Supplier With Item Details',
+                action: 'Create',
+                successRecords: createdRecords,
+                skippedRecords,
+                totalCount: supplierData.items.length
+            });
+        });
+    });
+
     test('should be able to delete supplier', async ({ page }) => {
         // ===== Deletion/Skipped Summary Trackers =====
         const deletedRecords = [];

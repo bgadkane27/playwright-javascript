@@ -85,10 +85,11 @@ export class SupplierPage {
         this.saveContactPerson = page.getByRole('button', { name: 'Save', exact: true });
 
         /* ================= ITEMS ================= */
+        this.addItem = page.getByRole('button', { name: 'Add Item', exact: true });
         this.item = page.locator("input[id*='ItemId']");
 
          /* ================= ITEMS ================= */
-        this.addDocument = page.getByRole('button', { name: 'Add Document', exact: true });;
+        this.addDocument = page.getByRole('button', { name: 'Add Document', exact: true });
     }
 
     /* ================= TAX DETAILS ACTIONS ================= */
@@ -560,9 +561,25 @@ export class SupplierPage {
     }
 
     /* ================= ITEMS ================= */
+    async clickAddItem(){
+        await test.step('Click Add Item', async () => {
+            await this.addItem.click();
+            // await this.page.waitForTimeout(1000);
+        });
+    }
+
     async clickItem() {
         await test.step('Click Item Lookup', async () => {
             await this.item.click();
+        });
+    }
+
+    async selectItem(value) {
+        await test.step(`Select Item: ${value}`, async () => {
+            await this.item.click();
+            await this.item.fill(value);
+            await this.page.waitForTimeout(500);
+            await this.lookup.selectLookupOption(value);
         });
     }
 

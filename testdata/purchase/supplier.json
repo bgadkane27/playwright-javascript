@@ -149,8 +149,8 @@
     "items": [
         {
             "code": "S0021",
-            "name": "Supplier - Items Details",
-            "nameArabic": "Supplier - Items Details",
+            "name": "Supplier - Item Details",
+            "nameArabic": "Supplier - Item Details",
             "currency": "",
             "country": "",
             "state": "",
@@ -162,6 +162,9 @@
                 },
                 {
                     "item": "Phone Cases"
+                },
+                {
+                    "item": "Monitor"
                 }
             ]
         }
@@ -212,7 +215,7 @@
             "name": "Supplier - Document Details"
         },
         {
-            "name": "Supplier - Items Details"
+            "name": "Supplier - Item Details"
         },
         {
             "name": "Supplier - Address Details"
