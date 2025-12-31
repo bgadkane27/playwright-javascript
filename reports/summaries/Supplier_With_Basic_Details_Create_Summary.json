@@ -5,9 +5,9 @@
   "successCount": 2,
   "skippedCount": 0,
   "successRecords": [
-    "Supplier - KWD Currency",
-    "Supplier - AED Currency"
+    "Supplier With KWD Currency",
+    "Supplier With AED Currency"
   ],
   "skippedRecords": [],
-  "executedAt": "31/12/2025, 8:08:51 am"
+  "executedAt": "31/12/2025, 4:30:24 pm"
 }

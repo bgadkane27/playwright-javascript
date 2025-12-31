@@ -451,7 +451,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
         });
     });
 
-    test.only('should be able to create supplier with address detail', async ({ page }) => {
+    test('should be able to create supplier with address detail', async ({ page }) => {
 
         // Track successfully created/skipped/failed records
         const createdRecords = [];
@@ -503,10 +503,10 @@ test.describe.serial('Supplier CRUD Operations', () => {
                     await supplierPage.openAddressTab();
                 });
 
-                // ================= Add Contact Person =================
+                // ================= Add Address =================
                 for (const [index, address] of supplier.address.entries()) {
 
-                    await test.step('Fill Address Details', async () => {
+                    await test.step(`Fill address details: ${address.description}`, async () => {
                         await supplierPage.clickAddAddress();
                         await supplierPage.fillAddressDescription(address.description);
                         await supplierPage.fillAddress1(address.address1);
@@ -514,21 +514,25 @@ test.describe.serial('Supplier CRUD Operations', () => {
                         await supplierPage.fillAddress3(address.address3);
                         await supplierPage.fillAddress4(address.address4);
                         await supplierPage.fillAddress5(address.address5);
-                        // await commonAction.fillMobileByIndex(person.mobile, 1);
-                        // await commonAction.fillTelephoneByIndex(person.telephone, 0);
-                        // await commonAction.fillFaxByIndex(person.fax, 0);
-                        // await commonAction.fillEmailByIndex(person.email, 1);
-
+                        await supplierPage.fillCity(address.city);
+                        await supplierPage.fillAddressState(address.state);
+                        await supplierPage.fillDialingCode(address.dialingCode);
+                        await supplierPage.fillZipCode(address.zipcode);
+                        await supplierPage.fillAddressContactPerson(address.contactPerson);
+                        await commonAction.fillEmailByIndex(address.email, 1);
+                        await commonAction.fillMobileByIndex(address.mobileNumber, 1);
+                        await commonAction.fillTelephoneByIndex(address.telNumber, 0);
+                        await commonAction.fillFaxByIndex(address.faxNumber, 0);
                     });
 
-                    // await test.step('Set contact person flags', async () => {
-                    //     if (index === 0) {
-                    //         await supplierPage.clickContactPersonDefault();
-                    //     }
-                    //     if (index === 1) {
-                    //         await supplierPage.clickContactPersonFreezed();
-                    //     }
-                    // });
+                    await test.step('Set address flags', async () => {
+                        if (index === 0) {
+                            await supplierPage.clickAddressDefault();
+                        }
+                        if (index === 1) {
+                            await supplierPage.clickAddressfreezed();
+                        }
+                    });
 
                     await test.step('Save Address record', async () => {
                         await commonAction.clickPopupSave();
@@ -551,7 +555,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 await test.step(`Handle skip/failure: ${supplier?.name}`, async () => {
                     skippedRecords.push(supplier?.name);
                     console.error(`Record creation skipped/failed: ${supplier?.name}`, error.stack);
-                    await menuAction.clickListingMenuOptionByTitle('Refresh');
+                    await menuAction.clickListingMenuOptionByTitle('Refresh').catch(() => {
+                        console.warn('⚠️ Refresh failed, attempting safe recovery');
+                    });
                 });
             }
         }
@@ -562,7 +568,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 action: 'Create',
                 successRecords: createdRecords,
                 skippedRecords,
-                totalCount: supplierData.contactPersons.length
+                totalCount: supplierData.addresses.length
             });
         });
 
@@ -572,7 +578,7 @@ test.describe.serial('Supplier CRUD Operations', () => {
                 action: 'Create',
                 successRecords: createdRecords,
                 skippedRecords,
-                totalCount: supplierData.contactPersons.length
+                totalCount: supplierData.addresses.length
             });
         });
     });

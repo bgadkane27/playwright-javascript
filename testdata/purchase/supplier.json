@@ -9,7 +9,7 @@
     "suppliers": [
         {
             "code": "S0016",
-            "name": "Supplier - KWD Currency",
+            "name": "Supplier With KWD Currency",
             "nameArabic": "Supplier - KWD Currency",
             "currency": null,
             "country": "",
@@ -19,7 +19,7 @@
         },
         {
             "code": "S0017",
-            "name": "Supplier - AED Currency",
+            "name": "Supplier With AED Currency",
             "nameArabic": "Supplier - AED Currency",
             "currency": "AED | UAE Dirham",
             "country": "",
@@ -31,7 +31,7 @@
     "keyInfos": [
         {
             "code": "S0018",
-            "name": "Supplier - Key Info Details",
+            "name": "Supplier With Key Info Details",
             "nameArabic": "Supplier - Key Info Details",
             "currency": null,
             "country": "",
@@ -63,7 +63,7 @@
     "contactPersons": [
         {
             "code": "S0019",
-            "name": "Supplier - Contact Person Details",
+            "name": "Supplier With Contact Person Details",
             "nameArabic": "Supplier - Contact Person Details",
             "currency": "",
             "country": "",
@@ -101,7 +101,7 @@
     "addresses": [
         {
             "code": "S0020",
-            "name": "Supplier - Address Details",
+            "name": "Supplier With Address Details",
             "nameArabic": "Supplier - Address Details",
             "currency": "",
             "country": "",
@@ -117,7 +117,7 @@
                     "address4": "Sharq Area",
                     "address5": "15458 Kuwait City",
                     "city": "Kuwait",
-                    "addressState": "KUWAIT",
+                    "state": "KUWAIT",
                     "dialingCode": "965",
                     "zipcode": "154858",
                     "contactPerson": "Kareem Amiri",
@@ -134,7 +134,7 @@
                     "address4": "Sharq Area",
                     "address5": "15459 Kuwait City",
                     "city": "Kuwait",
-                    "addressState": "KUWAIT",
+                    "state": "KUWAIT",
                     "dialingCode": "965",
                     "zipcode": "154858",
                     "contactPerson": "Salma Shah",
@@ -149,7 +149,7 @@
     "items": [
         {
             "code": "S0021",
-            "name": "Supplier - Item Details",
+            "name": "Supplier With Item Details",
             "nameArabic": "Supplier - Item Details",
             "currency": "",
             "country": "",
@@ -172,7 +172,7 @@
     "documents": [
         {
             "code": "S0022",
-            "name": "Supplier - Document Details",
+            "name": "Supplier With Document Details",
             "nameArabic": "Supplier - Document Details",
             "currency": "",
             "country": "",
@@ -212,25 +212,25 @@
     ],
     "delete": [
         {
-            "name": "Supplier - Document Details"
+            "name": "Supplier With Document Details"
         },
         {
-            "name": "Supplier - Item Details"
+            "name": "Supplier With Item Details"
         },
         {
-            "name": "Supplier - Address Details"
+            "name": "Supplier With Address Details"
         },
         {
-            "name": "Supplier - Contact Person Details"
+            "name": "Supplier With Contact Person Details"
         },
         {
-            "name": "Supplier - Key Info Details"
+            "name": "Supplier With Key Info Details"
         },
         {
-            "name": "Supplier - AED Currency"
+            "name": "Supplier With AED Currency"
         },
         {
-            "name": "Supplier - KWD Currency"
+            "name": "Supplier With KWD Currency"
         }
     ]
 }

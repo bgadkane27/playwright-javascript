@@ -65,7 +65,7 @@ export class SupplierPage {
         this.addressState = page.locator("input[id*='State']");
         this.dialingCode = page.locator("input[id*='CountryCode']");
         this.zipCode = page.locator("input[id*='Zipcode']");
-        this.addressContactPerson = page.locator("input[id*='Contact']");
+        this.addressContactPerson = page. getByRole('textbox', { name: 'Contact Person:' });
         this.addressEmail = page.locator("input[id*='Email']");
         this.addressMobileNumber = page.getByLabel("Mobile Number");
         this.addressTelNumber = page.getByLabel("Tel Number");
