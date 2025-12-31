@@ -54,6 +54,7 @@ export class SupplierPage {
         this.shipmentPriority = page.getByLabel(/Shipment Priority/i);
 
         /* ================= ADDRESS ================= */
+        this.addAddress = page.getByRole('button', { name: 'Add Address', exact: true });
         this.addressDescription = page.locator("input[id*='Description']");
         this.address1 = page.locator("input[id*='Address1']");
         this.address2 = page.locator("input[id*='Address2']");
@@ -449,6 +450,12 @@ export class SupplierPage {
     }
 
     /* ================= ADDRESS ================= */
+
+    async clickAddAddress(){
+        await test.step('Click Address', async () => {
+            await this.addAddress.click();
+        });
+    }
 
     async fillAddressDescription(value) {
         await test.step(`Fill Address Description: ${value}`, async () => {
