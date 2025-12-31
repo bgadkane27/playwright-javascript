@@ -24,8 +24,8 @@ export class DocumentAction {
     async selectDocumentType(value) {
         await test.step(`Select Document Type: ${value}`, async () => {
             await this.page.locator("[id*='DocumentTypeId']").click();
-            await this.page.waitForTimeout(500);
-            await this.lookup.selectListItem(value);
+            // await this.page.waitForTimeout(1000);
+            await this.lookup.selectLookupOption(value);
         });
     }
 

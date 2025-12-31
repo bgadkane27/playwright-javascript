@@ -2,10 +2,12 @@
   "module": "Supplier",
   "action": "Delete",
   "total": 7,
-  "successCount": 7,
-  "skippedCount": 0,
+  "successCount": 1,
+  "skippedCount": 6,
   "successRecords": [
-    "Supplier With Document Details",
+    "Supplier With Document Details"
+  ],
+  "skippedRecords": [
     "Supplier With Item Details",
     "Supplier With Address Details",
     "Supplier With Contact Person Details",
@@ -13,6 +15,5 @@
     "Supplier With AED Currency",
     "Supplier With KWD Currency"
   ],
-  "skippedRecords": [],
-  "executedAt": "31/12/2025, 4:32:38 pm"
+  "executedAt": "31/12/2025, 10:02:30 pm"
 }

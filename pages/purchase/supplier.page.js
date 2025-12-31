@@ -567,7 +567,7 @@ export class SupplierPage {
         });
     }
 
-    async clickAddressfreezed() {
+    async clickAddressFreezed() {
         await test.step('Click Address Freezed', async () => {
             await this.addressFreezed.click();
         });

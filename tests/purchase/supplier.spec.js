@@ -50,8 +50,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const supplier = supplierData.validate;
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         await test.step('Open new supplier creation form', async () => {
@@ -98,8 +99,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         for (const supplier of supplierData.suppliers) {
@@ -177,8 +179,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         for (const supplier of supplierData.keyInfos) {
@@ -324,8 +327,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -458,8 +462,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -526,11 +531,14 @@ test.describe.serial('Supplier CRUD Operations', () => {
                     });
 
                     await test.step('Set address flags', async () => {
-                        if (index === 0) {
+                        const PRIMARY = 0;
+                        const SECONDARY = 1;
+
+                        if (index === PRIMARY) {
                             await supplierPage.clickAddressDefault();
                         }
-                        if (index === 1) {
-                            await supplierPage.clickAddressfreezed();
+                        if (index === SECONDARY) {
+                            await supplierPage.clickAddressFreezed();
                         }
                     });
 
@@ -539,7 +547,6 @@ test.describe.serial('Supplier CRUD Operations', () => {
                     });
 
                     await test.step(`Validate address added with description: ${address.description}`, async () => {
-                        // await expect(page.locator('.info p:has-text("Description:") strong')).toHaveText(address.description);
                         await expect(page.getByText(address.description)).toBeVisible();
                     });
                 }
@@ -590,8 +597,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -702,8 +710,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -826,8 +835,9 @@ test.describe.serial('Supplier CRUD Operations', () => {
         const skippedRecords = [];
 
         await test.step('Navigate to supplier master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            await menuAction.clickLeftMenuOption('Supplier');
+            // await menuAction.clickLeftMenuOption('Setups');
+            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
         });
 
         // ===== Iterate To Delete =====

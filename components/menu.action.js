@@ -30,7 +30,7 @@ export class MenuAction {
    */
   async clickLeftMenuOption(option) {
     await test.step(`Click left menu option: ${option}`, async () => {
-      await this.page.getByTitle(option).click();
+      await this.page.getByTitle(option, { exact: true }).click();
     });
   }
 
@@ -57,16 +57,16 @@ export class MenuAction {
    *
    * @param {string} option - Name of the listing toolbar option.
    */
-    async clickListingMenuOptionWithIndex(option, index) {
-        await test.step(`Click listing toolbar option: ${option}`, async () => {
-            const menuItem = this.page.locator(`li[title="${option}"]`).nth(index);
-            await menuItem.waitFor({ state: 'visible' });
-            await menuItem.click();
+  async clickListingMenuOptionWithIndex(option, index) {
+    await test.step(`Click listing toolbar option: ${option}`, async () => {
+      const menuItem = this.page.locator(`li[title="${option}"]`).nth(index);
+      await menuItem.waitFor({ state: 'visible' });
+      await menuItem.click();
 
-            // Wait for action to complete (better than fixed timeout)
-            await this.page.waitForLoadState('networkidle');
-        });
-    }
+      // Wait for action to complete (better than fixed timeout)
+      await this.page.waitForLoadState('networkidle');
+    });
+  }
 
   /**
    * Clicks an option from the top master/transaction toolbar.
