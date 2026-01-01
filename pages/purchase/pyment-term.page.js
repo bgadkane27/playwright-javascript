@@ -4,10 +4,16 @@ export class PaymentTermPage {
     constructor(page) {
         this.page = page;
 
+        this.paymentTerm = page.getByRole("link", { name: "Payment Term", exact: true });
         this.code = page.getByRole('textbox', { name: 'Code' });
         this.dueDays = page.getByLabel('Due Days');
         this.autoInsertCustomer = page.locator('#PaymentTerm\\.AutoInsertWhileCreatingCustomer_S_D');
         this.autoInsertSupplier = page.locator('#PaymentTerm\\.AutoInsertWhileCreatingSupplier_S_D');
+    }
+
+    async clickPaymentTerm() {
+        await this.paymentTerm.click();
+        await this.page.waitForLoadState('networkidle');
     }
 
     /** Fill Due Days */
