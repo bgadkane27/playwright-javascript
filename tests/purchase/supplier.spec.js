@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test'
+// import { test, expect } from '@playwright/test'
+import { test, expect } from '../base/baseTest.js';
 import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
 import { MenuAction } from '../../components/menu.action.js';
@@ -897,5 +898,4 @@ test.describe.serial('Supplier CRUD Operations', () => {
             });
         });
     });
-
 });
