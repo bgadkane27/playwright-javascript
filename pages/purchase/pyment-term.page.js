@@ -4,9 +4,17 @@ export class PaymentTermPage {
     constructor(page) {
         this.page = page;
 
+        this.code = page.getByRole('textbox', { name: 'Code' });
         this.dueDays = page.getByLabel('Due Days');
         this.autoInsertCustomer = page.locator('#PaymentTerm\\.AutoInsertWhileCreatingCustomer_S_D');
         this.autoInsertSupplier = page.locator('#PaymentTerm\\.AutoInsertWhileCreatingSupplier_S_D');
+    }
+
+    /** Fill Due Days */
+    async fillCode(value) {
+        await test.step(`Fill Code: ${value}`, async () => {
+            await this.code.fill(value);
+        });
     }
 
     /** Fill Due Days */
@@ -16,7 +24,7 @@ export class PaymentTermPage {
         });
     }
 
-    /** Enable auto insert while creating customer (toggle-safe) */
+    /** Enable auto insert while creating customer */
     async enableAutoInsertCustomer() {
         await test.step('Ensure auto insert is enabled for customer', async () => {
             const isChecked = await this.autoInsertCustomer.isChecked();
@@ -29,7 +37,7 @@ export class PaymentTermPage {
         });
     }
 
-    /** Enable auto insert while creating supplier (toggle-safe) */
+    /** Enable auto insert while creating supplier */
     async enableAutoInsertSupplier() {
         await test.step('Ensure auto insert is enabled for supplier', async () => {
             const isChecked = await this.autoInsertSupplier.isChecked();

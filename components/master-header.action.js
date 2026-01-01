@@ -20,6 +20,20 @@ export class MasterHeaderAction {
     }
 
     /**
+     * Enters the given value into the Code input field.
+     *
+     * This method locates the Code textbox using a partial ID match
+     * and fills it with the provided code value.
+     *
+     * @param {string} option - The code value to be entered.
+     */
+    async fillCodeIntoTextBox(option) {
+        await test.step(`Fill Code field with value: ${option}`, async () => {
+            await this.page.getByRole('textbox', { name: 'Code' }).fill(option);
+        });
+    }
+
+    /**
      * Enters the given value into the name input field.
      *
      * This method locates the Name textbox using a partial ID match

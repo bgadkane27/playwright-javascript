@@ -30,10 +30,10 @@ test.beforeEach(async ({ page }, testInfo) => {
  */
 test.afterEach(async ({}, testInfo) => {
     console.info(
-        `\n        📋 [TEST SUMMARY] 
-        🧪 Test      : ${testInfo.title}
-        📌 Status    : ${testInfo.status}
-        ⏱  Duration  : ${testInfo.duration} ms`
+    `\n📋  [Test Summary] 
+    🧪 Test      : ${testInfo.title}
+    📌 Status    : ${testInfo.status}
+    ⏱  Duration  : ${(testInfo.duration / 1000).toFixed(2)} s`
     );
 
     // Optional: log error details for failed tests

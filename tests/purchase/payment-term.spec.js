@@ -40,7 +40,7 @@ test.describe.serial('Payment Term CRUD Operations', () => {
         lookupAction = new LookupAction(page);
         uploadAction = new UploadAction(page);
         toastHelper = new ToastHelper(page);
-        
+
         await menuAction.selectModule('Purchase');
     });
 
@@ -72,24 +72,24 @@ test.describe.serial('Payment Term CRUD Operations', () => {
         //     ).toBeVisible();
         // });
 
-        // await test.step('Attempt to save payment term with duplicate code', async () => {
-        //     await masterHeaderAction.fillCode(paymentTerm.code);
-        //     await menuAction.clickTopMenuOption('Save');
-        // });
+        await test.step('Attempt to save payment term with duplicate code', async () => {
+            await masterHeaderAction.fillCodeIntoTextBox(paymentTerm.code);
+            await menuAction.clickTopMenuOption('Save');
+        });
 
-        // await test.step('Validate duplicate payment term code message', async () => {
-        //     await expect.soft(
-        //         page.getByText(
-        //             `Duplicate code found. Code: ${paymentTerm.code} already exists!`,
-        //             { exact: false }
-        //         )
-        //     ).toBeVisible();
-        // });
+        await test.step('Validate duplicate payment term code message', async () => {
+            await expect.soft(
+                page.getByText(
+                    `Duplicate code found. Code: ${paymentTerm.code} already exists!`,
+                    { exact: false }
+                )
+            ).toBeVisible();
+        });
 
-        // await test.step('Log validation summary', async () => {
-        //     SummaryHelper.logValidationSummary(paymentTerm.name, paymentTerm.code);
-        // });
+        await test.step('Log validation summary', async () => {
+            SummaryHelper.logValidationSummary(paymentTerm.name, paymentTerm.code);
+        });
 
-    });    
+    });
 
 });
