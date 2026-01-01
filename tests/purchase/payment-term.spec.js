@@ -1,8 +1,8 @@
 import { test, expect } from '../base/baseTest.js';
-import { SetupAction } from '../../components/setup.action.js';
-import { CommonAction } from '../../components/common.action.js';
 import { MenuAction } from '../../components/menu.action.js';
 import { ListingAction } from '../../components/listing.action.js';
+import { SetupAction } from '../../components/setup.action.js';
+import { CommonAction } from '../../components/common.action.js';
 import { MasterHeaderAction } from '../../components/master-header.action.js';
 import { MasterDeleteAction } from '../../components/master-delete.action.js'
 import { DocumentAction } from '../../components/document.action.js';
@@ -16,35 +16,35 @@ import { PaymentTermPage } from '../../pages/purchase/pyment-term.page.js';
 import paymentTermData from '../../testdata/purchase/payment-term.json';
 
 test.describe.serial('Payment Term CRUD Operations', () => {
-    let setupAction;
-    let paymentTermPage;
-    let commonAction;
+    let paymentTermPage;    
     let menuAction;
     let listingAction;
-    let masterHeaderAction;
-    let masterDeleteAction;
-    let documentAction;
+    let setupAction;
+    let commonAction;
     let lookupAction;
+    let documentAction;
     let uploadAction;
+    let masterHeaderAction;
+    let masterDeleteAction;   
     let toastHelper;
 
     test.beforeEach(async ({ page }) => {
-        setupAction = new SetupAction(page);
-        paymentTermPage = new PaymentTermPage(page);
-        commonAction = new CommonAction(page);
+        paymentTermPage = new PaymentTermPage(page);        
         menuAction = new MenuAction(page);
         listingAction = new ListingAction(page);
-        masterHeaderAction = new MasterHeaderAction(page);
-        masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);
-        documentAction = new DocumentAction(page);
+        setupAction = new SetupAction(page);
+        commonAction = new CommonAction(page);
         lookupAction = new LookupAction(page);
+        documentAction = new DocumentAction(page);
         uploadAction = new UploadAction(page);
+        masterHeaderAction = new MasterHeaderAction(page);
+        masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);               
         toastHelper = new ToastHelper(page);
 
         await menuAction.selectModule('Purchase');
     });
 
-    test.only('should not allow duplicate payment term creation', async ({ page }) => {
+    test.only('should not allow duplicate payment term creation', async ({page}) => {
 
         const paymentTerm = paymentTermData.validate;
 

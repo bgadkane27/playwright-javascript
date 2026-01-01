@@ -1,4 +1,3 @@
-// baseTest.js
 import { test as base, expect } from '@playwright/test';
 
 /**
@@ -18,7 +17,7 @@ export const test = base;
  * Runs before EVERY test that imports `test` from baseTest.js
  */
 test.beforeEach(async ({ page }, testInfo) => {
-    // console.info(`▶️ Running Test: ${testInfo.title}`);
+    console.info(`▶️  Running Test: ${testInfo.title}\n`);
     // Default navigation (can be overridden in spec if needed)
     await page.goto('/');
 });
@@ -28,9 +27,9 @@ test.beforeEach(async ({ page }, testInfo) => {
  * ----------------
  * Runs after EVERY test
  */
-test.afterEach(async ({}, testInfo) => {
+test.afterEach(async ({ }, testInfo) => {
     console.info(
-    `\n📋  [Test Summary] 
+        `\n📋  [Test Summary] 
     🧪 Test      : ${testInfo.title}
     📌 Status    : ${testInfo.status}
     ⏱  Duration  : ${(testInfo.duration / 1000).toFixed(2)} s`
