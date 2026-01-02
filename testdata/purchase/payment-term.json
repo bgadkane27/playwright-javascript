@@ -5,7 +5,7 @@
     "validate": {
         "code": "PT01",
         "name": "Net 30",
-        "dueDays": null
+        "dueDays": 30
     },
     "create": [
         {

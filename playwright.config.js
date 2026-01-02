@@ -67,6 +67,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        viewport: { width: 1500, height: 720 },
         // Use the saved authentication state
         storageState: '.auth/user.json',
       },
@@ -78,6 +79,7 @@ export default defineConfig({
     //   name: 'firefox',
     //   use: { 
     //     ...devices['Desktop Firefox'],
+    //     viewport: { width: 1500, height: 720 },
     //     storageState: '.auth/user.json',
     //   },
     //   dependencies: ['setup'],
@@ -88,6 +90,7 @@ export default defineConfig({
     //   name: 'webkit',
     //   use: { 
     //     ...devices['Desktop Safari'],
+    //     viewport: { width: 1500, height: 720 },
     //     storageState: '.auth/user.json',
     //   },
     //   dependencies: ['setup'],
