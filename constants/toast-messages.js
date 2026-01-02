@@ -14,7 +14,8 @@ const Messages = {
     PaymentTerm: {
         Create: 'Payment Term (Payable) created successfully!',
         Update: 'Payment Method updated successfully',
-        Delete: 'Record deleted successfully!'
+        Delete: 'Record deleted successfully!',
+        dueDaysRequired: 'Due days is required'
     },
 
     PriceList: {

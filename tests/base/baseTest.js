@@ -32,7 +32,7 @@ test.afterEach(async ({ }, testInfo) => {
         `\n📋  [Test Summary] 
     🧪 Test      : ${testInfo.title}
     📌 Status    : ${testInfo.status}
-    ⏱  Duration  : ${(testInfo.duration / 1000).toFixed(2)} s`
+    🕒 Duration  : ${(testInfo.duration / 1000).toFixed(2)} s`
     );
 
     // Optional: log error details for failed tests

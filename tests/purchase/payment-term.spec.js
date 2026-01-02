@@ -5,10 +5,6 @@ import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
 import { MasterHeaderAction } from '../../components/master-header.action.js';
 import { MasterDeleteAction } from '../../components/master-delete.action.js'
-import { DocumentAction } from '../../components/document.action.js';
-import { LookupAction } from '../../components/lookup.action.js';
-import { UploadAction } from '../../components/upload.action.js';
-import { FileHelper } from '../../helpers/fileHelper.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
@@ -21,9 +17,6 @@ test.describe.serial('Payment Term CRUD Operations', () => {
     let listingAction;
     let setupAction;
     let commonAction;
-    let lookupAction;
-    let documentAction;
-    let uploadAction;
     let masterHeaderAction;
     let masterDeleteAction;
     let toastHelper;
@@ -34,9 +27,6 @@ test.describe.serial('Payment Term CRUD Operations', () => {
         listingAction = new ListingAction(page);
         setupAction = new SetupAction(page);
         commonAction = new CommonAction(page);
-        lookupAction = new LookupAction(page);
-        documentAction = new DocumentAction(page);
-        uploadAction = new UploadAction(page);
         masterHeaderAction = new MasterHeaderAction(page);
         masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);
         toastHelper = new ToastHelper(page);
@@ -88,6 +78,39 @@ test.describe.serial('Payment Term CRUD Operations', () => {
 
         await test.step('Log validation summary', async () => {
             SummaryHelper.logValidationSummary(paymentTerm.name, paymentTerm.code);
+        });
+
+    });
+
+    test('validate due days required for payment term creation', async ({ page }) => {
+
+        const paymentTerm = paymentTermData.validate;
+
+        await test.step('Navigate to payment term master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Payment Term');
+        });
+
+        await test.step('Open new payment term creation form', async () => {
+            await menuAction.clickListingMenuOptionByTitle('New');
+        });
+
+        await test.step(`Fill payment term code: ${paymentTerm.code} if feature is true`, async () => {
+            if (paymentTermData.feature?.allowCodeManual && paymentTerm.code) {
+                await masterHeaderAction.fillCodeIntoTextBox(paymentTerm.code);
+            }
+        });
+
+        await test.step(`Fill payment term name: ${paymentTerm.name}`, async () => {
+            await masterHeaderAction.fillName(paymentTerm.name);
+        });
+
+        await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
+            await menuAction.clickTopMenuOption('Save');
+        });
+
+        await test.step('Validate due days required for payment term message', async () => {
+            await toastHelper.assertByText('PaymentTerm', 'dueDaysRequired');
         });
 
     });
@@ -200,6 +223,112 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 .toBe(paymentTermData.create.length);
         });
 
+    });
+
+    test('should update a payment term successfully', async ({ page }) => {
+        // ===== Deletion/Skipped Summary Trackers =====
+        const updatedRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to payment term master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Payment Term');
+        });
+
+        // ===== Iterate To Delete =====
+        for (const paymentTerm of paymentTermData.update) {
+            try {
+                await test.step(`Filter payment term record: ${paymentTerm.name}`, async () => {
+                    await listingAction.filterMasterByName(paymentTerm.name);
+                });
+
+                const recordExists = await page.locator(`text=${paymentTerm.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+
+                if (!recordExists) {
+                    console.warn(`⚠️ Updation skipped because record not found: ${paymentTerm.name}.`);
+                    skippedRecords.push(paymentTerm.name);
+                    continue;
+                }
+
+                await listingAction.selectMasterRowByName(paymentTerm.name);
+                await menuAction.clickListingMenuOptionByTitle('Edit');
+
+                await test.step(`Fill payment term code: ${paymentTerm.code} if feature is true`, async () => {
+                    if (paymentTermData.feature?.allowCodeManual && paymentTerm.code) {
+                        await masterHeaderAction.fillCodeIntoTextBox(paymentTerm.code);
+                    }
+                });
+
+                await test.step(`Fill payment term new name: ${paymentTerm.newName}`, async () => {
+                    await masterHeaderAction.fillName(paymentTerm.newName);
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
+                        await masterHeaderAction.fillDescription(paymentTerm.description);
+                    }
+                });
+
+                await test.step(`Fill payment term due days: ${paymentTerm.dueDays}`, async () => {
+                    await paymentTermPage.fillDueDays(paymentTerm.dueDays);
+                });
+
+                await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate payment term new name: ${paymentTerm.newName}`, async () => {
+                    await expect(page.locator("input[name='PaymentTerm.Name']")).toHaveValue(paymentTerm.newName);
+                });
+
+                updatedRecords.push(paymentTerm.name);
+
+                await test.step('Back to the listing', async () => {
+                    await paymentTermPage.clickPaymentTerm();
+                });
+
+            } catch (error) {
+                skippedRecords.push(paymentTerm.name);
+                console.warn(`⚠️ Updation failed: '${paymentTerm.name}': ${error.message}`);
+            } finally {
+                await test.step(`Clear supplier filter`, async () => {
+                    await listingAction.clearMasterNameColumnFilter();
+                });
+            }
+        }
+
+        await test.step('Log update summary', async () => {
+            SummaryHelper.logCrudSummary({
+                entityName: 'Payment Term',
+                action: 'Update',
+                successRecords: updatedRecords,
+                skippedRecords,
+                totalCount: paymentTermData.update.length
+            });
+        });
+
+        await test.step('Export update summary', async () => {
+            SummaryHelper.exportCrudSummary({
+                entityName: 'Payment Term',
+                action: 'Update',
+                successRecords: updatedRecords,
+                skippedRecords,
+                totalCount: paymentTermData.update.length
+            });
+        });
+
+        await test.step('Validate at least one payment term was deleted', async () => {
+            expect(updatedRecords.length).toBeGreaterThan(0);
+        });
+
+        await test.step('Validate all records were processed', async () => {
+            expect(updatedRecords.length + skippedRecords.length)
+                .toBe(paymentTermData.update.length);
+        });
     });
 
     test('should delete a payment term successfully', async ({ page }) => {

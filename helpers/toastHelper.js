@@ -19,7 +19,7 @@ export class ToastHelper {
         const expectedMessage = Messages[entity][action];
 
         await expect(
-            this.page.getByText(expectedMessage).first()
+            this.page.getByText(expectedMessage, { exact: false }).first()
         ).toBeVisible({ timeout: 5000 });
     }
 

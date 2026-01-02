@@ -1,13 +1,15 @@
 {
   "module": "Payment Term",
   "action": "Delete",
-  "total": 2,
+  "total": 3,
   "successCount": 2,
-  "skippedCount": 0,
+  "skippedCount": 1,
   "successRecords": [
-    "Net 90",
+    "Net 60",
     "Net 75"
   ],
-  "skippedRecords": [],
-  "executedAt": "2/1/2026, 9:40:25 am"
+  "skippedRecords": [
+    "Net 90"
+  ],
+  "executedAt": "2/1/2026, 11:10:04 am"
 }
