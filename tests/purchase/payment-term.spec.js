@@ -96,13 +96,15 @@ test.describe.serial('Payment Term CRUD Operations', () => {
         // Track created/skipped/failed records
         const createdRecords = [];
         const skippedRecords = [];
+        const PRIMARY = 0;
+        const SECONDARY = 1;
 
         await test.step('Navigate to payment term master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
             await setupAction.navigateToMasterByText('Payment Term');
         });
 
-        for (const paymentTerm of paymentTermData.create) {
+        for (const [index, paymentTerm] of paymentTermData.create.entries()) {
             try {
                 await test.step('Open new payment term creation form', async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
@@ -122,10 +124,23 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                     if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
                     }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
+                        await masterHeaderAction.fillDescription(paymentTerm.description);
+                    }
                 });
 
                 await test.step(`Fill payment term due days: ${paymentTerm.dueDays}`, async () => {
                     await paymentTermPage.fillDueDays(paymentTerm.dueDays);
+                });
+
+                await test.step('Add payment term for newly created customer/supplier', async () => {
+                    if (index === PRIMARY) {
+                        await paymentTermPage.enableAutoInsertToCustomer();
+                    }
+                    if (index === SECONDARY) {
+                        await paymentTermPage.enableAutoInsertToSupplier();
+                    }
                 });
 
                 await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
@@ -141,11 +156,18 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 await test.step('Back to the listing', async () => {
                     await paymentTermPage.clickPaymentTerm();
                 });
-                
+
             } catch (error) {
                 skippedRecords.push(paymentTerm?.name);
                 console.warn(`Record creation failed: ${paymentTerm?.name}`, error);
                 await paymentTermPage.clickPaymentTerm();
+                if (
+                    error.message.includes('Timeout') ||
+                    error.message.includes('expect') ||
+                    error.name === 'AssertionError'
+                ) {
+                    throw error;
+                }
             }
         }
 
@@ -167,6 +189,91 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 skippedRecords,
                 totalCount: paymentTermData.create.length
             });
+        });
+
+        await test.step('Validate at least one payment term was created', async () => {
+            expect(createdRecords.length).toBeGreaterThan(0);
+        });
+
+        await test.step('Validate all records were processed', async () => {
+            expect(createdRecords.length + skippedRecords.length)
+                .toBe(paymentTermData.create.length);
+        });
+
+    });
+
+    test('should delete a payment term successfully', async ({ page }) => {
+        // ===== Deletion/Skipped Summary Trackers =====
+        const deletedRecords = [];
+        const skippedRecords = [];
+
+        await test.step('Navigate to payment term master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Payment Term');
+        });
+
+        // ===== Iterate To Delete =====
+        for (const paymentTerm of paymentTermData.delete) {
+            try {
+                await test.step(`Filter payment term record: ${paymentTerm.name}`, async () => {
+                    await listingAction.filterMasterByName(paymentTerm.name);
+                });
+
+                const recordExists = await page.locator(`text=${paymentTerm.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+
+                if (!recordExists) {
+                    console.warn(`⚠️ Deletion skipped because record not found: ${paymentTerm.name}.`);
+                    skippedRecords.push(paymentTerm.name);
+                    continue;
+                }
+
+                await test.step(`Delete payment term: ${paymentTerm.name}`, async () => {
+                    await masterDeleteAction.deleteMasterByName('Payment Term', paymentTerm.name);
+                });
+
+                await test.step(`Validate supplier deleted message: ${paymentTerm.name}`, async () => {
+                    await toastHelper.assertByText('PaymentTerm', 'Delete');
+                });
+
+                deletedRecords.push(paymentTerm.name);
+
+            } catch (error) {
+                skippedRecords.push(paymentTerm.name);
+                console.warn(`⚠️ Deletion failed: '${paymentTerm.name}': ${error.message}`);
+            } finally {
+                await test.step(`Clear supplier filter`, async () => {
+                    await listingAction.clearMasterNameColumnFilter();
+                });
+            }
+        }
+
+        await test.step('Log delete summary', async () => {
+            SummaryHelper.logCrudSummary({
+                entityName: 'Payment Term',
+                action: 'Delete',
+                successRecords: deletedRecords,
+                skippedRecords,
+                totalCount: paymentTermData.delete.length
+            });
+        });
+
+        await test.step('Export delete summary', async () => {
+            SummaryHelper.exportCrudSummary({
+                entityName: 'Payment Term',
+                action: 'Delete',
+                successRecords: deletedRecords,
+                skippedRecords,
+                totalCount: paymentTermData.delete.length
+            });
+        });
+
+        await test.step('Validate at least one payment term was deleted', async () => {
+            expect(deletedRecords.length).toBeGreaterThan(0);
+        });
+
+        await test.step('Validate all records were processed', async () => {
+            expect(deletedRecords.length + skippedRecords.length)
+                .toBe(paymentTermData.delete.length);
         });
     });
 });

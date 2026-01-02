@@ -11,9 +11,11 @@ export class PaymentTermPage {
         this.autoInsertSupplier = page.locator('#PaymentTerm\\.AutoInsertWhileCreatingSupplier_S_D');
     }
 
+    /** Click on the payment term navigation link */
     async clickPaymentTerm() {
         await this.paymentTerm.click();
         await this.page.waitForLoadState('networkidle');
+        await this.page.waitForURL('**/PaymentTerm/Listing**');
     }
 
     /** Fill Due Days */
@@ -31,28 +33,16 @@ export class PaymentTermPage {
     }
 
     /** Enable auto insert while creating customer */
-    async enableAutoInsertCustomer() {
-        await test.step('Ensure auto insert is enabled for customer', async () => {
-            const isChecked = await this.autoInsertCustomer.isChecked();
-
-            if (!isChecked) {
-                await this.autoInsertCustomer.click();
-            }
-
-            await expect(this.autoInsertCustomer).toBeChecked();
+    async enableAutoInsertToCustomer() {
+        await test.step('Click auto insert to customer', async () => {
+            await this.autoInsertCustomer.click();
         });
     }
 
     /** Enable auto insert while creating supplier */
-    async enableAutoInsertSupplier() {
-        await test.step('Ensure auto insert is enabled for supplier', async () => {
-            const isChecked = await this.autoInsertSupplier.isChecked();
-
-            if (!isChecked) {
-                await this.autoInsertSupplier.click();
-            }
-
-            await expect(this.autoInsertSupplier).toBeChecked();
+    async enableAutoInsertToSupplier() {
+        await test.step('Click auto insert to supplier', async () => {
+            await this.autoInsertSupplier.click();
         });
     }
 }

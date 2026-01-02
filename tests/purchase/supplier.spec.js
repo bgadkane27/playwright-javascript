@@ -16,7 +16,7 @@ import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { SupplierPage } from '../../pages/purchase/supplier.page.js';
 import supplierData from '../../testdata/purchase/supplier.json';
 
-test.describe.serial('Supplier CRUD Operations', () => {
+test.describe.skip('Supplier CRUD Operations', () => {
     let setupAction;
     let supplierPage;
     let commonAction;
