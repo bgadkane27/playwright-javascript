@@ -1,0 +1,12 @@
+{
+  "module": "Payment Term",
+  "action": "Update",
+  "total": 1,
+  "successCount": 0,
+  "skippedCount": 1,
+  "successRecords": [],
+  "skippedRecords": [
+    "Net 90"
+  ],
+  "executedAt": "2/1/2026, 2:46:39 pm"
+}

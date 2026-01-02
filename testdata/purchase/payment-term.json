@@ -12,14 +12,14 @@
             "code": "PT03",
             "name": "Net 75",
             "nameArabic": "Net 75",
-            "dueDays": "75",
+            "dueDays": null,
             "description": "Payment due within 75 days"
         },
         {
             "code": "PT04",
             "name": "Net 90",
             "nameArabic": "Net 90",
-            "dueDays": "90",
+            "dueDays": 90,
             "description": "Payment due within 90 days"
         }
     ],
@@ -29,7 +29,7 @@
             "name": "Net 90",
             "newName": "Net 60",
             "nameArabic": "Net 60",
-            "dueDays": "60",
+            "dueDays": 60,
             "description": "Payment due within 60 days"
         }
     ],

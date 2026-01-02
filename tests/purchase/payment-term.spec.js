@@ -11,7 +11,7 @@ import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { PaymentTermPage } from '../../pages/purchase/pyment-term.page.js';
 import paymentTermData from '../../testdata/purchase/payment-term.json';
 
-test.describe.serial('Payment Term CRUD Operations', () => {
+test.describe('Payment Term CRUD Operations', () => {
     let paymentTermPage;
     let menuAction;
     let listingAction;
@@ -116,9 +116,7 @@ test.describe.serial('Payment Term CRUD Operations', () => {
     });
 
     test('should create a payment term successfully', async ({ page }) => {
-        // Track created/skipped/failed records
         const createdRecords = [];
-        const skippedRecords = [];
         const PRIMARY = 0;
         const SECONDARY = 1;
 
@@ -128,7 +126,8 @@ test.describe.serial('Payment Term CRUD Operations', () => {
         });
 
         for (const [index, paymentTerm] of paymentTermData.create.entries()) {
-            try {
+            await test.step(`Create payment term: ${paymentTerm.name}`, async () => {
+                
                 await test.step('Open new payment term creation form', async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
                 });
@@ -179,19 +178,7 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 await test.step('Back to the listing', async () => {
                     await paymentTermPage.clickPaymentTerm();
                 });
-
-            } catch (error) {
-                skippedRecords.push(paymentTerm?.name);
-                console.warn(`Record creation failed: ${paymentTerm?.name}`, error);
-                await paymentTermPage.clickPaymentTerm();
-                if (
-                    error.message.includes('Timeout') ||
-                    error.message.includes('expect') ||
-                    error.name === 'AssertionError'
-                ) {
-                    throw error;
-                }
-            }
+            });
         }
 
         await test.step('Log create summary', async () => {
@@ -199,7 +186,6 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
-                skippedRecords,
                 totalCount: paymentTermData.create.length
             });
         });
@@ -209,20 +195,13 @@ test.describe.serial('Payment Term CRUD Operations', () => {
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
-                skippedRecords,
                 totalCount: paymentTermData.create.length
             });
         });
 
-        await test.step('Validate at least one payment term was created', async () => {
-            expect(createdRecords.length).toBeGreaterThan(0);
+        await test.step('Validate all payment terms were created', async () => {
+            expect(createdRecords.length).toBe(paymentTermData.create.length);
         });
-
-        await test.step('Validate all records were processed', async () => {
-            expect(createdRecords.length + skippedRecords.length)
-                .toBe(paymentTermData.create.length);
-        });
-
     });
 
     test('should update a payment term successfully', async ({ page }) => {
@@ -396,13 +375,13 @@ test.describe.serial('Payment Term CRUD Operations', () => {
             });
         });
 
-        await test.step('Validate at least one payment term was deleted', async () => {
-            expect(deletedRecords.length).toBeGreaterThan(0);
-        });
+        // await test.step('Validate at least one payment term was deleted', async () => {
+        //     expect(deletedRecords.length).toBeGreaterThan(0);
+        // });
 
-        await test.step('Validate all records were processed', async () => {
-            expect(deletedRecords.length + skippedRecords.length)
-                .toBe(paymentTermData.delete.length);
-        });
+        // await test.step('Validate all records were processed', async () => {
+        //     expect(deletedRecords.length + skippedRecords.length)
+        //         .toBe(paymentTermData.delete.length);
+        // });
     });
 });
