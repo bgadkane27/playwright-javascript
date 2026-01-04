@@ -12,7 +12,7 @@
             "code": "PT03",
             "name": "Net 75",
             "nameArabic": "Net 75",
-            "dueDays": null,
+            "dueDays": 75,
             "description": "Payment due within 75 days"
         },
         {
