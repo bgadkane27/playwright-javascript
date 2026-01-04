@@ -119,7 +119,7 @@ test.describe('Payment Term CRUD Operations', () => {
     test('should create a payment term successfully', async ({ page }) => {
         // Track created/skipped/failed records
         const createdRecords = [];
-        const skippedRecords = [];
+        const failedRecords = [];
         const PRIMARY = 0;
         const SECONDARY = 1;
 
@@ -178,51 +178,41 @@ test.describe('Payment Term CRUD Operations', () => {
                 createdRecords.push(paymentTerm.name);
 
                 await test.step('Back to the listing', async () => {
-                    await paymentTermPage.clickPaymentTerm();
+                    await menuAction.navigateBackToListing('Payment Term');
                 });
 
             } catch (error) {
-                skippedRecords.push(paymentTerm?.name);
-                console.warn(`Record creation failed: ${paymentTerm?.name}`, error);
-                await paymentTermPage.clickPaymentTerm();
-                if (
-                    error.message.includes('Timeout') ||
-                    error.message.includes('expect') ||
-                    error.name === 'AssertionError'
-                ) {
-                    throw error;
-                }
+                failedRecords.push(paymentTerm?.name);
+                await menuAction.navigateBackToListing('Payment Term');
             }
         }
 
         await test.step('Log create summary', async () => {
-            SummaryHelper.logCrudSummary({
+            SummaryHelp.logCreateSummary({
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
-                skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.create.length
             });
         });
+
 
         await test.step('Export create summary', async () => {
-            SummaryHelper.exportCrudSummary({
+            SummaryHelp.exportCreateSummary({
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
-                skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.create.length
             });
         });
 
-        await test.step('Validate at least one payment term was created', async () => {
-            expect(createdRecords.length).toBeGreaterThan(0);
-        });
-
-        await test.step('Validate all records were processed', async () => {
-            expect(createdRecords.length + skippedRecords.length)
-                .toBe(paymentTermData.create.length);
-        });
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `Test failed. Failed record(s): ${failedRecords.join(', ')}`
+            );
+        }
 
     });
 
@@ -405,106 +395,6 @@ test.describe('Payment Term CRUD Operations', () => {
         //     expect(deletedRecords.length + skippedRecords.length)
         //         .toBe(paymentTermData.delete.length);
         // });
-    });
-
-    test.only('new should create a payment term successfully', async ({ page }) => {
-        // Track created/skipped/failed records
-        const createdRecords = [];
-        const failedRecords = [];
-        const PRIMARY = 0;
-        const SECONDARY = 1;
-
-        await test.step('Navigate to payment term master', async () => {
-            await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Payment Term');
-        });
-
-        for (const [index, paymentTerm] of paymentTermData.create.entries()) {
-            try {
-                await test.step('Open new payment term creation form', async () => {
-                    await menuAction.clickListingMenuOptionByTitle('New');
-                });
-
-                await test.step(`Fill payment term code: ${paymentTerm.code} if feature is true`, async () => {
-                    if (paymentTermData.feature?.allowCodeManual && paymentTerm.code) {
-                        await masterHeaderAction.fillCodeIntoTextBox(paymentTerm.code);
-                    }
-                });
-
-                await test.step(`Fill payment term name: ${paymentTerm.name}`, async () => {
-                    await masterHeaderAction.fillName(paymentTerm.name);
-                });
-
-                await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
-                        await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
-                    }
-
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
-                        await masterHeaderAction.fillDescription(paymentTerm.description);
-                    }
-                });
-
-                await test.step(`Fill payment term due days: ${paymentTerm.dueDays}`, async () => {
-                    await paymentTermPage.fillDueDays(paymentTerm.dueDays);
-                });
-
-                await test.step('Add payment term for newly created customer/supplier', async () => {
-                    if (index === PRIMARY) {
-                        await paymentTermPage.enableAutoInsertToCustomer();
-                    }
-                    if (index === SECONDARY) {
-                        await paymentTermPage.enableAutoInsertToSupplier();
-                    }
-                });
-
-                await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
-                    await menuAction.clickTopMenuOption('Save');
-                });
-
-                await test.step(`Validate payment term created message`, async () => {
-                    await toastHelper.assertByText('PaymentTerm', 'Create');
-                });
-
-                createdRecords.push(paymentTerm.name);
-
-                await test.step('Back to the listing', async () => {
-                    await paymentTermPage.clickPaymentTerm();
-                });
-
-            } catch (error) {
-                failedRecords.push(paymentTerm?.name);
-                console.warn(`Record creation failed: ${paymentTerm?.name}`);
-                await paymentTermPage.clickPaymentTerm();
-            }
-        }
-
-        await test.step('Log create summary', async () => {
-            SummaryHelp.logCreateSummary({
-                entityName: 'Payment Term',
-                action: 'Create',
-                successRecords: createdRecords,
-                failedRecords: failedRecords,
-                totalCount: paymentTermData.create.length
-            });
-        });
-
-
-        await test.step('Export create summary', async () => {
-            SummaryHelp.exportCreateSummary({
-                entityName: 'Payment Term',
-                action: 'Create',
-                successRecords: createdRecords,
-                failedRecords: failedRecords,
-                totalCount: paymentTermData.create.length
-            });
-        });
-
-        if (failedRecords.length > 0) {
-            throw new Error(
-                `\nTest failed. Failed records: ${failedRecords.join(', ')}`
-            );
-        }
     });
 
 });

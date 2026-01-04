@@ -37,7 +37,7 @@ test.afterEach(async ({ }, testInfo) => {
 
     // Optional: log error details for failed tests
     if (testInfo.status === 'failed' && testInfo.error) {
-        console.error('❌ Error:', testInfo.error.message);
+        console.error(testInfo.error.message);
     }
 });
 

@@ -3,6 +3,8 @@ import { test } from '@playwright/test';
 export class MenuAction {
   constructor(page) {
     this.page = page;
+
+    this.formTitle = page.getByRole("link", { name: "Payment Term", exact: true });
   }
 
   /**
@@ -100,5 +102,17 @@ export class MenuAction {
       await this.page.getByText(option, { exact: true }).click();
       await this.page.waitForTimeout(1000);
     });
+  }
+
+  /** Navigate to the listing by clicking on the form title hyperlink */
+  async navigateBackToListing(formTitle) {
+    await this.page.getByRole("link", { name: formTitle, exact: true }).click();
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  //** click on close form */
+  async clickCloseForm(){
+    await this.page.getByRole('listitem', { name: 'Close form' }).click();
+    await this.page.waitForLoadState('networkidle');
   }
 }

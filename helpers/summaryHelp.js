@@ -124,9 +124,9 @@ export class SummaryHelp {
       <h2>${summary.module} ${summary.action} Summary</h2>
 
       <h3>Total records attempted: ${summary.total}</h3>
-      <h4 class="success">✅ Success records count: ${summary.successCount}</h4>
+      <h4 class="success">✔ Success records count: ${summary.successCount}</h4>
       <h4 class="failed">❌ Failed records count: ${summary.failedCount}</h4>
-      <h4 class="success">✅ Success records</h4>
+      <h4 class="success">✔ Success records</h4>
       <ul>
         ${summary.successRecords.length
                 ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
@@ -137,7 +137,7 @@ export class SummaryHelp {
       <ul>
         ${summary.failedRecords.length
                 ? summary.failedRecords.map(r => `<li>${r}</li><br />`).join('')
-                : '<p>No Record Skipped / Failed</p>'}
+                : '<p>No Record Failed</p>'}
       </ul>
 
       <p>Executed at: ${summary.executedAt}</p>
