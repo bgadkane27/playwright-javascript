@@ -183,6 +183,7 @@ test.describe('Payment Term CRUD Operations', () => {
 
             } catch (error) {
                 failedRecords.push(paymentTerm?.name);
+                console.error(`❌ Failed to create record: ${paymentTerm?.name}`, error);
                 await menuAction.navigateBackToListing('Payment Term');
             }
         }
