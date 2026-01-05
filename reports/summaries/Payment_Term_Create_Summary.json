@@ -2,12 +2,12 @@
   "module": "Payment Term",
   "action": "Create",
   "total": 2,
-  "successCount": 2,
-  "failedCount": 0,
-  "successRecords": [
+  "successCount": 0,
+  "failedCount": 2,
+  "successRecords": [],
+  "failedRecords": [
     "Net 75",
     "Net 90"
   ],
-  "failedRecords": [],
-  "executedAt": "4/1/2026, 10:07:45 pm"
+  "executedAt": "5/1/2026, 7:46:59 am"
 }

@@ -221,6 +221,7 @@ test.describe('Payment Term CRUD Operations', () => {
         // ===== Deletion/Skipped Summary Trackers =====
         const updatedRecords = [];
         const skippedRecords = [];
+        const failedRecords = [];
 
         await test.step('Navigate to payment term master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
@@ -277,28 +278,29 @@ test.describe('Payment Term CRUD Operations', () => {
                     await expect(page.locator("input[name='PaymentTerm.Name']")).toHaveValue(paymentTerm.newName);
                 });
 
-                updatedRecords.push(paymentTerm.name);
+                updatedRecords.push(paymentTerm.newName);
 
                 await test.step('Back to the listing', async () => {
                     await paymentTermPage.clickPaymentTerm();
                 });
 
             } catch (error) {
-                skippedRecords.push(paymentTerm.name);
-                console.warn(`⚠️ Updation failed: '${paymentTerm.name}': ${error.message}`);
+                failedRecords.push(paymentTerm?.name);
+                console.error(`❌ Failed to update record: ${paymentTerm?.name} \n`, error);
+                await menuAction.navigateBackToListing('Payment Term');
             } finally {
-                await test.step(`Clear supplier filter`, async () => {
+                await test.step(`Clear payment term filter`, async () => {
                     await listingAction.clearMasterNameColumnFilter();
                 });
             }
         }
 
-        await test.step('Log update summary', async () => {
-            SummaryHelper.logCrudSummary({
+        await test.step('Log create summary', async () => {
+            SummaryHelp.logCreateSummary({
                 entityName: 'Payment Term',
                 action: 'Update',
                 successRecords: updatedRecords,
-                skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.update.length
             });
         });
@@ -313,14 +315,11 @@ test.describe('Payment Term CRUD Operations', () => {
             });
         });
 
-        await test.step('Validate at least one payment term was deleted', async () => {
-            expect(updatedRecords.length).toBeGreaterThan(0);
-        });
-
-        await test.step('Validate all records were processed', async () => {
-            expect(updatedRecords.length + skippedRecords.length)
-                .toBe(paymentTermData.update.length);
-        });
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `Test failed. Failed record(s): ${failedRecords.join(', ')}`
+            );
+        }
     });
 
     test('should delete a payment term successfully', async ({ page }) => {
