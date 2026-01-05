@@ -8,7 +8,8 @@
         li { color: #1f9aff; }
         p { color: #1f9aff;}
         .success { color: #66ff66c1; }
-        .failed { color: #fff833d0; }
+        .skipped { color: #ff9100ff; }
+        .failed { color: #f73628d2; }
         ul { margin-left: 20px; }
       </style>
     </head>
@@ -16,18 +17,23 @@
       <h2>Payment Term Create Summary</h2>
 
       <h3>Total records attempted: 2</h3>
-      <h4 class="success">✔ Success records count: 0</h4>
-      <h4 class="failed">❌ Failed records count: 2</h4>
-      <h4 class="success">✔ Success records</h4>
+      <h4 class="success">✔ Created records: 2</h4>
+      <h4 class="success">✔ Created record names</h4>
       <ul>
-        <p>No Record Created</p>
-      </ul>
-      
-      <h4 class="failed">❌ Failed records</h4>
-      <ul>
-        <li>Net 75</li><br /><li>Net 90</li><br />
+        <li>Net 75</li><li>Net 90</li>
       </ul>
 
-      <p>Executed at: 5/1/2026, 7:46:59 am</p>
+      <h4 class="skipped">⚠️ Skipped records: 0</h4>
+            <h4 class="skipped">⚠️ Skipped record names</h4>
+      <ul>
+        
+      </ul>
+      <h4 class="failed">🔴 Failed records: 0</h4>
+      <h4 class="failed">🔴 Failed record names</h4>
+      <ul>
+        
+      </ul>
+
+      <p>Executed at: 5/1/2026, 11:33:39 pm</p>
     </body>
     </html>

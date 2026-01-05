@@ -13,6 +13,7 @@
             "name": "Net 75",
             "nameArabic": "Net 75",
             "dueDays": 75,
+            "autoInsertFor": "Customer",
             "description": "Payment due within 75 days"
         },
         {
@@ -20,6 +21,7 @@
             "name": "Net 90",
             "nameArabic": "Net 90",
             "dueDays": 90,
+            "autoInsertFor": "Supplier",
             "description": "Payment due within 90 days"
         }
     ],

@@ -8,7 +8,6 @@ import { MasterDeleteAction } from '../../components/master-delete.action.js'
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
-import { SummaryHelp } from '../../helpers/summaryHelp.js'
 import { PaymentTermPage } from '../../pages/purchase/pyment-term.page.js';
 import paymentTermData from '../../testdata/purchase/payment-term.json';
 
@@ -116,21 +115,29 @@ test.describe('Payment Term CRUD Operations', () => {
 
     });
 
-    test('should create a payment term successfully', async ({ page }) => {
-        // Track created/skipped/failed records
+    test('should create payment term(s) successfully', async ({ page }) => {
+
+        // ===== Record Tracking =====
         const createdRecords = [];
+        const skippedRecords = [];
         const failedRecords = [];
-        const PRIMARY = 0;
-        const SECONDARY = 1;
 
         await test.step('Navigate to payment term master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
             await setupAction.navigateToMasterByText('Payment Term');
         });
 
-        for (const [index, paymentTerm] of paymentTermData.create.entries()) {
+        for (const paymentTerm of paymentTermData.create) {
+
+            // ===== Skip Conditions =====
+            if (!paymentTerm?.name || !paymentTerm?.dueDays) {
+                skippedRecords.push(paymentTerm?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Skipped record due to missing data: ${paymentTerm?.name}`);
+                continue;
+            }
+
             try {
-                await test.step('Open new payment term creation form', async () => {
+                await test.step(`Open new payment term form: ${paymentTerm.name}`, async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
                 });
 
@@ -159,12 +166,14 @@ test.describe('Payment Term CRUD Operations', () => {
                 });
 
                 await test.step('Add payment term for newly created customer/supplier', async () => {
-                    if (index === PRIMARY) {
+                    if (paymentTerm.autoInsertFor === 'Customer') {
                         await paymentTermPage.enableAutoInsertToCustomer();
                     }
-                    if (index === SECONDARY) {
+
+                    if (paymentTerm.autoInsertFor === 'Supplier') {
                         await paymentTermPage.enableAutoInsertToSupplier();
                     }
+
                 });
 
                 await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
@@ -177,22 +186,22 @@ test.describe('Payment Term CRUD Operations', () => {
 
                 createdRecords.push(paymentTerm.name);
 
-                await test.step('Back to the listing', async () => {
-                    await menuAction.navigateBackToListing('Payment Term');
-                });
-
             } catch (error) {
                 failedRecords.push(paymentTerm?.name);
-                console.error(`❌ Failed to create record: ${paymentTerm?.name}`, error);
-                await menuAction.navigateBackToListing('Payment Term');
+                console.error(`🔴 Failed to create payment term: ${paymentTerm?.name}\n`, error);
+            } finally {
+                await menuAction
+                    .navigateBackToListing('Payment Term')
+                    .catch(() => console.warn('🔴 Navigate to listing failed'));
             }
         }
 
         await test.step('Log create summary', async () => {
-            SummaryHelp.logCreateSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
+                skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
                 totalCount: paymentTermData.create.length
             });
@@ -200,10 +209,11 @@ test.describe('Payment Term CRUD Operations', () => {
 
 
         await test.step('Export create summary', async () => {
-            SummaryHelp.exportCreateSummary({
+            SummaryHelper.exportCrudSummary({
                 entityName: 'Payment Term',
                 action: 'Create',
                 successRecords: createdRecords,
+                skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
                 totalCount: paymentTermData.create.length
             });
@@ -211,7 +221,7 @@ test.describe('Payment Term CRUD Operations', () => {
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `Test failed. Failed record(s): ${failedRecords.join(', ')}`
+                `🔴 Test failed. Failed record(s): ${failedRecords.join(', ')}`
             );
         }
 
@@ -296,10 +306,11 @@ test.describe('Payment Term CRUD Operations', () => {
         }
 
         await test.step('Log create summary', async () => {
-            SummaryHelp.logCreateSummary({
+            SummaryHelper.logCrudSummary({
                 entityName: 'Payment Term',
                 action: 'Update',
                 successRecords: updatedRecords,
+                skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
                 totalCount: paymentTermData.update.length
             });
@@ -310,7 +321,8 @@ test.describe('Payment Term CRUD Operations', () => {
                 entityName: 'Payment Term',
                 action: 'Update',
                 successRecords: updatedRecords,
-                skippedRecords,
+                skippedRecords: skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.update.length
             });
         });

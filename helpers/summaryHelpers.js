@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export class SummaryHelp {
+export class SummaryHelpers {
 
     /**
      * Logs a generic CRUD summary report in console.
@@ -13,11 +13,11 @@ export class SummaryHelp {
      * @param {Array<string>} options.skippedRecords - Skipped or failed records
      * @param {number} options.totalCount - Total records attempted
      */
-    static logCreateSummary({
+    static logCrudSummary({
         entityName,
         action,
         successRecords = [],
-        failedRecords = [],
+        skippedRecords = [],
         totalCount = 0
     }) {
         console.info(`\n========== ${entityName} ${action} Summary ==========`);
@@ -29,10 +29,10 @@ export class SummaryHelp {
             console.info(`🟢 ${action}d records: ${successRecords.join(', ')}`);
         }
 
-        console.info(`⚠️ Failed records: ${failedRecords.length}`);
+        console.info(`⚠️ Skipped/Failed records: ${skippedRecords.length}`);
 
-        if (failedRecords.length) {
-            console.info(`🔴 Failed records: ${failedRecords.join(', ')}`);
+        if (skippedRecords.length) {
+            console.info(`🔴 Skipped/Failed records: ${skippedRecords.join(', ')}`);
         }
 
         console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}\n`);
@@ -63,21 +63,21 @@ export class SummaryHelp {
      * @param {Array<string>} options.skippedRecords - Skipped or failed records
      * @param {number} options.totalCount - Total records attempted
      */
-    static exportCreateSummary({
+    static exportCrudSummary({
         entityName,
         action,
         successRecords = [],
-        failedRecords = [],
+        skippedRecords = [],
         totalCount = 0
     }) {
         const summary = {
             module: entityName,
             action,
-            total: totalCount ?? successRecords.length + failedRecords.length,
+            total: totalCount ?? successRecords.length + skippedRecords.length,
             successCount: successRecords.length,
-            failedCount: failedRecords.length,
+            skippedCount: skippedRecords.length,
             successRecords,
-            failedRecords,
+            skippedRecords,
             executedAt: new Date().toLocaleString('en-IN')
         };
 
@@ -124,20 +124,20 @@ export class SummaryHelp {
       <h2>${summary.module} ${summary.action} Summary</h2>
 
       <h3>Total records attempted: ${summary.total}</h3>
-      <h4 class="success">✔ Success records count: ${summary.successCount}</h4>
-      <h4 class="failed">❌ Failed records count: ${summary.failedCount}</h4>
-      <h4 class="success">✔ Success records</h4>
+      <h4 class="success">✅ Success records: ${summary.successCount}</h4>
+      <h4 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h4>
+      <h4 class="success">✅ Success records</h4>
       <ul>
         ${summary.successRecords.length
                 ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
                 : `<p>No Record ${summary.action}d</p>`}
       </ul>
       
-      <h4 class="failed">❌ Failed records</h4>
+      <h4 class="failed">🚫 Skipped / Failed records</h4>
       <ul>
-        ${summary.failedRecords.length
-                ? summary.failedRecords.map(r => `<li>${r}</li><br />`).join('')
-                : '<p>No Record Failed</p>'}
+        ${summary.skippedRecords.length
+                ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
+                : '<p>No Record Skipped / Failed</p>'}
       </ul>
 
       <p>Executed at: ${summary.executedAt}</p>

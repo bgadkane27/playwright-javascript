@@ -18,39 +18,32 @@ export class SummaryHelper {
         action,
         successRecords = [],
         skippedRecords = [],
+        failedRecords = [],
         totalCount = 0
     }) {
         console.info(`\n========== ${entityName} ${action} Summary ==========`);
 
         console.info(`📄 Total records attempted: ${totalCount}`);
-        console.info(`✅ Success records: ${successRecords.length}`);
+        console.info(`🟢 ${action}d records: ${successRecords.length}`);
 
         if (successRecords.length) {
-            console.info(`🟢 ${action}d records: ${successRecords.join(', ')}`);
+            console.info(`🟢 ${action}d record names: ${successRecords.join(', ')}`);
         }
 
-        console.info(`⚠️ Skipped/Failed records: ${skippedRecords.length}`);
+        console.info(`⚠️ Skipped records: ${skippedRecords.length}`);
 
         if (skippedRecords.length) {
-            console.info(`🔴 Skipped/Failed records: ${skippedRecords.join(', ')}`);
+            console.info(`⚠️ Skipped record names: ${skippedRecords.join(', ')}`);
+        }
+
+        console.info(`🔴 Failed records: ${failedRecords.length}`);
+
+        if (failedRecords.length) {
+            console.info(`🔴 Failed record names: ${failedRecords.join(', ')}`);
         }
 
         console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}\n`);
         console.info('=====================================================');
-    }
-
-    /**
-     * Logs duplicate master creation not allowed validation summary.
-     * 
-     * @param {string} masterName - Name of the master (Supplier, Customer, etc.) 
-     * @param {string} masterCode - Code of the master (Supplier, Customer, etc.)
-     */
-    static logValidationSummary(masterName, masterCode) {
-        console.info('===== Duplicate Master Creation Not Allowed Validation Summary =====\n');
-        console.info(`✅ Validated Master Name: ${masterName}`);
-        console.info(`✅ Validated Master Code: ${masterCode || 'Not Applicable'}`);
-        console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
-        console.info('==============================================\n');
     }
 
     /**
@@ -68,16 +61,19 @@ export class SummaryHelper {
         action,
         successRecords = [],
         skippedRecords = [],
+        failedRecords = [],
         totalCount = 0
     }) {
         const summary = {
             module: entityName,
             action,
-            total: totalCount ?? successRecords.length + skippedRecords.length,
+            total: totalCount,
             successCount: successRecords.length,
             skippedCount: skippedRecords.length,
+            failedCount: failedRecords.length,
             successRecords,
             skippedRecords,
+            failedRecords,
             executedAt: new Date().toLocaleString('en-IN')
         };
 
@@ -116,7 +112,8 @@ export class SummaryHelper {
         li { color: #1f9aff; }
         p { color: #1f9aff;}
         .success { color: #66ff66c1; }
-        .failed { color: #fff833d0; }
+        .skipped { color: #ff9100ff; }
+        .failed { color: #f73628d2; }
         ul { margin-left: 20px; }
       </style>
     </head>
@@ -124,25 +121,47 @@ export class SummaryHelper {
       <h2>${summary.module} ${summary.action} Summary</h2>
 
       <h3>Total records attempted: ${summary.total}</h3>
-      <h4 class="success">✅ Success records: ${summary.successCount}</h4>
-      <h4 class="failed">🚫 Skipped / Failed records: ${summary.skippedCount}</h4>
-      <h4 class="success">✅ Success records</h4>
+      <h4 class="success">✔ ${summary.action}d records: ${summary.successCount}</h4>
+      <h4 class="success">✔ ${summary.action}d record names</h4>
       <ul>
         ${summary.successRecords.length
-                ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
-                : `<p>No Record ${summary.action}d</p>`}
+                ? summary.successRecords.map(r => `<li>${r}</li>`).join('')
+                : ``}
       </ul>
-      
-      <h4 class="failed">🚫 Skipped / Failed records</h4>
+
+      <h4 class="skipped">⚠️ Skipped records: ${summary.skippedCount}</h4>
+            <h4 class="skipped">⚠️ Skipped record names</h4>
       <ul>
         ${summary.skippedRecords.length
-                ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
-                : '<p>No Record Skipped / Failed</p>'}
+                ? summary.skippedRecords.map(r => `<li>${r}</li>`).join('')
+                : ``}
+      </ul>
+      <h4 class="failed">🔴 Failed records: ${summary.failedCount}</h4>
+      <h4 class="failed">🔴 Failed record names</h4>
+      <ul>
+        ${summary.failedRecords.length
+                ? summary.failedRecords.map(r => `<li>${r}</li>`).join('')
+                : ''}
       </ul>
 
       <p>Executed at: ${summary.executedAt}</p>
     </body>
     </html>`;
+    }
+
+
+    /**
+     * Logs duplicate master creation not allowed validation summary.
+     * 
+     * @param {string} masterName - Name of the master (Supplier, Customer, etc.) 
+     * @param {string} masterCode - Code of the master (Supplier, Customer, etc.)
+     */
+    static logValidationSummary(masterName, masterCode) {
+        console.info('===== Duplicate Master Creation Not Allowed Validation Summary =====\n');
+        console.info(`✅ Validated Master Name: ${masterName}`);
+        console.info(`✅ Validated Master Code: ${masterCode || 'Not Applicable'}`);
+        console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
+        console.info('==============================================\n');
     }
 
 }

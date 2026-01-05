@@ -8,7 +8,8 @@
         li { color: #1f9aff; }
         p { color: #1f9aff;}
         .success { color: #66ff66c1; }
-        .failed { color: #fff833d0; }
+        .skipped { color: #ff9100ff; }
+        .failed { color: #f73628d2; }
         ul { margin-left: 20px; }
       </style>
     </head>
@@ -16,18 +17,23 @@
       <h2>Payment Term Delete Summary</h2>
 
       <h3>Total records attempted: 3</h3>
-      <h4 class="success">✅ Success records: 1</h4>
-      <h4 class="failed">🚫 Skipped / Failed records: 2</h4>
-      <h4 class="success">✅ Success records</h4>
+      <h4 class="success">✔ Deleted records: 2</h4>
+      <h4 class="success">✔ Deleted record names</h4>
       <ul>
-        <li>Net 75</li><br />
-      </ul>
-      
-      <h4 class="failed">🚫 Skipped / Failed records</h4>
-      <ul>
-        <li>Net 60</li><br /><li>Net 90</li><br />
+        <li>Net 60</li><li>Net 75</li>
       </ul>
 
-      <p>Executed at: 5/1/2026, 7:47:35 am</p>
+      <h4 class="skipped">⚠️ Skipped records: 1</h4>
+            <h4 class="skipped">⚠️ Skipped record names</h4>
+      <ul>
+        <li>Net 90</li>
+      </ul>
+      <h4 class="failed">🔴 Failed records: 0</h4>
+      <h4 class="failed">🔴 Failed record names</h4>
+      <ul>
+        
+      </ul>
+
+      <p>Executed at: 5/1/2026, 11:34:21 pm</p>
     </body>
     </html>

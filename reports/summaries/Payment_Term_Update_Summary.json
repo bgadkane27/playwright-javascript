@@ -2,9 +2,13 @@
   "module": "Payment Term",
   "action": "Update",
   "total": 1,
-  "successCount": 0,
+  "successCount": 1,
   "skippedCount": 0,
-  "successRecords": [],
+  "failedCount": 0,
+  "successRecords": [
+    "Net 60"
+  ],
   "skippedRecords": [],
-  "executedAt": "5/1/2026, 8:25:34 am"
+  "failedRecords": [],
+  "executedAt": "5/1/2026, 11:33:55 pm"
 }
