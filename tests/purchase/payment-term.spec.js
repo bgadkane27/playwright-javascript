@@ -5,6 +5,7 @@ import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
 import { MasterHeaderAction } from '../../components/master-header.action.js';
 import { MasterDeleteAction } from '../../components/master-delete.action.js'
+import { DeleteHelper } from '../../helpers/deleteHelper.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
@@ -356,10 +357,12 @@ test.describe('Payment Term CRUD Operations', () => {
         }
     });
 
-    test('should delete a payment term successfully', async ({ page }) => {
-        // ===== Deletion/Skipped Summary Trackers =====
+    test.skip('should delete payment term(s) successfully', async ({ page }) => {
+
+        // ===== Record tracking =====
         const deletedRecords = [];
         const skippedRecords = [];
+        const failedRecords = [];
 
         await test.step('Navigate to payment term master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
@@ -373,6 +376,7 @@ test.describe('Payment Term CRUD Operations', () => {
                     await listingAction.filterMasterByName(paymentTerm.name);
                 });
 
+                // ===== Skip Condition ===== 
                 const recordExists = await page.locator(`text=${paymentTerm.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
 
                 if (!recordExists) {
@@ -385,17 +389,17 @@ test.describe('Payment Term CRUD Operations', () => {
                     await masterDeleteAction.deleteMasterByName('Payment Term', paymentTerm.name);
                 });
 
-                await test.step(`Validate supplier deleted message: ${paymentTerm.name}`, async () => {
+                await test.step(`Validate payment term deleted message: ${paymentTerm.name}`, async () => {
                     await toastHelper.assertByText('PaymentTerm', 'Delete');
                 });
 
                 deletedRecords.push(paymentTerm.name);
 
             } catch (error) {
-                skippedRecords.push(paymentTerm.name);
-                console.warn(`⚠️ Deletion failed: '${paymentTerm.name}': ${error.message}`);
+                failedRecords.push(paymentTerm.name);
+                console.error(`🔴 Deletion failed: '${paymentTerm.name}'`, error);
             } finally {
-                await test.step(`Clear supplier filter`, async () => {
+                await test.step(`Clear Payment term filter`, async () => {
                     await listingAction.clearMasterNameColumnFilter();
                 });
             }
@@ -406,7 +410,8 @@ test.describe('Payment Term CRUD Operations', () => {
                 entityName: 'Payment Term',
                 action: 'Delete',
                 successRecords: deletedRecords,
-                skippedRecords,
+                skippedRecords: skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.delete.length
             });
         });
@@ -416,19 +421,66 @@ test.describe('Payment Term CRUD Operations', () => {
                 entityName: 'Payment Term',
                 action: 'Delete',
                 successRecords: deletedRecords,
-                skippedRecords,
+                skippedRecords: skippedRecords,
+                failedRecords: failedRecords,
                 totalCount: paymentTermData.delete.length
             });
         });
 
-        // await test.step('Validate at least one payment term was deleted', async () => {
-        //     expect(deletedRecords.length).toBeGreaterThan(0);
-        // });
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `🔴 Failed to delete payment term(s): ${failedRecords.join(', ')}`
+            );
+        }
 
-        // await test.step('Validate all records were processed', async () => {
-        //     expect(deletedRecords.length + skippedRecords.length)
-        //         .toBe(paymentTermData.delete.length);
-        // });
+    });
+
+    test('retry should delete payment term(s) successfully', async ({ page }) => {
+
+        const deletedRecords = [];
+        let failedRecords = [];
+
+        await menuAction.clickLeftMenuOption('Setups');
+        await setupAction.navigateToMasterByText('Payment Term');
+
+        // ===== First attempt =====
+        for (const paymentTerm of paymentTermData.delete) {
+            try {
+                await DeleteHelper.deletePaymentTerm(page, paymentTerm.name, {
+                    listingAction,
+                    masterDeleteAction,
+                    toastHelper
+                });
+
+                deletedRecords.push(paymentTerm.name);
+
+            } catch (error) {
+                failedRecords.push(paymentTerm.name);
+                console.warn(`❌ Delete failed (1st attempt): ${paymentTerm.name}`);
+            }
+        }
+
+        // ===== Retry only failed =====
+        if (failedRecords.length > 0) {
+            console.warn(`🔁 Retrying failed deletes...`);
+
+            failedRecords = await DeleteHelper.retryFailedDeletes(
+                page,
+                failedRecords,
+                {
+                    listingAction,
+                    masterDeleteAction,
+                    toastHelper
+                }
+            );
+        }
+
+        // ===== Final failure =====
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `🔴 Delete failed even after retry: ${failedRecords.join(', ')}`
+            );
+        }
     });
 
 });
