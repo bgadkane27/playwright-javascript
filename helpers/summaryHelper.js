@@ -10,7 +10,8 @@ export class SummaryHelper {
      * @param {string} options.entityName - Master name with description
      * @param {'Create'|'Update'|'Delete'} options.action - Action performed
      * @param {Array<string>} options.successRecords - Successfully processed records
-     * @param {Array<string>} options.skippedRecords - Skipped or failed records
+     * @param {Array<string>} options.skippedRecords - Skipped records
+     * @param {Array<string>} options.failedRecords - Failed records
      * @param {number} options.totalCount - Total records attempted
      */
     static logCrudSummary({
@@ -53,7 +54,8 @@ export class SummaryHelper {
      * @param {string} options.entityName - Master name with description
      * @param {'Create'|'Update'|'Delete'} options.action - Action performed
      * @param {Array<string>} options.successRecords - Successfully processed records
-     * @param {Array<string>} options.skippedRecords - Skipped or failed records
+     * @param {Array<string>} options.skippedRecords - Skipped records
+     * @param {Array<string>} options.failedRecords - Failed records
      * @param {number} options.totalCount - Total records attempted
      */
     static exportCrudSummary({
@@ -109,12 +111,12 @@ export class SummaryHelper {
       <title>${summary.module} ${summary.action} Summary</title>
       <style>
         body { font-family: Arial; padding: 20px; color: #d2d2d2; background: #1a1a1a; }
-        li { color: #1f9aff; }
+        li { color: #b325ffff; }
         p { color: #1f9aff;}
         .success { color: #66ff66c1; }
         .skipped { color: #ff9100ff; }
-        .failed { color: #f73628d2; }
-        ul { margin-left: 20px; }
+        .failed { color: #ff0000d8; }
+        ul { margin-left: 10px; }
       </style>
     </head>
     <body>

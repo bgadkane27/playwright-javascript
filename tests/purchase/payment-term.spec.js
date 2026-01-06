@@ -117,7 +117,7 @@ test.describe('Payment Term CRUD Operations', () => {
 
     test('should create payment term(s) successfully', async ({ page }) => {
 
-        // ===== Record Tracking =====
+        // ===== Record tracking =====
         const createdRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
@@ -127,12 +127,13 @@ test.describe('Payment Term CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Payment Term');
         });
 
+        // Iterate to create
         for (const paymentTerm of paymentTermData.create) {
 
-            // ===== Skip Conditions =====
+            // ===== Skip conditions =====
             if (!paymentTerm?.name || !paymentTerm?.dueDays) {
                 skippedRecords.push(paymentTerm?.name ?? 'UNKNOWN');
-                console.warn(`⚠️ Skipped record due to missing data: ${paymentTerm?.name}`);
+                console.warn(`⚠️ Creation skipped because record data missing for name or dueDays: ${paymentTerm?.name}`);
                 continue;
             }
 
@@ -192,7 +193,10 @@ test.describe('Payment Term CRUD Operations', () => {
             } finally {
                 await menuAction
                     .navigateBackToListing('Payment Term')
-                    .catch(() => console.warn('🔴 Navigate to listing failed'));
+                    .catch(async () => {
+                        console.warn('🔴 Navigation failed, reloading page');
+                        await page.reload();
+                    });
             }
         }
 
@@ -227,8 +231,9 @@ test.describe('Payment Term CRUD Operations', () => {
 
     });
 
-    test('should update a payment term successfully', async ({ page }) => {
-        // ===== Deletion/Skipped Summary Trackers =====
+    test('should update payment term(s) successfully', async ({ page }) => {
+
+        // ===== Record tracking =====
         const updatedRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
@@ -238,8 +243,16 @@ test.describe('Payment Term CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Payment Term');
         });
 
-        // ===== Iterate To Delete =====
+        // ===== Iterate to update =====
         for (const paymentTerm of paymentTermData.update) {
+
+            // ===== Skip conditions =====
+            if (!paymentTerm?.name || !paymentTerm?.newName || !paymentTerm?.dueDays) {
+                skippedRecords.push(paymentTerm?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Updation skipped because record data missing for name, new name or dueDays: ${paymentTerm?.name}`);
+                continue;
+            }
+
             try {
                 await test.step(`Filter payment term record: ${paymentTerm.name}`, async () => {
                     await listingAction.filterMasterByName(paymentTerm.name);
@@ -288,24 +301,33 @@ test.describe('Payment Term CRUD Operations', () => {
                     await expect(page.locator("input[name='PaymentTerm.Name']")).toHaveValue(paymentTerm.newName);
                 });
 
-                updatedRecords.push(paymentTerm.newName);
+                // updatedRecords.push(paymentTerm.newName);
+                updatedRecords.push(`${paymentTerm.name} → ${paymentTerm.newName}`);
 
-                await test.step('Back to the listing', async () => {
-                    await paymentTermPage.clickPaymentTerm();
-                });
+                // await test.step('Back to the listing', async () => {
+                //     await paymentTermPage.clickPaymentTerm();
+                // });
 
             } catch (error) {
                 failedRecords.push(paymentTerm?.name);
-                console.error(`❌ Failed to update record: ${paymentTerm?.name} \n`, error);
-                await menuAction.navigateBackToListing('Payment Term');
+                console.error(`🔴 Failed to update record: ${paymentTerm?.name} \n`, error);
             } finally {
+                await test.step(`Back to listing`, async () => {
+                    await menuAction
+                        .navigateBackToListing('Payment Term')
+                        .catch(async () => {
+                            console.warn('🔴 Navigation failed, reloading page');
+                            await page.reload();
+                        });
+                });
+
                 await test.step(`Clear payment term filter`, async () => {
                     await listingAction.clearMasterNameColumnFilter();
                 });
             }
         }
 
-        await test.step('Log create summary', async () => {
+        await test.step('Log update summary', async () => {
             SummaryHelper.logCrudSummary({
                 entityName: 'Payment Term',
                 action: 'Update',
@@ -329,7 +351,7 @@ test.describe('Payment Term CRUD Operations', () => {
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `Test failed. Failed record(s): ${failedRecords.join(', ')}`
+                `🔴 Failed payment term(s): ${failedRecords.join(', ')}`
             );
         }
     });
