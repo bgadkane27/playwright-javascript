@@ -17,7 +17,7 @@ export const test = base;
  * Runs before EVERY test that imports `test` from baseTest.js
  */
 test.beforeEach(async ({ page }, testInfo) => {
-    console.info(`🧪 Test: ${testInfo.title}\n`);
+    console.info(`\n🧪 Test: ${testInfo.title}`);
     // Default navigation (can be overridden in spec if needed)
     await page.goto('/');
 });

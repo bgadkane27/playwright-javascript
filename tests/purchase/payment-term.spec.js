@@ -5,7 +5,6 @@ import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
 import { MasterHeaderAction } from '../../components/master-header.action.js';
 import { MasterDeleteAction } from '../../components/master-delete.action.js'
-import { DeleteHelper } from '../../helpers/deleteHelper.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
@@ -357,9 +356,8 @@ test.describe('Payment Term CRUD Operations', () => {
         }
     });
 
-    test.skip('should delete payment term(s) successfully', async ({ page }) => {
+    test('should delete payment term(s) successfully', async ({ page }) => {
 
-        // ===== Record tracking =====
         const deletedRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
@@ -369,39 +367,24 @@ test.describe('Payment Term CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Payment Term');
         });
 
-        // ===== Iterate To Delete =====
+        // ===== Iterate & Delete =====
         for (const paymentTerm of paymentTermData.delete) {
-            try {
-                await test.step(`Filter payment term record: ${paymentTerm.name}`, async () => {
-                    await listingAction.filterMasterByName(paymentTerm.name);
-                });
+            const result = await masterDeleteAction.safeDeleteByName({
+                masterType: 'Payment Term',
+                name: paymentTerm.name,
+                retries: 1
+            });
 
-                // ===== Skip Condition ===== 
-                const recordExists = await page.locator(`text=${paymentTerm.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
-
-                if (!recordExists) {
-                    console.warn(`⚠️ Deletion skipped because record not found: ${paymentTerm.name}.`);
-                    skippedRecords.push(paymentTerm.name);
-                    continue;
-                }
-
-                await test.step(`Delete payment term: ${paymentTerm.name}`, async () => {
-                    await masterDeleteAction.deleteMasterByName('Payment Term', paymentTerm.name);
-                });
-
-                await test.step(`Validate payment term deleted message: ${paymentTerm.name}`, async () => {
-                    await toastHelper.assertByText('PaymentTerm', 'Delete');
-                });
-
+            if (result === 'deleted') {
                 deletedRecords.push(paymentTerm.name);
+            }
 
-            } catch (error) {
+            if (result === 'skipped') {
+                skippedRecords.push(paymentTerm.name);
+            }
+
+            if (result === 'failed') {
                 failedRecords.push(paymentTerm.name);
-                console.error(`🔴 Deletion failed: '${paymentTerm.name}'`, error);
-            } finally {
-                await test.step(`Clear Payment term filter`, async () => {
-                    await listingAction.clearMasterNameColumnFilter();
-                });
             }
         }
 
@@ -427,58 +410,10 @@ test.describe('Payment Term CRUD Operations', () => {
             });
         });
 
+        // ===== Fail test ONLY for real failures =====
         if (failedRecords.length > 0) {
             throw new Error(
-                `🔴 Failed to delete payment term(s): ${failedRecords.join(', ')}`
-            );
-        }
-
-    });
-
-    test('retry should delete payment term(s) successfully', async ({ page }) => {
-
-        const deletedRecords = [];
-        let failedRecords = [];
-
-        await menuAction.clickLeftMenuOption('Setups');
-        await setupAction.navigateToMasterByText('Payment Term');
-
-        // ===== First attempt =====
-        for (const paymentTerm of paymentTermData.delete) {
-            try {
-                await DeleteHelper.deletePaymentTerm(page, paymentTerm.name, {
-                    listingAction,
-                    masterDeleteAction,
-                    toastHelper
-                });
-
-                deletedRecords.push(paymentTerm.name);
-
-            } catch (error) {
-                failedRecords.push(paymentTerm.name);
-                console.warn(`❌ Delete failed (1st attempt): ${paymentTerm.name}`);
-            }
-        }
-
-        // ===== Retry only failed =====
-        if (failedRecords.length > 0) {
-            console.warn(`🔁 Retrying failed deletes...`);
-
-            failedRecords = await DeleteHelper.retryFailedDeletes(
-                page,
-                failedRecords,
-                {
-                    listingAction,
-                    masterDeleteAction,
-                    toastHelper
-                }
-            );
-        }
-
-        // ===== Final failure =====
-        if (failedRecords.length > 0) {
-            throw new Error(
-                `🔴 Delete failed even after retry: ${failedRecords.join(', ')}`
+                `🔴 Test failed. Could not delete: ${failedRecords.join(', ')}`
             );
         }
     });
