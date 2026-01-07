@@ -34,7 +34,7 @@ test.describe('Charge CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test.skip('should not allow duplicate charge creation', async ({ page }) => {
+    test('should not allow duplicate charge creation', async ({ page }) => {
 
         const charge = chargeData.validate;
 
@@ -44,6 +44,12 @@ test.describe('Charge CRUD Operations', () => {
         });
 
         try {
+
+            await test.step('Check the record is present or not', async () => {
+                const exists = await listingAction.isRecordExists(charge?.name);
+                expect(exists).toBeTruthy();
+            });
+
             await test.step('Open new charge creation form', async () => {
                 await menuAction.clickListingMenuOptionByTitle('New');
             });
@@ -69,8 +75,8 @@ test.describe('Charge CRUD Operations', () => {
 
             await test.step('Validate duplicate code error', async () => {
                 await expect(
-                    page.locator('#ValidationSummary').getByText(`Duplicate code found. Code: ${charge.code} already exists!`)
-                ).toBeVisible();
+                    page.getByText(`Duplicate code found. Code: ${charge.code} already exists!`)
+                ).toBeVisible({ timeout: 5000 });
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
@@ -107,7 +113,7 @@ test.describe('Charge CRUD Operations', () => {
             }
 
             try {
-                await test.step(`Open new charge form: ${charge.name}`, async () => {
+                await test.step(`Open new charge creation form`, async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
                 });
 
@@ -128,6 +134,10 @@ test.describe('Charge CRUD Operations', () => {
 
                     if (ValidationHelper.isNotNullOrWhiteSpace(charge.description)) {
                         await masterHeaderAction.fillDescription(charge.description);
+                    }
+
+                    if (ValidationHelper.isNumberGreaterThanZero(charge.defaultValue)) {
+                        await chargePage.fillDefaultValue(charge.defaultValue);
                     }
                 });
 
@@ -191,97 +201,99 @@ test.describe('Charge CRUD Operations', () => {
 
     });
 
-    test.skip('should update charge(s) successfully', async ({ page }) => {
+    test('should update charge(s) successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const updatedRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
 
-        await test.step('Navigate to payment term master', async () => {
+        await test.step('Navigate to charge master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Payment Term');
+            await setupAction.navigateToMasterByText('Charge');
         });
 
         // ===== Iterate to update =====
-        for (const paymentTerm of paymentTermData.update) {
+        for (const charge of chargeData.update) {
 
             // ===== Skip conditions =====
-            if (!paymentTerm?.name || !paymentTerm?.newName || !paymentTerm?.dueDays) {
-                skippedRecords.push(paymentTerm?.name ?? 'UNKNOWN');
-                console.warn(`⚠️ Updation skipped because record data missing for name, new name or dueDays: ${paymentTerm?.name}`);
+            if (!charge?.name || !charge?.newName) {
+                skippedRecords.push(charge?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Updation skipped because record data missing for name or new name ${charge?.name}`);
                 continue;
             }
 
             try {
-                await test.step(`Filter payment term record: ${paymentTerm.name}`, async () => {
-                    await listingAction.filterMasterByName(paymentTerm.name);
+                await test.step(`Filter charge record: ${charge.name}`, async () => {
+                    await listingAction.filterMasterByName(charge.name);
                 });
 
-                const recordExists = await page.locator(`text=${paymentTerm.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
+                const recordExists = await page.locator(`text=${charge.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
 
                 if (!recordExists) {
-                    console.warn(`⚠️ Updation skipped because record not found: ${paymentTerm.name}.`);
-                    skippedRecords.push(paymentTerm.name);
+                    console.warn(`⚠️ Updation skipped because record not found: ${charge.name}.`);
+                    skippedRecords.push(charge.name);
                     continue;
                 }
 
-                await listingAction.selectMasterRowByName(paymentTerm.name);
+                await listingAction.selectMasterRowByName(charge.name);
                 await menuAction.clickListingMenuOptionByTitle('Edit');
 
-                await test.step(`Fill payment term code: ${paymentTerm.code} if feature is true`, async () => {
-                    if (paymentTermData.feature?.allowCodeManual && paymentTerm.code) {
-                        await masterHeaderAction.fillCodeIntoTextBox(paymentTerm.code);
+                await test.step(`Fill charge code: ${charge.code} if feature is true`, async () => {
+                    if (chargeData.feature?.allowCodeManual && charge.code) {
+                        await masterHeaderAction.fillCodeIntoTextBox(charge.code);
                     }
                 });
 
-                await test.step(`Fill payment term new name: ${paymentTerm.newName}`, async () => {
-                    await masterHeaderAction.fillName(paymentTerm.newName);
+                await test.step(`Fill charge new name: ${charge.newName}`, async () => {
+                    await masterHeaderAction.fillName(charge.newName);
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
-                        await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(charge.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
-                        await masterHeaderAction.fillDescription(paymentTerm.description);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.description)) {
+                        await masterHeaderAction.fillDescription(charge.description);
+                    }
+
+                    if (ValidationHelper.isNumberGreaterThanZero(charge.defaultValue)) {
+                        await chargePage.fillDefaultValue(charge.defaultValue);
                     }
                 });
 
-                await test.step(`Fill payment term due days: ${paymentTerm.dueDays}`, async () => {
-                    await paymentTermPage.fillDueDays(paymentTerm.dueDays);
+                await test.step(`Select main account: ${charge.mainAccount}`, async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.mainAccount)) {
+                        await commonAction.selectMainAccount(charge.mainAccount);
+                    }
                 });
 
-                await test.step(`Save payment term: ${paymentTerm.name}`, async () => {
+                await test.step(`Save charge: ${charge.newName}`, async () => {
                     await menuAction.clickTopMenuOption('Save');
                 });
 
-                await test.step(`Validate payment term new name: ${paymentTerm.newName}`, async () => {
-                    await expect(page.locator("input[name='PaymentTerm.Name']")).toHaveValue(paymentTerm.newName);
+                await test.step(`Validate charge new name: ${charge.newName}`, async () => {
+                    await expect(page.locator("input[name='Charge.Name']")).toHaveValue(charge.newName);
                 });
 
                 // updatedRecords.push(paymentTerm.newName);
-                updatedRecords.push(`${paymentTerm.name} → ${paymentTerm.newName}`);
-
-                // await test.step('Back to the listing', async () => {
-                //     await paymentTermPage.clickPaymentTerm();
-                // });
+                updatedRecords.push(`${charge.name} → ${charge.newName}`);
 
             } catch (error) {
-                failedRecords.push(paymentTerm?.name);
-                console.error(`🔴 Failed to update record: ${paymentTerm?.name} \n`, error);
+                failedRecords.push(charge?.name);
+                console.error(`🔴 Failed to update record: ${charge?.name} \n`, error);
             } finally {
                 await test.step(`Back to listing`, async () => {
                     await menuAction
-                        .navigateBackToListing('Payment Term')
+                        .navigateBackToListing('Charge')
                         .catch(async () => {
                             console.warn('🔴 Navigation failed, reloading page');
                             await page.reload();
                         });
                 });
 
-                await test.step(`Clear payment term filter`, async () => {
+                await test.step(`Clear charge filter`, async () => {
                     await listingAction.clearMasterNameColumnFilter();
                 });
             }
@@ -289,84 +301,84 @@ test.describe('Charge CRUD Operations', () => {
 
         await test.step('Log update summary', async () => {
             SummaryHelper.logCrudSummary({
-                entityName: 'Payment Term',
+                entityName: 'Charge',
                 action: 'Update',
                 successRecords: updatedRecords,
                 skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
-                totalCount: paymentTermData.update.length
+                totalCount: chargeData.update.length
             });
         });
 
         await test.step('Export update summary', async () => {
             SummaryHelper.exportCrudSummary({
-                entityName: 'Payment Term',
+                entityName: 'Charge',
                 action: 'Update',
                 successRecords: updatedRecords,
                 skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
-                totalCount: paymentTermData.update.length
+                totalCount: chargeData.update.length
             });
         });
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `🔴 Failed payment term(s): ${failedRecords.join(', ')}`
+                `🔴 Failed charge(s): ${failedRecords.join(', ')}`
             );
         }
     });
 
-    test.skip('should delete charge(s) successfully', async ({ page }) => {
+    test('should delete charge(s) successfully', async ({ page }) => {
 
         const deletedRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
 
-        await test.step('Navigate to payment term master', async () => {
+        await test.step('Navigate to charge master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Payment Term');
+            await setupAction.navigateToMasterByText('Charge');
         });
 
         // ===== Iterate & Delete =====
-        for (const paymentTerm of paymentTermData.delete) {
+        for (const charge of chargeData.delete) {
             const result = await masterDeleteAction.safeDeleteByName({
-                masterType: 'Payment Term',
-                name: paymentTerm.name,
+                masterType: 'Charge',
+                name: charge.name,
                 retries: 1
             });
 
             if (result === 'deleted') {
-                deletedRecords.push(paymentTerm.name);
+                deletedRecords.push(charge.name);
             }
 
             if (result === 'skipped') {
-                skippedRecords.push(paymentTerm.name);
+                skippedRecords.push(charge.name);
             }
 
             if (result === 'failed') {
-                failedRecords.push(paymentTerm.name);
+                failedRecords.push(charge.name);
             }
         }
 
         await test.step('Log delete summary', async () => {
             SummaryHelper.logCrudSummary({
-                entityName: 'Payment Term',
+                entityName: 'Charge',
                 action: 'Delete',
                 successRecords: deletedRecords,
                 skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
-                totalCount: paymentTermData.delete.length
+                totalCount: chargeData.delete.length
             });
         });
 
         await test.step('Export delete summary', async () => {
             SummaryHelper.exportCrudSummary({
-                entityName: 'Payment Term',
+                entityName: 'Charge',
                 action: 'Delete',
                 successRecords: deletedRecords,
                 skippedRecords: skippedRecords,
                 failedRecords: failedRecords,
-                totalCount: paymentTermData.delete.length
+                totalCount: chargeData.delete.length
             });
         });
 

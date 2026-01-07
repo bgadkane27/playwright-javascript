@@ -107,7 +107,7 @@ export class CommonAction {
 
     async selectMainAccount(mainAccount) {
         await this.page.locator("[id*='MainAccountIdLookup_B']").first().click();
-        await this.page.locator("input[id*='MainAccountIdLookup_I']").fill(mainAccount);
+        // await this.page.locator("input[id*='MainAccountIdLookup_I']").fill(mainAccount);
         await this.page.waitForTimeout(1000);
         await this.lookupAction.selectLookupText(mainAccount);
     }

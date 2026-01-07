@@ -1,17 +1,17 @@
 {
-  "module": "Payment Term",
+  "module": "Charge",
   "action": "Delete",
   "total": 3,
   "successCount": 2,
   "skippedCount": 1,
   "failedCount": 0,
   "successRecords": [
-    "Net 60",
-    "Net 75"
+    "Packaging Charge",
+    "Swift Charge update"
   ],
   "skippedRecords": [
-    "Net 90"
+    "Swift Charge"
   ],
   "failedRecords": [],
-  "executedAt": "7/1/2026, 4:35:32 pm"
+  "executedAt": "7/1/2026, 10:46:00 pm"
 }

@@ -56,12 +56,12 @@ export class LookupAction {
                     const text = (await row.innerText()).trim();
 
                     if (text.includes(optionText)) {
-                        await row.click();
+                        await row.click({ force: true });
                         await this.page.waitForTimeout(500);
                         return;
                     }
                 }
-                await this.page.getByRole('button', {name: 'next-icon', exact : true}).click();
+                await this.page.getByRole('button', { name: 'next-icon', exact: true }).click();
                 await this.page.waitForTimeout(500);
             }
         });

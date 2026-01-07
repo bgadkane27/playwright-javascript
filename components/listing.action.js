@@ -43,6 +43,24 @@ export class ListingAction {
     }
 
     /**
+     * Checks whether a master record exists in the listing
+     *
+     * @param {string} name
+     * @returns {Promise<boolean>}
+     */
+    async isRecordExists(name) {
+        try {
+            await this.filterMasterByName(name);
+            return await this.page
+                .locator(`text=${name}`)
+                .first()
+                .isVisible({ timeout: 3000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
      * Clears the Name column filter in the master listing.
      *
      * This method removes the applied filter value
