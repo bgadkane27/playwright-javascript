@@ -1,9 +1,10 @@
 import { test } from '@playwright/test';
+import { LookupAction } from './lookup.action';
 
 export class CommonAction {
-    constructor(page, lookupAction) {
+    constructor(page) {
         this.page = page;
-        this.lookupAction = lookupAction;
+        this.lookupAction = new LookupAction(page);
     }
 
     /**
@@ -105,7 +106,7 @@ export class CommonAction {
     }
 
     async selectMainAccount(mainAccount) {
-        await this.page.locator("[id*='MainAccountIdLookup_B']").click();
+        await this.page.locator("[id*='MainAccountIdLookup_B']").first().click();
         await this.page.locator("input[id*='MainAccountIdLookup_I']").fill(mainAccount);
         await this.page.waitForTimeout(1000);
         await this.lookupAction.selectLookupText(mainAccount);

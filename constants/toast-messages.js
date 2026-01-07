@@ -34,6 +34,12 @@ const Messages = {
         Create: 'Supplier created successfully',
         Update: 'Supplier updated successfully',
         Delete: 'Supplier deleted successfully'
+    },
+
+    Charge: {
+        Create: 'Charge created successfully',
+        Update: 'Charge updated successfully',
+        Delete: 'Record deleted successfully'
     }
 };
 

@@ -1,15 +1,15 @@
 {
-  "module": "Payment Term",
+  "module": "Charge",
   "action": "Create",
   "total": 2,
   "successCount": 2,
   "skippedCount": 0,
   "failedCount": 0,
   "successRecords": [
-    "Net 75",
-    "Net 90"
+    "Swift Charge",
+    "Packaging Charge"
   ],
   "skippedRecords": [],
   "failedRecords": [],
-  "executedAt": "7/1/2026, 4:34:57 pm"
+  "executedAt": "7/1/2026, 5:04:43 pm"
 }

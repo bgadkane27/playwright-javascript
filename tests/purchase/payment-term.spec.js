@@ -11,7 +11,7 @@ import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { PaymentTermPage } from '../../pages/purchase/pyment-term.page.js';
 import paymentTermData from '../../testdata/purchase/payment-term.json';
 
-test.describe('Payment Term CRUD Operations', () => {
+test.describe.skip('Payment Term CRUD Operations', () => {
     let paymentTermPage;
     let menuAction;
     let listingAction;

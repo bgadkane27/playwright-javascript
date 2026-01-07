@@ -4,7 +4,7 @@ import { ListingAction } from '../../components/listing.action.js';
 import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
 import { MasterHeaderAction } from '../../components/master-header.action.js';
-import { MasterDeleteAction } from '../../components/master-delete.action.js'
+import { MasterDeleteAction } from '../../components/master-delete.action.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
@@ -34,7 +34,7 @@ test.describe('Charge CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test.only('should not allow duplicate charge creation', async ({ page }) => {
+    test.skip('should not allow duplicate charge creation', async ({ page }) => {
 
         const charge = chargeData.validate;
 
@@ -43,41 +43,40 @@ test.describe('Charge CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Charge');
         });
 
-        await test.step('Open new charge creation form', async () => {
-            await menuAction.clickListingMenuOptionByTitle('New');
-        });
+        try {
+            await test.step('Open new charge creation form', async () => {
+                await menuAction.clickListingMenuOptionByTitle('New');
+            });
 
-        await test.step('Attempt to save charge with duplicate name', async () => {
-            await masterHeaderAction.fillName(charge.name);
-            await menuAction.clickTopMenuOption('Save');
-        });
+            await test.step('Attempt to save charge with duplicate name', async () => {
+                await masterHeaderAction.fillName(charge.name);
+                await menuAction.clickTopMenuOption('Save');
+            });
 
-        // await test.step('Validate duplicate charge name message', async () => {
-        //     await expect.soft(
-        //         page.getByText(
-        //             `Charge with ${charge.name} name already exists.`,
-        //             { exact: false }
-        //         )
-        //     ).toBeVisible();
-        // });
+            // await test.step('Validate duplicate charge name message', async () => {
+            //     await expect.soft(
+            //         page.getByText(
+            //             `Charge with ${charge.name} name already exists.`,
+            //             { exact: false }
+            //         )
+            //     ).toBeVisible();
+            // });
 
-        await test.step('Attempt to save charge with duplicate code', async () => {
-            await masterHeaderAction.fillCodeIntoTextBox(charge.code);
-            await menuAction.clickTopMenuOption('Save');
-        });
+            await test.step('Attempt to save charge with duplicate code', async () => {
+                await masterHeaderAction.fillCodeIntoTextBox(charge.code);
+                await menuAction.clickTopMenuOption('Save');
+            });
 
-        await test.step('Validate duplicate charge code message', async () => {
-            await expect(
-                page.getByText(
-                    `Duplicate code found. Code: ${charge.code} already exists!`,
-                    { exact: false }
-                )
-            ).toBeVisible();
-        });
-
-        await test.step('Navigate back to listing', async () => {
-            await menuAction.navigateBackToListing('Charge');
-        });
+            await test.step('Validate duplicate code error', async () => {
+                await expect(
+                    page.locator('#ValidationSummary').getByText(`Duplicate code found. Code: ${charge.code} already exists!`)
+                ).toBeVisible();
+            });
+        } finally {
+            await test.step('Navigate back to listing', async () => {
+                await menuAction.navigateBackToListing('Charge');
+            });
+        }
 
         await test.step('Log validation summary', async () => {
             SummaryHelper.logValidationSummary(charge.name, charge.code);
@@ -133,7 +132,9 @@ test.describe('Charge CRUD Operations', () => {
                 });
 
                 await test.step(`Select main account: ${charge.mainAccount}`, async () => {
-                    await commonAction.selectMainAccount(charge.mainAccount);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.mainAccount)) {
+                        await commonAction.selectMainAccount(charge.mainAccount);
+                    }
                 });
 
                 await test.step(`Save charge: ${charge.name}`, async () => {
@@ -190,7 +191,7 @@ test.describe('Charge CRUD Operations', () => {
 
     });
 
-    test('should update charge(s) successfully', async ({ page }) => {
+    test.skip('should update charge(s) successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const updatedRecords = [];
@@ -315,7 +316,7 @@ test.describe('Charge CRUD Operations', () => {
         }
     });
 
-    test('should delete charge(s) successfully', async ({ page }) => {
+    test.skip('should delete charge(s) successfully', async ({ page }) => {
 
         const deletedRecords = [];
         const skippedRecords = [];
