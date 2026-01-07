@@ -1,0 +1,43 @@
+{
+    "feature": {
+        "allowCodeManual": false
+    },
+    "validate": {
+        "code": "C001",
+        "name": "Freight Charges"
+    },
+    "create": [
+        {
+            "code": "C002",
+            "name": "Swift Charge",
+            "nameArabic": "Swift Charge",
+            "defaultValue": "10",
+            "mainAccount": "11110 | Cash-in-Hand",
+            "description": "Swift Charge"
+        },
+        {
+            "code": "C003",
+            "name": "Packaging Charge",
+            "nameArabic": "رسوم التغليف",
+            "defaultValue": "20",
+            "mainAccount": null,
+            "description": "Extra charge for packaging materials"
+        }
+    ],
+    "update": {
+        "code": "C003",
+        "name": "Updated Packaging Charge",
+        "nameArabic": "تحديث رسوم التوصيل",
+        "defaultValue": "60",
+        "mainAccount": "11110 | Cash-in-Hand",
+        "description": "Updated charge for packaging materials"
+    },
+    "delete": [
+        {
+            "name": "Packaging Charge"
+        },
+        {
+            "name": "Swift Charge"
+        }
+    ]
+}

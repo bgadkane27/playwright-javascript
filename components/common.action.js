@@ -1,8 +1,9 @@
 import { test } from '@playwright/test';
 
 export class CommonAction {
-    constructor(page) {
+    constructor(page, lookupAction) {
         this.page = page;
+        this.lookupAction = lookupAction;
     }
 
     /**
@@ -101,6 +102,13 @@ export class CommonAction {
         await test.step(`Fill Fax Number field ${index + 1}: ${fax}`, async () => {
             await this.page.locator("input[id*='FaxNumber']").nth(index).fill(fax);
         });
+    }
+
+    async selectMainAccount(mainAccount) {
+        await this.page.locator("[id*='MainAccountIdLookup_B']").click();
+        await this.page.locator("input[id*='MainAccountIdLookup_I']").fill(mainAccount);
+        await this.page.waitForTimeout(1000);
+        await this.lookupAction.selectLookupText(mainAccount);
     }
 
 }

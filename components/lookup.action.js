@@ -45,21 +45,25 @@ export class LookupAction {
 
     async selectLookupText(optionText) {
         await test.step(`Select lookup text option: ${optionText}`, async () => {
-            const rows = this.page.locator(".lookup-text");
 
-            const count = await rows.count();
+            while (true) {
+                const rows = this.page.locator(".lookup-text");
 
-            for (let i = 0; i < count; i++) {
-                const row = rows.nth(i);
-                const text = (await row.innerText()).trim();
+                const count = await rows.count();
 
-                if (text.includes(optionText)) {
-                    await row.click();
-                    await this.page.waitForTimeout(500);
-                    return;
+                for (let i = 0; i < count; i++) {
+                    const row = rows.nth(i);
+                    const text = (await row.innerText()).trim();
+
+                    if (text.includes(optionText)) {
+                        await row.click();
+                        await this.page.waitForTimeout(500);
+                        return;
+                    }
                 }
+                await this.page.getByRole('button', {name: 'next-icon', exact : true}).click();
+                await this.page.waitForTimeout(500);
             }
-            throw new Error(`Lookup value not found: ${optionText}`);
         });
     }
 
