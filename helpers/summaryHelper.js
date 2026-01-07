@@ -123,29 +123,25 @@ export class SummaryHelper {
       <h2>${summary.module} ${summary.action} Summary</h2>
 
       <h3>Total records attempted: ${summary.total}</h3>
-      <h4 class="success">✔ ${summary.action}d records: ${summary.successCount}</h4>
-      <h4 class="success">✔ ${summary.action}d record names</h4>
+        <p>${summary.successCount} ${summary.action}d, ${summary.failedCount} failed, ${summary.skippedCount} skipped</p>      
+        <h4 class="success">✔ ${summary.action}d record names</h4>
       <ul>
         ${summary.successRecords.length
-                ? summary.successRecords.map(r => `<li>${r}</li>`).join('')
+                ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
                 : ``}
-      </ul>
-
-      <h4 class="skipped">⚠️ Skipped records: ${summary.skippedCount}</h4>
-            <h4 class="skipped">⚠️ Skipped record names</h4>
-      <ul>
-        ${summary.skippedRecords.length
-                ? summary.skippedRecords.map(r => `<li>${r}</li>`).join('')
-                : ``}
-      </ul>
-      <h4 class="failed">🔴 Failed records: ${summary.failedCount}</h4>
-      <h4 class="failed">🔴 Failed record names</h4>
+      </ul>     
+        <h4 class="failed">🔴 Failed record names</h4>
       <ul>
         ${summary.failedRecords.length
-                ? summary.failedRecords.map(r => `<li>${r}</li>`).join('')
+                ? summary.failedRecords.map(r => `<li>${r}</li><br />`).join('')
                 : ''}
       </ul>
-
+        <h4 class="skipped">⚠️ Skipped record names</h4>
+      <ul>
+        ${summary.skippedRecords.length
+                ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
+                : ``}
+      </ul> 
       <p>Executed at: ${summary.executedAt}</p>
     </body>
     </html>`;
