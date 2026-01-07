@@ -223,18 +223,14 @@ test.describe('Charge CRUD Operations', () => {
                 continue;
             }
 
-            try {
-                await test.step(`Filter charge record: ${charge.name}`, async () => {
-                    await listingAction.filterMasterByName(charge.name);
-                });
+            try {          
 
-                const recordExists = await page.locator(`text=${charge.name}`).first().isVisible({ timeout: 3000 }).catch(() => false);
-
+                const recordExists = await listingAction.isRecordExists(charge?.name);
                 if (!recordExists) {
                     console.warn(`⚠️ Updation skipped because record not found: ${charge.name}.`);
                     skippedRecords.push(charge.name);
                     continue;
-                }
+                }           
 
                 await listingAction.selectMasterRowByName(charge.name);
                 await menuAction.clickListingMenuOptionByTitle('Edit');
@@ -277,7 +273,6 @@ test.describe('Charge CRUD Operations', () => {
                     await expect(page.locator("input[name='Charge.Name']")).toHaveValue(charge.newName);
                 });
 
-                // updatedRecords.push(paymentTerm.newName);
                 updatedRecords.push(`${charge.name} → ${charge.newName}`);
 
             } catch (error) {
