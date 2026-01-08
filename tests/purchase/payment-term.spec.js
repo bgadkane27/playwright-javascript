@@ -8,7 +8,7 @@ import { MasterDeleteAction } from '../../components/master-delete.action.js'
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
-import { PaymentTermPage } from '../../pages/purchase/pyment-term.page.js';
+import { PaymentTermPage } from '../../pages/purchase/payment-term.page.js';
 import paymentTermData from '../../testdata/purchase/payment-term.json';
 
 test.describe.skip('Payment Term CRUD Operations', () => {
