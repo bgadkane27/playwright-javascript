@@ -1,6 +1,6 @@
 {
     "feature": {
-        "allowCodeManual": false
+        "allowCodeManual": true
     },
     "validate": {
         "code": "C001",

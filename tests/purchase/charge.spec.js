@@ -34,7 +34,7 @@ test.describe('Charge CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test('should not allow duplicate charge creation', async ({ page }) => {
+    test('create charge: should show validation message for duplicate code', async ({ page }) => {
 
         const charge = chargeData.validate;
 
@@ -43,51 +43,70 @@ test.describe('Charge CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Charge');
         });
 
-        try {
+        // await test.step(`Check precondition: record exists (${charge?.code})`, async () => {
+        //     const exists = await listingAction.isRecordExists(charge?.code);
+        //     test.skip(!exists, `Precondition failed: Charge '${charge?.code}' does not exist`);
+        // });
 
-            await test.step('Check the record is present or not', async () => {
-                const exists = await listingAction.isRecordExists(charge?.name);
-                expect(exists).toBeTruthy();
-            });
-
-            await test.step('Open new charge creation form', async () => {
-                await menuAction.clickListingMenuOptionByTitle('New');
-            });
-
-            await test.step('Attempt to save charge with duplicate name', async () => {
-                await masterHeaderAction.fillName(charge.name);
-                await menuAction.clickTopMenuOption('Save');
-            });
-
-            // await test.step('Validate duplicate charge name message', async () => {
-            //     await expect.soft(
-            //         page.getByText(
-            //             `Charge with ${charge.name} name already exists.`,
-            //             { exact: false }
-            //         )
-            //     ).toBeVisible();
-            // });
-
-            await test.step('Attempt to save charge with duplicate code', async () => {
-                await masterHeaderAction.fillCodeIntoTextBox(charge.code);
-                await menuAction.clickTopMenuOption('Save');
-            });
-
-            await test.step('Validate duplicate code error', async () => {
-                await expect(
-                    page.getByText(`Duplicate code found. Code: ${charge.code} already exists!`)
-                ).toBeVisible({ timeout: 5000 });
-            });
-        } finally {
-            await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Charge');
-            });
-        }
-
-        await test.step('Log validation summary', async () => {
-            SummaryHelper.logValidationSummary(charge.name, charge.code);
+        await test.step('Open new charge creation form', async () => {
+            await menuAction.clickListingMenuOptionByTitle('New');
         });
 
+        await test.step(`Fill name: ${charge.name}`, async () => {
+            await masterHeaderAction.fillName(charge.name);
+        });
+
+        await test.step('Attempt to save charge with duplicate code', async () => {
+            await masterHeaderAction.fillCodeIntoTextBox(charge.code);
+            await menuAction.clickTopMenuOption('Save');
+        });
+
+        await test.step('Validate duplicate code error', async () => {
+            await expect(
+                page.getByText(`Duplicate code found. Code: ${charge.code} already exists!`)
+            ).toBeVisible({ timeout: 5000 });
+        });
+
+        await test.step('Navigate back to listing', async () => {
+            await menuAction.navigateBackToListing('Charge');
+        });
+    });
+    
+    test('create charge: should show validation message for duplicate name', async ({ page }) => {
+
+        const charge = chargeData.validate;
+
+        await test.step('Navigate to charge master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Charge');
+        });
+
+        await test.step(`Check precondition: record exists (${charge?.name})`, async () => {
+            const exists = await listingAction.isRecordExists(charge?.name);
+            test.skip(!exists, `Precondition failed: Charge '${charge?.name}' does not exist`);
+        });
+
+        await test.step('Open new charge creation form', async () => {
+            await menuAction.clickListingMenuOptionByTitle('New');
+        });
+
+        await test.step('Attempt to save charge with duplicate name', async () => {
+            await masterHeaderAction.fillName(charge.name);
+            await menuAction.clickTopMenuOption('Save');
+        });
+
+        await test.step('Validate duplicate charge name message', async () => {
+            await expect(
+                page.getByText(
+                    `Charge with ${charge.name} name already exists.`,
+                    { exact: false }
+                )
+            ).toBeVisible();
+        });
+
+        await test.step('Navigate back to listing', async () => {
+            await menuAction.navigateBackToListing('Charge');
+        });
     });
 
     test('should create charge(s) successfully', async ({ page }) => {
@@ -223,14 +242,14 @@ test.describe('Charge CRUD Operations', () => {
                 continue;
             }
 
-            try {          
+            try {
 
                 const recordExists = await listingAction.isRecordExists(charge?.name);
                 if (!recordExists) {
                     console.warn(`⚠️ Updation skipped because record not found: ${charge.name}.`);
                     skippedRecords.push(charge.name);
                     continue;
-                }           
+                }
 
                 await listingAction.selectMasterRowByName(charge.name);
                 await menuAction.clickListingMenuOptionByTitle('Edit');
