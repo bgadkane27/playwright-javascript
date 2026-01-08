@@ -6,6 +6,23 @@ export class ListingAction {
     }
 
     /**
+     * Filters the master listing by column index.
+     *
+     * This method enters the provided value into the
+     * column filter textbox to narrow down the results.
+     *
+     * @param {string} option - The master details used for filtering.
+     */
+    async filterMasterByColumnIndex(option, number) {
+        await test.step(`Filter master list: ${option}`, async () => {
+            await this.page
+                .locator(`input[aria-describedby="dx-col-${number}"]`)
+                .fill(option);
+            await this.page.waitForTimeout(2000);
+        });
+    }
+
+    /**
      * Filters the master listing by the given code.
      *
      * This method enters the provided value into the
