@@ -44,7 +44,7 @@ test.describe('Charge CRUD Operations', () => {
         });
 
         await test.step(`Check precondition: record exists (${charge?.code})`, async () => {
-            const exists = await listingAction.isRecordExistsWithCode(charge?.code);
+            const exists = await listingAction.isRecordExists(charge?.code, 2);
             test.skip(!exists, `Precondition failed: Charge '${charge?.code}' does not exist`);
         });
 
@@ -86,7 +86,7 @@ test.describe('Charge CRUD Operations', () => {
         });
 
         await test.step(`Check precondition: record exists (${charge?.name})`, async () => {
-            const exists = await listingAction.isRecordExistsWithName(charge?.name);
+            const exists = await listingAction.isRecordExists(charge?.name, 3);
             test.skip(!exists, `Precondition failed: Charge '${charge?.name}' does not exist`);
         });
 

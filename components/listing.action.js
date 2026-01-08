@@ -11,15 +11,57 @@ export class ListingAction {
      * This method enters the provided value into the
      * column filter textbox to narrow down the results.
      *
-     * @param {string} option - The master details used for filtering.
+     * @param {string} masterInfo - The master details used for filtering the record
+     * @param {number} columnIndex - Index of the column
      */
-    async filterMasterByColumnIndex(option, number) {
-        await test.step(`Filter master list: ${option}`, async () => {
+    async filterMasterByColumnIndex(masterInfo, columnIndex) {
+        await test.step(`Filter master list: ${masterInfo}`, async () => {
             await this.page
-                .locator(`input[aria-describedby="dx-col-${number}"]`)
-                .fill(option);
+                .locator(`input[aria-describedby="dx-col-${columnIndex}"]`)
+                .fill(masterInfo);
             await this.page.waitForTimeout(2000);
         });
+    }
+
+    /**
+     * Checks whether a master record exists in the listing with master details
+     *
+     * @param {string} masterInfo - The master details used for filtering the record
+     * @param {number} columnIndex - Index of the column
+     * @returns {Promise<boolean>}
+     */
+    async isRecordExists(masterInfo, columnIndex) {
+        try {
+            await this.filterMasterByColumnIndex(masterInfo, columnIndex);
+
+            return await this.page
+                .locator(`text=${masterInfo}`)
+                .first()
+                .isVisible({ timeout: 3000 });
+
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether a master record exists in the listing
+     *
+     * @param {string} masterInfo
+     * @returns {Promise<boolean>}
+     */
+    async isRecordExistsWithDetails(masterInfo, columnIndex) {
+        try {
+            await this.filterMasterByColumnIndex(masterInfo, columnIndex);
+
+            const record = this.page.locator(
+                `//td[normalize-space()='${masterInfo}']`
+            );
+
+            return await record.first().isVisible({ timeout: 3000 });
+        } catch {
+            return false;
+        }
     }
 
     /**
