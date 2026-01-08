@@ -3,108 +3,108 @@ import path from 'path';
 
 export class SummaryHelper {
 
-    /**
-     * Logs a generic CRUD summary report in console.
-     *
-     * @param {Object} options
-     * @param {string} options.entityName - Master name with description
-     * @param {'Create'|'Update'|'Delete'} options.action - Action performed
-     * @param {Array<string>} options.successRecords - Successfully processed records
-     * @param {Array<string>} options.skippedRecords - Skipped records
-     * @param {Array<string>} options.failedRecords - Failed records
-     * @param {number} options.totalCount - Total records attempted
-     */
-    static logCrudSummary({
-        entityName,
-        action,
-        successRecords = [],
-        skippedRecords = [],
-        failedRecords = [],
-        totalCount = 0
-    }) {
-        console.info(`\n========== ${entityName} ${action} Summary ==========`);
+  /**
+   * Logs a generic CRUD summary report in console.
+   *
+   * @param {Object} options
+   * @param {string} options.entityName - Master name with description
+   * @param {'Create'|'Update'|'Delete'} options.action - Action performed
+   * @param {Array<string>} options.successRecords - Successfully processed records
+   * @param {Array<string>} options.skippedRecords - Skipped records
+   * @param {Array<string>} options.failedRecords - Failed records
+   * @param {number} options.totalCount - Total records attempted
+   */
+  static logCrudSummary({
+    entityName,
+    action,
+    successRecords = [],
+    skippedRecords = [],
+    failedRecords = [],
+    totalCount = 0
+  }) {
+    console.info(`\n========== ${entityName} ${action} Summary ==========`);
 
-        console.info(`📄 Total records attempted: ${totalCount}`);
-        console.info(`🟢 ${action}d records: ${successRecords.length}`);
+    console.info(`📄 Total records attempted: ${totalCount}`);
+    console.info(`🟢 ${action}d records: ${successRecords.length}`);
 
-        if (successRecords.length) {
-            console.info(`🟢 ${action}d record names: ${successRecords.join(', ')}`);
-        }
-
-        console.info(`⚠️ Skipped records: ${skippedRecords.length}`);
-
-        if (skippedRecords.length) {
-            console.info(`⚠️ Skipped record names: ${skippedRecords.join(', ')}`);
-        }
-
-        console.info(`🔴 Failed records: ${failedRecords.length}`);
-
-        if (failedRecords.length) {
-            console.info(`🔴 Failed record names: ${failedRecords.join(', ')}`);
-        }
-
-        console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}\n`);
-        console.info('=====================================================');
+    if (successRecords.length) {
+      console.info(`🟢 ${action}d record names: ${successRecords.join(', ')}`);
     }
 
-    /**
-     * Export a generic CRUD summary report to files (JSON & HTML)
-     *
-     * @param {Object} options
-     * @param {string} options.entityName - Master name with description
-     * @param {'Create'|'Update'|'Delete'} options.action - Action performed
-     * @param {Array<string>} options.successRecords - Successfully processed records
-     * @param {Array<string>} options.skippedRecords - Skipped records
-     * @param {Array<string>} options.failedRecords - Failed records
-     * @param {number} options.totalCount - Total records attempted
-     */
-    static exportCrudSummary({
-        entityName,
-        action,
-        successRecords = [],
-        skippedRecords = [],
-        failedRecords = [],
-        totalCount = 0
-    }) {
-        const summary = {
-            module: entityName,
-            action,
-            total: totalCount,
-            successCount: successRecords.length,
-            skippedCount: skippedRecords.length,
-            failedCount: failedRecords.length,
-            successRecords,
-            skippedRecords,
-            failedRecords,
-            executedAt: new Date().toLocaleString('en-IN')
-        };
+    console.info(`⚠️ Skipped records: ${skippedRecords.length}`);
 
-        const outputDir = path.resolve('reports/summaries');
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir, { recursive: true });
-        }
-
-        // const fileBaseName = `${entityName}-${action}-Summary`;
-        const fileBaseName = `${entityName.replace(/[^a-z0-9]/gi, '_')}_${action}_Summary`;
-
-        // 📄 JSON
-        fs.writeFileSync(
-            path.join(outputDir, `${fileBaseName}.json`),
-            JSON.stringify(summary, null, 2)
-        );
-
-        // 🌐 HTML
-        fs.writeFileSync(
-            path.join(outputDir, `${fileBaseName}.html`),
-            this.generateHtml(summary)
-        );
+    if (skippedRecords.length) {
+      console.info(`⚠️ Skipped record names: ${skippedRecords.join(', ')}`);
     }
 
-    /* ===========================
-       HTML GENERATOR
-    ============================ */
-    static generateHtml(summary) {
-        return `
+    console.info(`🔴 Failed records: ${failedRecords.length}`);
+
+    if (failedRecords.length) {
+      console.info(`🔴 Failed record names: ${failedRecords.join(', ')}`);
+    }
+
+    console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}\n`);
+    console.info('=====================================================');
+  }
+
+  /**
+   * Export a generic CRUD summary report to files (JSON & HTML)
+   *
+   * @param {Object} options
+   * @param {string} options.entityName - Master name with description
+   * @param {'Create'|'Update'|'Delete'} options.action - Action performed
+   * @param {Array<string>} options.successRecords - Successfully processed records
+   * @param {Array<string>} options.skippedRecords - Skipped records
+   * @param {Array<string>} options.failedRecords - Failed records
+   * @param {number} options.totalCount - Total records attempted
+   */
+  static exportCrudSummary({
+    entityName,
+    action,
+    successRecords = [],
+    skippedRecords = [],
+    failedRecords = [],
+    totalCount = 0
+  }) {
+    const summary = {
+      module: entityName,
+      action,
+      total: totalCount,
+      successCount: successRecords.length,
+      skippedCount: skippedRecords.length,
+      failedCount: failedRecords.length,
+      successRecords,
+      skippedRecords,
+      failedRecords,
+      executedAt: new Date().toLocaleString('en-IN')
+    };
+
+    const outputDir = path.resolve('reports/summaries');
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    // const fileBaseName = `${entityName}-${action}-Summary`;
+    const fileBaseName = `${entityName.replace(/[^a-z0-9]/gi, '_')}_${action}_Summary`;
+
+    // 📄 JSON
+    fs.writeFileSync(
+      path.join(outputDir, `${fileBaseName}.json`),
+      JSON.stringify(summary, null, 2)
+    );
+
+    // 🌐 HTML
+    fs.writeFileSync(
+      path.join(outputDir, `${fileBaseName}.html`),
+      this.generateHtml(summary)
+    );
+  }
+
+  /* ===========================
+     HTML GENERATOR
+  ============================ */
+  static generateHtml(summary) {
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -127,39 +127,49 @@ export class SummaryHelper {
         <h4 class="success">✔ ${summary.action}d record names</h4>
       <ul>
         ${summary.successRecords.length
-                ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
-                : ``}
+        ? summary.successRecords.map(r => `<li>${r}</li><br />`).join('')
+        : ``}
       </ul>     
         <h4 class="failed">🔴 Failed record names</h4>
       <ul>
         ${summary.failedRecords.length
-                ? summary.failedRecords.map(r => `<li>${r}</li><br />`).join('')
-                : ''}
+        ? summary.failedRecords.map(r => `<li>${r}</li><br />`).join('')
+        : ''}
       </ul>
         <h4 class="skipped">⚠️ Skipped record names</h4>
       <ul>
         ${summary.skippedRecords.length
-                ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
-                : ``}
+        ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
+        : ``}
       </ul> 
       <p>Executed at: ${summary.executedAt}</p>
     </body>
     </html>`;
-    }
+  }
 
 
-    /**
-     * Logs duplicate master creation not allowed validation summary.
-     * 
-     * @param {string} masterName - Name of the master (Supplier, Customer, etc.) 
-     * @param {string} masterCode - Code of the master (Supplier, Customer, etc.)
-     */
-    static logValidationSummary(masterName, masterCode) {
-        console.info('===== Duplicate Master Creation Not Allowed Validation Summary =====\n');
-        console.info(`✅ Validated Master Name: ${masterName}`);
-        console.info(`✅ Validated Master Code: ${masterCode || 'Not Applicable'}`);
-        console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
-        console.info('==============================================\n');
-    }
+  /**
+   * Logs duplicate master creation not allowed validation summary.
+   * 
+   * @param {string} masterCode - Code of the master (Supplier, Customer, etc.)
+   */
+  static logCodeValidationSummary(masterCode) {
+    console.info('===== Duplicate Code Validation Summary =====\n');
+    console.info(`✅ Validated Master Code: ${masterCode || 'Not Applicable'}`);
+    console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
+    console.info('==============================================\n');
+  }
+
+  /**
+   * Logs duplicate master creation not allowed validation summary.
+   * 
+   * @param {string} masterName - Name of the master (Supplier, Customer, etc.) 
+   */
+  static logNameValidationSummary(masterName) {
+    console.info('===== Duplicate Name Validation Summary =====\n');
+    console.info(`✅ Validated Master Name: ${masterName}`);
+    console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
+    console.info('==============================================\n');
+  }
 
 }

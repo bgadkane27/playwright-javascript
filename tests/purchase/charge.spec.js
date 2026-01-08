@@ -34,7 +34,7 @@ test.describe('Charge CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test.only('create charge: should show validation message for duplicate code', async ({ page }) => {
+    test('create charge: should show validation message for duplicate code', async ({ page }) => {
 
         const charge = chargeData.validate;
 
@@ -69,6 +69,10 @@ test.describe('Charge CRUD Operations', () => {
 
         await test.step('Navigate back to listing', async () => {
             await menuAction.navigateBackToListing('Charge');
+        });
+
+        await test.step('Log name validation summary', async () => { 
+            SummaryHelper.logCodeValidationSummary(charge.code); 
         });
     });
 
@@ -107,6 +111,11 @@ test.describe('Charge CRUD Operations', () => {
         await test.step('Navigate back to listing', async () => {
             await menuAction.navigateBackToListing('Charge');
         });
+
+        await test.step('Log name validation summary', async () => { 
+            SummaryHelper.logNameValidationSummary(charge.name); 
+        });
+        
     });
 
     test('should create charge(s) successfully', async ({ page }) => {
