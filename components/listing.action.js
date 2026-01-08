@@ -6,6 +6,23 @@ export class ListingAction {
     }
 
     /**
+     * Filters the master listing by the given code.
+     *
+     * This method enters the provided value into the
+     * Code column filter textbox to narrow down the results.
+     *
+     * @param {string} option - The master code used for filtering.
+     */
+    async filterMasterByCode(option) {
+        await test.step(`Filter master list by code: ${option}`, async () => {
+            await this.page
+                .locator('input[aria-describedby="dx-col-2"]')
+                .fill(option);
+            await this.page.waitForTimeout(2000);
+        });
+    }
+
+    /**
      * Filters the master listing by the given name.
      *
      * This method enters the provided value into the
@@ -45,10 +62,28 @@ export class ListingAction {
     /**
      * Checks whether a master record exists in the listing
      *
+     * @param {string} code
+     * @returns {Promise<boolean>}
+     */
+    async isRecordExistsWithCode(code) {
+        try {
+            await this.filterMasterByCode(code);
+            return await this.page
+                .locator(`text=${code}`)
+                .first()
+                .isVisible({ timeout: 3000 });
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Checks whether a master record exists in the listing
+     *
      * @param {string} name
      * @returns {Promise<boolean>}
      */
-    async isRecordExists(name) {
+    async isRecordExistsWithName(name) {
         try {
             await this.filterMasterByName(name);
             return await this.page

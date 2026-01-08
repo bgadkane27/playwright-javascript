@@ -34,7 +34,7 @@ test.describe('Charge CRUD Operations', () => {
         await menuAction.selectModule('Purchase');
     });
 
-    test('create charge: should show validation message for duplicate code', async ({ page }) => {
+    test.only('create charge: should show validation message for duplicate code', async ({ page }) => {
 
         const charge = chargeData.validate;
 
@@ -43,10 +43,10 @@ test.describe('Charge CRUD Operations', () => {
             await setupAction.navigateToMasterByText('Charge');
         });
 
-        // await test.step(`Check precondition: record exists (${charge?.code})`, async () => {
-        //     const exists = await listingAction.isRecordExists(charge?.code);
-        //     test.skip(!exists, `Precondition failed: Charge '${charge?.code}' does not exist`);
-        // });
+        await test.step(`Check precondition: record exists (${charge?.code})`, async () => {
+            const exists = await listingAction.isRecordExistsWithCode(charge?.code);
+            test.skip(!exists, `Precondition failed: Charge '${charge?.code}' does not exist`);
+        });
 
         await test.step('Open new charge creation form', async () => {
             await menuAction.clickListingMenuOptionByTitle('New');
@@ -71,7 +71,7 @@ test.describe('Charge CRUD Operations', () => {
             await menuAction.navigateBackToListing('Charge');
         });
     });
-    
+
     test('create charge: should show validation message for duplicate name', async ({ page }) => {
 
         const charge = chargeData.validate;
@@ -82,7 +82,7 @@ test.describe('Charge CRUD Operations', () => {
         });
 
         await test.step(`Check precondition: record exists (${charge?.name})`, async () => {
-            const exists = await listingAction.isRecordExists(charge?.name);
+            const exists = await listingAction.isRecordExistsWithName(charge?.name);
             test.skip(!exists, `Precondition failed: Charge '${charge?.name}' does not exist`);
         });
 
@@ -244,7 +244,7 @@ test.describe('Charge CRUD Operations', () => {
 
             try {
 
-                const recordExists = await listingAction.isRecordExists(charge?.name);
+                const recordExists = await listingAction.isRecordExistsWithName(charge?.name);
                 if (!recordExists) {
                     console.warn(`⚠️ Updation skipped because record not found: ${charge.name}.`);
                     skippedRecords.push(charge.name);
