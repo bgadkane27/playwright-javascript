@@ -1,7 +1,7 @@
 {
     "feature": {
         "allowCodeManual": true,
-        "isFinancialSegmentsEnabled": false
+        "isFinancialSegmentsEnabled": true
     },
     "validate": {
         "code": "WH01",

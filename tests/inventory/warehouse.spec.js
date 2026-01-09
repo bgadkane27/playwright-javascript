@@ -185,6 +185,13 @@ test.describe('Warehouse CRUD Operations', () => {
 
                 });
 
+                if (warehouseData.feature?.isFinancialSegmentsEnabled && warehouse.financialIntegration != null) {
+                    const segment = warehouse.financialIntegration;
+                    await warehousePage.expandFinancialIntegrationTab();
+                    await warehousePage.selectSegmentOptionByText(1, segment.segment1)
+                    await warehousePage.selectSegmentOptionByText(2, segment.segment2)
+                }
+
                 await test.step(`Save warehouse: ${warehouse.name}`, async () => {
                     await menuAction.clickTopMenuOption('Save');
                 });
@@ -276,11 +283,11 @@ test.describe('Warehouse CRUD Operations', () => {
             try {
 
                 await test.step(`Select the record: ${warehouse.name}`, async () => {
-                await listingAction.selectRecordByText(warehouse.name);
+                    await listingAction.selectRecordByText(warehouse.name);
                 });
 
                 await test.step(`Open warehouse in edit mode`, async () => {
-                await menuAction.clickListingMenuOptionByTitle('Edit');
+                    await menuAction.clickListingMenuOptionByTitle('Edit');
                 });
 
                 await test.step(`Fill warehouse code: ${warehouse.code} if feature is true`, async () => {
@@ -303,6 +310,13 @@ test.describe('Warehouse CRUD Operations', () => {
                     }
 
                 });
+
+                if (warehouseData.feature?.isFinancialSegmentsEnabled && warehouse.financialIntegration != null) {
+                    const segment = warehouse.financialIntegration;
+                    await warehousePage.expandFinancialIntegrationTab();
+                    await warehousePage.selectSegmentOptionByText(1, segment.segment1)
+                    await warehousePage.selectSegmentOptionByText(2, segment.segment2)
+                }
 
                 await test.step(`Save warehouse: ${warehouse.newName}`, async () => {
                     await menuAction.clickTopMenuOption('Save');

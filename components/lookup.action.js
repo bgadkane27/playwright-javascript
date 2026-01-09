@@ -6,6 +6,30 @@ export class LookupAction {
     }
 
     /**
+     * Selects an option by visible text from the currently open DevExpress dropdown/lookup list.
+     * 
+     * @param {string} optionText - The exact visible text to select (e.g., "Account", "Sales")
+     */
+    async selectDropdownOptionByText(optionText) {
+        await test.step(`Select dropdown option: "${optionText}"`, async () => {
+            // Target the visible text inside the DevExpress listbox items
+            const optionRow = this.page.getByRole('row').locator('td').getByText(optionText, { exact: true });
+
+            // Wait for it to be visible (in case of animation/loading)
+            await optionRow.waitFor({ state: 'visible', timeout: 5000 });
+
+            // Optional: Scroll into view if needed
+            await optionRow.scrollIntoViewIfNeeded();
+
+            // Click the option
+            await optionRow.click();
+
+            // Optional: Small wait to let selection apply (helps with some DevExpress behaviors)
+            await this.page.waitForTimeout(300);
+        });
+    }
+
+    /**
    * Selects a value from a lookup list box based on visible text.
    *
    * This method finds the first lookup row containing the given text
