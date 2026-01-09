@@ -154,8 +154,8 @@ export class SummaryHelper {
    * @param {string} masterCode - Code of the master (Supplier, Customer, etc.)
    */
   static logCodeValidationSummary(masterCode) {
-    console.info('===== Duplicate Code Validation Summary =====\n');
-    console.info(`✅ Validated Master Code: ${masterCode || 'Not Applicable'}`);
+    console.info('\n===== Duplicate Code Validation Summary =====');
+    console.info(`✅ Validated Code: ${masterCode || 'Not Applicable'}`);
     console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
     console.info('==============================================\n');
   }
@@ -166,8 +166,8 @@ export class SummaryHelper {
    * @param {string} masterName - Name of the master (Supplier, Customer, etc.) 
    */
   static logNameValidationSummary(masterName) {
-    console.info('===== Duplicate Name Validation Summary =====\n');
-    console.info(`✅ Validated Master Name: ${masterName}`);
+    console.info('\n===== Duplicate Name Validation Summary =====');
+    console.info(`✅ Validated Name: ${masterName}`);
     console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
     console.info('==============================================\n');
   }

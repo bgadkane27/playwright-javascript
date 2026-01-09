@@ -34,7 +34,7 @@ export class MasterDeleteAction {
      */
     async deleteMasterByName(masterType, name) {
         await test.step(`Delete ${masterType}: ${name}`, async () => {
-            await this.listingAction.selectMasterRowByName(name);
+            await this.listingAction.selectRecordByText(name);
             await this.commonAction.clickMeatballMenu();
             await this.menuAction.clickMenuOptionByText('Delete');
             await this.menuAction.clickMenuOptionByText('Ok');

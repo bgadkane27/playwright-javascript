@@ -40,6 +40,12 @@ const Messages = {
         Create: 'Charge created successfully',
         Update: 'Charge updated successfully',
         Delete: 'Record deleted successfully'
+    },
+
+    Warehouse: {
+        Create: 'Warehouse created successfully',
+        Update: 'Warehouse updated successfully',
+        Delete: 'Record deleted successfully'
     }
 };
 

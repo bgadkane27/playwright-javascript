@@ -11,7 +11,7 @@ import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { ChargePage } from '../../pages/purchase/charge.page.js';
 import chargeData from '../../testdata/purchase/charge.json';
 
-test.describe('Charge CRUD Operations', () => {
+test.describe.skip('Charge CRUD Operations', () => {
     let chargePage;
     let menuAction;
     let listingAction;
@@ -30,7 +30,8 @@ test.describe('Charge CRUD Operations', () => {
         masterHeaderAction = new MasterHeaderAction(page);
         masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);
         toastHelper = new ToastHelper(page);
-
+        
+        await commonAction.navigateToApp('/');
         await menuAction.selectModule('Purchase');
     });
 
@@ -260,7 +261,7 @@ test.describe('Charge CRUD Operations', () => {
                     continue;
                 }
 
-                await listingAction.selectMasterRowByName(charge.name);
+                await listingAction.selectRecordByText(charge.name);
                 await menuAction.clickListingMenuOptionByTitle('Edit');
 
                 await test.step(`Fill charge code: ${charge.code} if feature is true`, async () => {

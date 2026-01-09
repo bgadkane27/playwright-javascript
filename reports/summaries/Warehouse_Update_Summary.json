@@ -1,14 +1,14 @@
 {
-  "module": "Charge",
+  "module": "Warehouse",
   "action": "Update",
   "total": 1,
   "successCount": 1,
   "skippedCount": 0,
   "failedCount": 0,
   "successRecords": [
-    "Swift Charge → Swift Charge update"
+    "SwiftSouth Hub → SwiftEast Hub"
   ],
   "skippedRecords": [],
   "failedRecords": [],
-  "executedAt": "8/1/2026, 9:47:43 pm"
+  "executedAt": "9/1/2026, 2:36:19 pm"
 }

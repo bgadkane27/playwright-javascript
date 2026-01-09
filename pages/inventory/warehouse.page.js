@@ -4,13 +4,13 @@ export class WarehousePage {
     constructor(page) {
         this.page = page;
 
-        this.skipNegativeStock = page.locator('#Warehouse\\.SkipNegativeStockCheck_S_D');
+        this.skipNegativeStockCheck = page.locator('#Warehouse\\.SkipNegativeStockCheck_S_D');
     }
 
     /** Enable auto insert while creating customer */
-    async enableSkipNegativeStock() {
+    async enableSkipNegativeStockCheck() {
         await test.step('Click Skip Negative Stock', async () => {
-            await this.skipNegativeStock.click();
+            await this.skipNegativeStockCheck.click();
         });
     }
 }

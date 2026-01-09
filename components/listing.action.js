@@ -119,6 +119,26 @@ export class ListingAction {
     }
 
     /**
+     * Selects a record from the listing by provided text.
+     *
+     * This method locates the row containing the given text,
+     * focuses on it, and performs a click to select the record.
+     *
+     * @param {string} option - The master record to be selected.
+     */
+    async selectRecordByText(option) {
+        await test.step(`Select record by name: ${option}`, async () => {
+            const row = this.page
+                .getByRole('row')
+                .filter({ hasText: option });
+
+            await row.focus();
+            await row.click({ position: { x: 10, y: 10 } });
+            await this.page.waitForTimeout(500);
+        });
+    }
+
+    /**
      * Checks whether a master record exists in the listing
      *
      * @param {string} code
@@ -164,6 +184,21 @@ export class ListingAction {
         await test.step('Clear master name column filter', async () => {
             await this.page
                 .locator('input[aria-describedby="dx-col-3"]')
+                .clear();
+            await this.page.waitForTimeout(500);
+        });
+    }
+
+    /**
+     * Clears the column data used to filter in listing.
+     *
+     * This method removes the applied filter value
+     * to reset the listing view.
+     */
+    async clearFilterDataFromColumnIndex(columnIndex) {
+        await test.step(`Clear filter Data from column number: ${columnIndex}`, async () => {
+            await this.page
+                .locator(`input[aria-describedby="dx-col-${columnIndex}"]`)
                 .clear();
             await this.page.waitForTimeout(500);
         });

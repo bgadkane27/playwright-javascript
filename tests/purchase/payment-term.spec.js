@@ -31,6 +31,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
         masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);
         toastHelper = new ToastHelper(page);
 
+        await commonAction.navigateToApp('/');
         await menuAction.selectModule('Purchase');
     });
 
@@ -266,7 +267,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
                     continue;
                 }
 
-                await listingAction.selectMasterRowByName(paymentTerm.name);
+                await listingAction.selectRecordByText(paymentTerm.name);
                 await menuAction.clickListingMenuOptionByTitle('Edit');
 
                 await test.step(`Fill payment term code: ${paymentTerm.code} if feature is true`, async () => {
