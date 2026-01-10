@@ -1,5 +1,6 @@
 import { test, expect } from '../base/baseTest.js';
 import { MenuAction } from '../../components/menu.action.js';
+import { LookupAction } from '../../components/lookup.action.js';
 import { ListingAction } from '../../components/listing.action.js';
 import { SetupAction } from '../../components/setup.action.js';
 import { CommonAction } from '../../components/common.action.js';
@@ -8,25 +9,28 @@ import { MasterDeleteAction } from '../../components/master-delete.action.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
-import { WarehousePage } from '../../pages/inventory/warehouse.page.js';
-import warehouseData from '../../testdata/inventory/warehouse.json';
+import { DateHelper } from '../../helpers/dateHelper.js';
+import { StockCountBatchPage } from '../../pages/inventory/stock-count-batch.page.js';
+import stockCountBatchData from '../../testdata/inventory/stock-count-batch.json';
 
-test.describe.skip('Warehouse CRUD Operations', () => {
-    let warehousePage;
+test.describe('Stock Count Batch CRUD Operations', () => {
+    let stockCountBatchPage;
     let menuAction;
     let listingAction;
     let setupAction;
     let commonAction;
+    let lookupAction;
     let masterHeaderAction;
     let masterDeleteAction;
     let toastHelper;
 
     test.beforeEach(async ({ page }) => {
-        warehousePage = new WarehousePage(page);
+        stockCountBatchPage = new StockCountBatchPage(page);
         menuAction = new MenuAction(page);
         listingAction = new ListingAction(page);
         setupAction = new SetupAction(page);
         commonAction = new CommonAction(page);
+        lookupAction = new LookupAction(page);
         masterHeaderAction = new MasterHeaderAction(page);
         masterDeleteAction = new MasterDeleteAction(page, listingAction, commonAction, menuAction);
         toastHelper = new ToastHelper(page);
@@ -35,36 +39,51 @@ test.describe.skip('Warehouse CRUD Operations', () => {
         await menuAction.selectModule('Inventory');
     });
 
-    test('should show validation message for duplicate code', async ({ page }) => {
+    test.only('create: stock count batch should show validation message for duplicate code', async ({ page }) => {
 
-        const warehouse = warehouseData.validate;
+        const stockCountBatch = stockCountBatchData.validate;
+        const todayDate = DateHelper.getDate();
 
-        await test.step('Navigate to warehouse master', async () => {
+        await test.step('Navigate to stock count batch master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Warehouse');
+            await setupAction.navigateToMasterByText('Stock Count Batch');
         });
 
         // ===== Precondition (SAFE skip) =====
-        const exists = await listingAction.isRecordExists(warehouse?.code, 2);
+        const exists = await listingAction.isRecordExists(stockCountBatch?.code, 2);
 
         test.skip(
             !exists,
-            `Precondition failed: Warehouse '${warehouse?.code}' not found.`
+            `Precondition failed: Stock count batch '${stockCountBatch?.code}' not found.`
         );
 
-        await test.step('Open new warehouse creation form', async () => {
+        await test.step('Open new stock count batch creation form', async () => {
             await menuAction.clickListingMenuOptionByTitle('New');
         });
 
         try {
-            await test.step(`Fill name: ${warehouse.name}`, async () => {
-                await masterHeaderAction.fillName(warehouse.name);
+
+            await test.step(`Fill code: ${stockCountBatch.code}`, async () => {
+                await masterHeaderAction.fillCodeIntoTextBox(stockCountBatch.code);
             });
 
-            await test.step('Attempt to save warehouse with duplicate code', async () => {
-                await masterHeaderAction.fillCodeIntoTextBox(warehouse.code);
-                await menuAction.clickTopMenuOption('Save');
+            await test.step(`Fill name: ${stockCountBatch.name}`, async () => {
+                await masterHeaderAction.fillName(stockCountBatch.name);
             });
+
+            await test.step('Open Warehouse lookup', async () => {
+                await stockCountBatchPage.openWarehouseLookup();
+            });
+
+            await test.step(`Select warehouse: ${stockCountBatch.warehouse}`, async () => {
+                await lookupAction.selectLookupText(stockCountBatch.warehouse);
+            });
+
+            await test.step(`Fill Freeze Date: ${todayDate}`, async () => {
+                await stockCountBatchPage.fillFreezedDate(todayDate);
+            });
+
+            await menuAction.clickTopMenuOption('Save');
 
             await test.step('Validate duplicate code error message', async () => {
                 await expect(
@@ -73,60 +92,126 @@ test.describe.skip('Warehouse CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Warehouse');
+                await menuAction.navigateBackToListing('Stock Count Batch');
             });
         }
 
         await test.step('Log code validation summary', async () => {
-            SummaryHelper.logCodeValidationSummary(warehouse.code);
+            SummaryHelper.logCodeValidationSummary(stockCountBatch.code);
         });
     });
 
-    test('should show validation message for duplicate name', async ({ page }) => {
+    test.only('create: stock count batch should show validation message for duplicate name', async ({ page }) => {
 
-        const warehouse = warehouseData.validate;
+        const stockCountBatch = stockCountBatchData.validate;
+        const todayDate = DateHelper.getDate();
 
-        await test.step('Navigate to warehouse master', async () => {
+        await test.step('Navigate to stock count batch master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Warehouse');
+            await setupAction.navigateToMasterByText('Stock Count Batch');
         });
 
         // ===== Precondition (SAFE skip) =====
-        const exists = await listingAction.isRecordExists(warehouse?.name, 3);
+        const exists = await listingAction.isRecordExists(stockCountBatch?.name, 3);
 
         test.skip(
             !exists,
-            `Precondition failed: Warehouse '${warehouse?.name}' not found.`
+            `Precondition failed: Stock count batch '${stockCountBatch?.name}' not found.`
         );
 
-        await test.step('Open new warehouse creation form', async () => {
+        await test.step('Open new stock count batch creation form', async () => {
             await menuAction.clickListingMenuOptionByTitle('New');
         });
 
         try {
-            await test.step('Attempt to save warehouse with duplicate name', async () => {
-                await masterHeaderAction.fillName(warehouse.name);
-                await menuAction.clickTopMenuOption('Save');
+            await test.step(`Fill name: ${stockCountBatch.name}`, async () => {
+                await masterHeaderAction.fillName(stockCountBatch.name);
             });
 
-            await test.step('Validate duplicate warehouse name message', async () => {
+            await test.step('Open Warehouse lookup', async () => {
+                await stockCountBatchPage.openWarehouseLookup();
+            });
+
+            await test.step(`Select warehouse: ${stockCountBatch.warehouse}`, async () => {
+                await lookupAction.selectLookupText(stockCountBatch.warehouse);
+            });
+
+            await test.step(`Fill Freeze Date: ${todayDate}`, async () => {
+                await stockCountBatchPage.fillFreezedDate(todayDate);
+            });
+
+            await menuAction.clickTopMenuOption('Save');
+
+            await test.step('Validate duplicate name error message', async () => {
                 await expect(
-                    page.getByText(/warehouse.*already exists/i)
+                    page.getByText(/stock count batch.*already exists/i)
                 ).toBeVisible({ timeout: 5000 });
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Warehouse');
+                await menuAction.navigateBackToListing('Stock Count Batch');
             });
         }
 
         await test.step('Log name validation summary', async () => {
-            SummaryHelper.logNameValidationSummary(warehouse.name);
+            SummaryHelper.logNameValidationSummary(stockCountBatch.name);
         });
 
     });
 
-    test('should create warehouse(s) successfully', async ({ page }) => {
+    test.only('create: stock count batch should show validation message for freezed date', async ({ page }) => {
+
+        const stockCountBatch = stockCountBatchData.validate;
+
+        await test.step('Navigate to stock count batch master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Stock Count Batch');
+        });
+
+        try {
+
+            await test.step('Open new stock count batch creation form', async () => {
+                await menuAction.clickListingMenuOptionByTitle('New');
+            });
+
+            await test.step(`Fill stock count batch code: ${stockCountBatch.code} if feature is true`, async () => {
+                if (stockCountBatchData.feature?.allowCodeManual && stockCountBatch.code) {
+                    await masterHeaderAction.fillCodeIntoTextBox(stockCountBatch.code);
+                }
+            });
+
+            await test.step(`Fill name: ${stockCountBatch.newName}`, async () => {
+                await masterHeaderAction.fillName(stockCountBatch.newName);
+            });
+
+            await test.step('Open Warehouse lookup', async () => {
+                await stockCountBatchPage.openWarehouseLookup();
+            });
+
+            await test.step(`Select warehouse: ${stockCountBatch.warehouse}`, async () => {
+                await lookupAction.selectLookupText(stockCountBatch.warehouse);
+            });
+
+            await menuAction.clickTopMenuOption('Save');
+
+            await test.step('Validate freezed date required error message', async () => {
+                await expect(
+                    page.getByText(/StockFreezeDate.*is required/i).first()
+                ).toBeVisible({ timeout: 5000 });
+            });
+        } finally {
+            await test.step('Navigate back to listing', async () => {
+                await menuAction.navigateBackToListing('Stock Count Batch');
+            });
+        }
+
+        await test.step('Log name validation summary', async () => {
+            SummaryHelper.logNameValidationSummary(stockCountBatch.name);
+        });
+
+    });
+
+    test('should create stock count batches successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const createdRecords = [];
@@ -246,7 +331,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
 
     });
 
-    test('should update warehouse(s) successfully', async ({ page }) => {
+    test('should update stock count batches successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const updatedRecords = [];
@@ -376,7 +461,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
         }
     });
 
-    test('should delete warehouse(s) successfully', async ({ page }) => {
+    test('should delete stock count batches successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const deletedRecords = [];
