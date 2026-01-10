@@ -17,7 +17,7 @@
             "warehouse": "Grand Prime House",
             "freezedDate": "10-01-2026",
             "description": "Monthly stock count",
-            "adjustmentMethod": "Consider Uncounted Items As Zero"
+            "adjustmentMethod": null
         },
         {
             "code": "SCB003",
@@ -32,13 +32,13 @@
     "update": [
         {
             "code": "SCB002",
-            "newCode": "",
+            "newCode": "SCB004",
             "name": "Month Opening Batch",
             "newName": "New Month Opening Batch",
             "nameArabic": "جرد يناير - تحديث",
-            "warehouse": "Grand Second House",
             "freezedDate": "11-01-2026",
-            "description": "New Month Opening Batch"
+            "description": "New Month Opening Batch",
+            "adjustmentMethod": "Skip Uncounted Items"
         }
     ],
     "delete": [

@@ -41,25 +41,19 @@ export class StockCountBatchPage {
      * Fills the Freeze Date field
      */
     async fillFreezedDate(value) {
-            const input = this.freezedDate;
+        const input = this.freezedDate;
 
-            await expect(input).toBeVisible();
-            await expect(input).toBeEnabled();
+        await expect(input).toBeVisible();
+        await expect(input).toBeEnabled();
 
-            await input.clear();
-            await input.fill(value);
+        await input.clear();
+        await input.fill(value);
     }
 
     /**
      * Opens the Adjustment Method lookup
      */
     async openAdjustmentMethodLookup() {
-        await test.step('Open Adjustment Method lookup', async () => {
-            await this.adjustmentMethod.click();
-            await this.page
-                .locator('.dxeListBoxItem_Office365')
-                .first()
-                .waitFor({ state: 'visible', timeout: 10000 });
-        });
+        await this.adjustmentMethod.click();
     }
 }

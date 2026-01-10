@@ -1,17 +1,17 @@
 {
-  "module": "Warehouse",
+  "module": "Stock Count Batch",
   "action": "Delete",
   "total": 3,
   "successCount": 2,
   "skippedCount": 1,
   "failedCount": 0,
   "successRecords": [
-    "SwiftEast Hub",
-    "SwiftNorth Hub"
+    "New Month Opening Batch",
+    "Month Closing Batch"
   ],
   "skippedRecords": [
-    "SwiftSouth Hub"
+    "Month Opening Batch"
   ],
   "failedRecords": [],
-  "executedAt": "10/1/2026, 11:36:53 am"
+  "executedAt": "10/1/2026, 8:55:52 pm"
 }

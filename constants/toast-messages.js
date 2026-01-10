@@ -46,7 +46,13 @@ const Messages = {
         Create: 'Warehouse created successfully',
         Update: 'Warehouse updated successfully',
         Delete: 'Record deleted successfully'
-    }
+    },
+
+    StockCountBatch: {
+        Create: 'Stock Count Batch created successfully',
+        Update: 'Warehouse updated successfully',
+        Delete: 'Record deleted successfully'
+    },
 };
 
 export default Messages;

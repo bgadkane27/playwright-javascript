@@ -1,14 +1,14 @@
 {
-  "module": "Warehouse",
+  "module": "Stock Count Batch",
   "action": "Update",
   "total": 1,
   "successCount": 1,
   "skippedCount": 0,
   "failedCount": 0,
   "successRecords": [
-    "SwiftSouth Hub → SwiftEast Hub"
+    "Month Opening Batch → New Month Opening Batch"
   ],
   "skippedRecords": [],
   "failedRecords": [],
-  "executedAt": "10/1/2026, 11:36:30 am"
+  "executedAt": "10/1/2026, 8:55:27 pm"
 }
