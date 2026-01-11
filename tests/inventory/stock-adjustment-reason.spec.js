@@ -39,21 +39,23 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
         await menuAction.selectModule('Inventory');
     });
 
-    test('create: stock adjustment reason - should show validation message for duplicate code', async ({ page }) => {
+    test('should prevent creating stock adjustment reason with duplicate code', async ({ page }) => {
 
+        const CODE_COLUMN_INDEX = 2;
+        const VALIDATION_TIMEOUT = 5000;
         const stockAdjustmentReason = stockAdjustmentReasonData.validate;
-        
+
         await test.step('Navigate to stock adjustment reason master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
             await setupAction.navigateToMasterByText('Stock Adjustment Reason');
         });
 
         // ===== Precondition (SAFE skip) =====
-        const exists = await listingAction.isRecordExists(stockAdjustmentReason?.code, 2);
+        const exists = await listingAction.isRecordExists(stockAdjustmentReason.code, CODE_COLUMN_INDEX);
 
         test.skip(
             !exists,
-            `Precondition failed: Stock adjustment reason '${stockAdjustmentReason?.code}' not found.`
+            `Precondition failed: Stock adjustment reason '${stockAdjustmentReason.code}' not found.`
         );
 
         await test.step('Open new stock adjustment reason creation form', async () => {
@@ -68,14 +70,14 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
             await test.step(`Fill name: ${stockAdjustmentReason.name}`, async () => {
                 await masterHeaderAction.fillName(stockAdjustmentReason.name);
-            });            
+            });
 
             await menuAction.clickTopMenuOption('Save');
 
             await test.step('Validate duplicate code error message', async () => {
                 await expect(
                     page.getByText(/duplicate code.*already exists/i)
-                ).toBeVisible({ timeout: 5000 });
+                ).toBeVisible({ timeout: VALIDATION_TIMEOUT });
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
