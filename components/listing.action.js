@@ -15,7 +15,7 @@ export class ListingAction {
      * @param {number} columnIndex - Index of the column
      */
     async filterMasterByColumnIndex(masterInfo, columnIndex) {
-        await test.step(`Filter master list: ${masterInfo}`, async () => {
+        await test.step(`Filter record on listing by text: ${masterInfo}`, async () => {
             await this.page
                 .locator(`input[aria-describedby="dx-col-${columnIndex}"]`)
                 .fill(masterInfo);

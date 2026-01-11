@@ -78,15 +78,13 @@ export class MenuAction {
    *
    * @param {string} option - Name of the master/transaction toolbar option.
    */
-  async clickTopMenuOption(option) {
-    await test.step(`Click top menu option: ${option}`, async () => {
+  async clickTopMenuOption(option) {    
       const optionButton = this.page
         .locator('div.dxm-hasText', { hasText: option })
         .first();
 
       await optionButton.click();
       await this.page.waitForTimeout(1000);
-    });
   }
 
   /**

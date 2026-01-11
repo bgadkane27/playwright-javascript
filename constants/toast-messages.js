@@ -50,7 +50,13 @@ const Messages = {
 
     StockCountBatch: {
         Create: 'Stock Count Batch created successfully',
-        Update: 'Warehouse updated successfully',
+        Update: 'Stock Count Batch updated successfully',
+        Delete: 'Record deleted successfully'
+    },
+
+    StockAdjustmentReason: {
+        Create: 'Stock Adjustment Reason created successfully',
+        Update: 'Stock Adjustment Reason updated successfully',
         Delete: 'Record deleted successfully'
     },
 };
