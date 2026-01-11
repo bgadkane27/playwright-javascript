@@ -12,7 +12,7 @@
     },
     {
       "name": ".TESTAUTH",
-      "value": "3505FBD7C9CF2161A33B86F719E9894174BF904B1BB7C77569552DBD8F8E53FAD0151543C2BCD3C2B4961B16A47213B2CC65252184FE7EC8C588BC0FB0DB3EA77398112C4AEA846E61EB107FDAC8668D6DF2F6B78C345C837DD55CB0B09693E2A7690855D72036E562D2766FC5669BF1EAE7DED2420A0731DE0851007FC237161A51491B6B286BF8C98598E7E272E3E3EB8E623A",
+      "value": "528C70EDCA83F84C646EAC957766E491A2B2521DCD38444E0812135E054BAAB66F843D2C1DAD9789A97C4D657FAC278270FA834CA2E5D31C44F7E7639B9BF740BAC70593EA7F7FFE60DD8E0FF8FE35AB5551E0569D7D22CC61B4E402354BC6EBE9BF1962DA8EEB5B9CAE2E43460095CCE1E5F2EA94EDDB530E92655894579723087C94F6ADF7DF4C166F175E49E8B8ED5F020F44",
       "domain": ".onenfinity.com",
       "path": "/",
       "expires": -1,
@@ -26,28 +26,8 @@
       "origin": "https://testerp.onenfinity.com",
       "localStorage": [
         {
-          "name": "refresh_notification_7154c659-fb5d-4921-a1dc-941cfbd40d43",
-          "value": "Sat Jan 10 2026 20:53:28 GMT+0530 (India Standard Time)"
-        },
-        {
-          "name": "pending_approval_count_80752240-fc29-46c5-a9b5-3ba7244827f2",
-          "value": "0"
-        },
-        {
-          "name": "announcement_count_80752240-fc29-46c5-a9b5-3ba7244827f2",
-          "value": "0"
-        },
-        {
-          "name": "notification_count_80752240-fc29-46c5-a9b5-3ba7244827f2",
-          "value": "0"
-        },
-        {
-          "name": "/inventorywidgets",
-          "value": "uriZTdTf7154c659-fb5d-4921-a1dc-941cfbd40d43"
-        },
-        {
-          "name": "bell_notification_count_80752240-fc29-46c5-a9b5-3ba7244827f2",
-          "value": "0"
+          "name": "refresh_notification_0cc4e696-c93b-4376-be6b-2e6926da4a82",
+          "value": "Sun Jan 11 2026 08:27:39 GMT+0530 (India Standard Time)"
         }
       ]
     }

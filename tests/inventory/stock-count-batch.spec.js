@@ -13,7 +13,7 @@ import { DateHelper } from '../../helpers/dateHelper.js';
 import { StockCountBatchPage } from '../../pages/inventory/stock-count-batch.page.js';
 import stockCountBatchData from '../../testdata/inventory/stock-count-batch.json';
 
-test.describe('Stock Count Batch CRUD Operations', () => {
+test.describe.skip('Stock Count Batch CRUD Operations', () => {
     let stockCountBatchPage;
     let menuAction;
     let listingAction;

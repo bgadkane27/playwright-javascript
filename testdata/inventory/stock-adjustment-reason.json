@@ -1,0 +1,67 @@
+{
+    "feature": {
+        "allowCodeManual": true
+    },
+    "validate": {
+        "code": "SAR01",
+        "name": "Damage"
+    },
+    "create": [
+        {
+            "code": "SAR04",
+            "name": "Inventory Damage",
+            "nameArabic": "تلف المخزون",
+            "type": "Qty Only",
+            "adjustmentType": "Negative Only",
+            "description": "Adjustment created when items are damaged or expired.",
+            "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
+            "negativeAdjustmentAccount": ""
+        },
+        {
+            "code": "SAR05",
+            "name": "Inventory Gain",
+            "nameArabic": "زيادة المخزون",
+            "type": "Qty Only",
+            "adjustmentType": "Positive Only",
+            "description": "Adjustment for unrecorded inventory found during stock count.",
+            "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
+            "negativeAdjustmentAccount": ""
+        },
+        {
+            "code": "SAR06",
+            "name": "Stock Transfer Correction",
+            "nameArabic": "تصحيح تحويل المخزون",
+            "type": "Qty And Value",
+            "adjustmentType": "Both",
+            "description": "Used when stock transfer discrepancies are corrected.",
+            "positiveAdjustmentAccount": "",
+            "negativeAdjustmentAccount": "52103 | Inventory Adjustments"
+        }
+    ],
+    "update": [
+        {
+            "code": "SAR04",
+            "name": "Inventory Damage - Updated",
+            "nameArabic": "تلف المخزون - تحديث",
+            "type": "Qty Only",
+            "adjustmentType": "Negative Only",
+            "description": "Updated reason for damaged or expired inventory.",
+            "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
+            "negativeAdjustmentAccount": "52103 | Inventory Adjustments"
+        }
+    ],
+    "delete": [
+        {
+            "name": "Inventory Damage - Updated"
+        },
+        {
+            "name": "Stock Transfer Correction"
+        },
+        {
+            "name": "Inventory Gain"
+        },
+        {
+            "name": "Inventory Damage"
+        }
+    ]
+}
