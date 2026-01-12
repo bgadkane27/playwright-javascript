@@ -8,12 +8,14 @@ export class StockAdjustmentReasonPage {
         this.documentType = page.locator('[id*="DocumentType_B-1Img"]');
         this.adjustmentType = page.locator('[id*="AdjustmentType_B-1Img"]');
         this.positiveAdjustmentAccount = page.locator('[id*="PositiveAdjustmentMainAccountIdLookup_B-1Img"]');
+        this.newLookup = page.locator('[id="StockAdjustmentReason.NegativeAdjustmentMainAccountIdLookup_DDD_gv_DXMainTable"]');
         this.negativeAdjustmentAccount = page.locator('[id*="NegativeAdjustmentMainAccountIdLookup_B-1Img"]');
     }
 
     async openLookup(locator) {
         await expect(locator).toBeVisible({ timeout: 5000 });
         await locator.click();
+        await this.page.waitForTimeout(500);
     }
 
     async openDocumentType() {
@@ -29,6 +31,12 @@ export class StockAdjustmentReasonPage {
     }
 
     async openNegativeAdjustmentAccount() {
-        await this.openLookup(this.negativeAdjustmentAccount);
+        await this.openLookups(this.newLookup ,this.negativeAdjustmentAccount);
+    }
+
+    async openLookups(locator, popupLocator) {
+        await expect(locator).toBeVisible({ timeout: 5000 });
+        await locator.click();
+        await expect(popupLocator).toBeVisible({ timeout: 5000 });
     }
 }

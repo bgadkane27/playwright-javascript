@@ -15,7 +15,7 @@
             "adjustmentType": "Negative Only",
             "description": "Adjustment created when items are damaged or expired.",
             "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
-            "negativeAdjustmentAccount": ""
+            "negativeAdjustmentAccount": "52103 | Inventory Adjustments"
         },
         {
             "code": "SAR05",
@@ -25,7 +25,7 @@
             "adjustmentType": "Positive Only",
             "description": "Adjustment for unrecorded inventory found during stock count.",
             "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
-            "negativeAdjustmentAccount": ""
+            "negativeAdjustmentAccount": null
         },
         {
             "code": "SAR06",
@@ -34,7 +34,7 @@
             "type": "Qty And Value",
             "adjustmentType": "Both",
             "description": "Used when stock transfer discrepancies are corrected.",
-            "positiveAdjustmentAccount": "",
+            "positiveAdjustmentAccount": "52103 | Inventory Adjustments",
             "negativeAdjustmentAccount": "52103 | Inventory Adjustments"
         }
     ],

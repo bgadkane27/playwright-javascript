@@ -139,7 +139,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
     });
 
-    test('should create stock adjustment reason(s) successfully', async ({ page }) => {
+    test.only('should create stock adjustment reason(s) successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const createdRecords = [];
@@ -154,7 +154,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
         // ===== Iterate to create =====
         for (const stockAdjustmentReason of stockAdjustmentReasonData.create) {
-            
+
             // ===== Skip invalid test data =====
             if (!stockAdjustmentReason?.name || (stockAdjustmentReasonData.feature?.allowCodeManual && !stockAdjustmentReason.code)) {
                 skippedRecords.push(stockAdjustmentReason?.name ?? 'UNKNOWN');
@@ -190,7 +190,22 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                     if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
                     }
-                });              
+                });
+
+                await stockAdjustmentReasonPage.openDocumentType();
+                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.type);
+                await stockAdjustmentReasonPage.openAdjustmentType();
+                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.adjustmentType);
+
+                if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
+                    await stockAdjustmentReasonPage.openPositiveAdjustmentAccount(stockAdjustmentReason.positiveAdjustmentAccount);
+                    await lookupAction.selectLookupText(stockAdjustmentReason.positiveAdjustmentAccount);
+                }
+
+                if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
+                    await stockAdjustmentReasonPage.openNegativeAdjustmentAccount(stockAdjustmentReason.negativeAdjustmentAccount);
+                    await lookupAction.selectLookupText(stockAdjustmentReason.negativeAdjustmentAccount);
+                }
 
                 await test.step('Save record', async () => {
                     await menuAction.clickTopMenuOption('Save');
@@ -239,6 +254,65 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
             );
         }
 
+    });
+
+    test('should delete stock adjustment reason(s) successfully', async ({ page }) => {
+
+        // ===== Record tracking =====
+        const deletedRecords = [];
+        const skippedRecords = [];
+        const failedRecords = [];
+
+        await test.step('Navigate to stock adjustment reason master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Stock Adjustment Reason');
+        });
+
+        // ===== Iterate & Delete =====
+        for (const stockAdjustmentReason of stockAdjustmentReasonData.delete) {
+            const result = await masterDeleteAction.safeDeleteByName({
+                masterType: 'StockAdjustmentReason',
+                name: stockAdjustmentReason.name,
+                retries: 1
+            });
+
+            if (result === 'deleted') {
+                deletedRecords.push(stockAdjustmentReason.name);
+            }
+
+            if (result === 'skipped') {
+                skippedRecords.push(stockAdjustmentReason.name);
+            }
+
+            if (result === 'failed') {
+                failedRecords.push(stockAdjustmentReason.name);
+            }
+        }
+
+        SummaryHelper.logCrudSummary({
+            entityName: 'Stock Adjustment Reason',
+            action: 'Delete',
+            successRecords: deletedRecords,
+            skippedRecords: skippedRecords,
+            failedRecords: failedRecords,
+            totalCount: stockAdjustmentReasonData.delete.length
+        });
+
+        SummaryHelper.exportCrudSummary({
+            entityName: 'Stock Adjustment Reason',
+            action: 'Delete',
+            successRecords: deletedRecords,
+            skippedRecords: skippedRecords,
+            failedRecords: failedRecords,
+            totalCount: stockAdjustmentReasonData.delete.length
+        });
+
+        // ===== Fail test ONLY for real failures =====
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `🔴 Stock adjustment reason delete failed for: ${failedRecords.join(', ')}`
+            );
+        }
     });
 
 });
