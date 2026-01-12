@@ -198,13 +198,11 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.adjustmentType);
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                    await stockAdjustmentReasonPage.openPositiveAdjustmentAccount(stockAdjustmentReason.positiveAdjustmentAccount);
-                    await lookupAction.selectLookupText(stockAdjustmentReason.positiveAdjustmentAccount);
+                    await lookupAction.selectLookupValues('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
                 }
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                    await stockAdjustmentReasonPage.openNegativeAdjustmentAccount(stockAdjustmentReason.negativeAdjustmentAccount);
-                    await lookupAction.selectLookupText(stockAdjustmentReason.negativeAdjustmentAccount);
+                    await lookupAction.selectLookupValues('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
                 }
 
                 await test.step('Save record', async () => {
@@ -250,7 +248,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `🔴 Failed stock adjustment reason creation for: ${failedRecords.join(', ')}`
+                `🔴 Stock adjustment reason creation failed for: ${failedRecords.join(', ')}`
             );
         }
 

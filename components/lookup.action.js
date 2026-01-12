@@ -214,4 +214,30 @@ export class LookupAction {
             throw new Error(`Lookup value not found: ${optionText}`);
         });
     }
+
+    async selectLookupValue(FieldLabel, value) {
+        try{
+        const lookupButton = this.page.locator(`[id*="${FieldLabel}IdLookup_B-1Img"]`);
+        await lookupButton.click();
+        await this.page.waitForTimeout(500);
+        // 2. Handle the input field
+        const inputField = this.page.locator(`input[id*="${FieldLabel}IdLookup_I"]`);
+        await inputField.click();
+        await inputField.clear();
+
+        await inputField.pressSequentially(value, { delay: 30 });
+        await this.page.waitForTimeout(500);
+
+        const targetCell = this.page.locator('td[id*="tcrow0"]')
+            .filter({ hasText: value })
+            .first();
+
+        await targetCell.waitFor({ state: 'visible', timeout: 3000 });
+        await targetCell.click();
+        await this.page.waitForTimeout(500);
+        }catch(error){
+            throw new Error(`Value not found in lookup: '${value}'`);
+        }
+    }
+    
 }
