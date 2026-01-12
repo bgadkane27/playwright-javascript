@@ -2,15 +2,15 @@
   "module": "Stock Adjustment Reason",
   "action": "Create",
   "total": 3,
-  "successCount": 0,
+  "successCount": 3,
   "skippedCount": 0,
-  "failedCount": 3,
-  "successRecords": [],
-  "skippedRecords": [],
-  "failedRecords": [
+  "failedCount": 0,
+  "successRecords": [
     "Inventory Damage",
     "Inventory Gain",
     "Stock Transfer Correction"
   ],
-  "executedAt": "12/1/2026, 3:52:02 pm"
+  "skippedRecords": [],
+  "failedRecords": [],
+  "executedAt": "12/1/2026, 4:14:52 pm"
 }

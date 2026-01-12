@@ -139,7 +139,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
     });
 
-    test.only('should create stock adjustment reason(s) successfully', async ({ page }) => {
+    test('should create stock adjustment reason(s) successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const createdRecords = [];
@@ -198,11 +198,11 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.adjustmentType);
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                    await lookupAction.selectLookupValues('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    await lookupAction.selectLookupValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
                 }
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                    await lookupAction.selectLookupValues('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    await lookupAction.selectLookupValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
                 }
 
                 await test.step('Save record', async () => {
