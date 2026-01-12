@@ -239,5 +239,24 @@ export class LookupAction {
             throw new Error(`Value not found in lookup: '${value}'`);
         }
     }
+
+    async openLookupAndSelectItem(FieldLabel, value) {
+        try{
+        const lookupButton = this.page.locator(`[id*="${FieldLabel}_B-1Img"]`);
+        await lookupButton.click();
+        await this.page.waitForTimeout(500);
+
+        const item = this.page.locator('tr.dxeListBoxItemRow_Office365')
+        .filter({ hasText: value })
+        .first();
+
+        // Ensure the item is visible before clicking
+        await item.waitFor({ state: 'visible', timeout: 3000 });
+        await item.click();
+        await this.page.waitForTimeout(500);
+        }catch(error){
+            throw new Error(`Value not found in lookup: '${value}'`);
+        }
+    }
     
 }

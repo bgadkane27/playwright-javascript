@@ -65,7 +65,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
         try {
 
-            await test.step('Open form in creation mode', async () => {
+            await test.step(`Open form to create: ${stockAdjustmentReason.name}`, async () => {
                 await menuAction.clickListingMenuOptionByTitle('New');
             });
 
@@ -97,8 +97,12 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
     test('should prevent creating stock adjustment reason with duplicate name', async ({ page }) => {
 
         const NAME_COLUMN_INDEX = 3;
-        const VALIDATION_TIMEOUT = 5000;
         const stockAdjustmentReason = stockAdjustmentReasonData.validate;
+
+        test.skip(
+            !stockAdjustmentReason?.name,
+            'Validation data missing: stock adjustment reason name'
+        );
 
         await test.step('Navigate to stock adjustment reason master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
@@ -110,16 +114,16 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
         test.skip(
             !exists,
-            `Precondition failed: Stock adjustment reason '${stockAdjustmentReason.name}' not found.`
+            `Precondition failed: Stock adjustment reason name '${stockAdjustmentReason.name}' not found.`
         );
 
         try {
 
-            await test.step('Open form in create mode', async () => {
+            await test.step(`Open form to create: ${stockAdjustmentReason.name}`, async () => {
                 await menuAction.clickListingMenuOptionByTitle('New');
             });
 
-            await test.step(`Fill duplicate name: ${stockAdjustmentReason.name}`, async () => {
+            await test.step(`Fill existing name: ${stockAdjustmentReason.name}`, async () => {
                 await masterHeaderAction.fillName(stockAdjustmentReason.name);
             });
 
@@ -127,11 +131,8 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await menuAction.clickTopMenuOption('Save');
             });
 
-            await test.step('Verify duplicate name validation error', async () => {
-                await expect(
-                    page.locator('#ValidationSummary')
-                        .filter({ hasText: /stock adjustment reason.*already exists/i })
-                ).toBeVisible({ timeout: VALIDATION_TIMEOUT });
+            await test.step('Validate duplicate name error message', async () => {
+                await toastHelper.assertDuplicateNameMessage();
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
@@ -176,7 +177,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
             try {
 
-                await test.step('Open form in create mode', async () => {
+                await test.step(`Open form to create: ${stockAdjustmentReason.name}`, async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
                 });
 
@@ -189,25 +190,28 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await test.step(`Fill name: ${stockAdjustmentReason.name}`, async () => {
                     await masterHeaderAction.fillName(stockAdjustmentReason.name);
                 });
+                
+                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
+                await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
+                });
+
+                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.adjustmentType}`, async () => {
+                await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
+                });
 
                 await test.step('Fill optional fields (if provided)', async () => {
                     if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
                     }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
+                        await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
+                        await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    }
                 });
-
-                await stockAdjustmentReasonPage.openDocumentType();
-                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.documentType);
-                await stockAdjustmentReasonPage.openAdjustmentType();
-                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.adjustmentType);
-
-                if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                    await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
-                }
-
-                if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                    await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
-                }
 
                 await test.step('Save record', async () => {
                     await menuAction.clickTopMenuOption('Save');
