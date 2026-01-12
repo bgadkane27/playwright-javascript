@@ -31,12 +31,6 @@ export class StockAdjustmentReasonPage {
     }
 
     async openNegativeAdjustmentAccount() {
-        await this.openLookups(this.newLookup ,this.negativeAdjustmentAccount);
-    }
-
-    async openLookups(locator, popupLocator) {
-        await expect(locator).toBeVisible({ timeout: 5000 });
-        await locator.click();
-        await expect(popupLocator).toBeVisible({ timeout: 5000 });
+        await this.openLookup(this.negativeAdjustmentAccount);
     }
 }

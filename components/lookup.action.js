@@ -215,7 +215,7 @@ export class LookupAction {
         });
     }
 
-    async selectLookupValue(FieldLabel, value) {
+    async openLookupAndSelectValue(FieldLabel, value) {
         try{
         const lookupButton = this.page.locator(`[id*="${FieldLabel}IdLookup_B-1Img"]`);
         await lookupButton.click();

@@ -9,7 +9,6 @@ import { MasterDeleteAction } from '../../components/master-delete.action.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { ToastHelper } from '../../helpers/toastHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
-import { DateHelper } from '../../helpers/dateHelper.js';
 import { StockAdjustmentReasonPage } from '../../pages/inventory/stock-adjustment-reason.page.js';
 import stockAdjustmentReasonData from '../../testdata/inventory/stock-adjustment-reason.json';
 
@@ -42,27 +41,33 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
     test('should prevent creating stock adjustment reason with duplicate code', async ({ page }) => {
 
         const CODE_COLUMN_INDEX = 2;
-        const VALIDATION_TIMEOUT = 5000;
         const stockAdjustmentReason = stockAdjustmentReasonData.validate;
+
+        test.skip(
+            !stockAdjustmentReasonData.feature?.allowCodeManual,
+            'Setting → Allow code manual is OFF.'
+        );
 
         await test.step('Navigate to stock adjustment reason master', async () => {
             await menuAction.clickLeftMenuOption('Setups');
             await setupAction.navigateToMasterByText('Stock Adjustment Reason');
         });
 
-        // ===== Precondition (SAFE skip) =====
-        const exists = await listingAction.isRecordExists(stockAdjustmentReason.code, CODE_COLUMN_INDEX);
+        const exists = await listingAction.isRecordExists(
+            stockAdjustmentReason.code,
+            CODE_COLUMN_INDEX
+        );
 
         test.skip(
             !exists,
-            `Precondition failed: Stock adjustment reason '${stockAdjustmentReason.code}' not found.`
+            `Precondition failed: Stock adjustment reason code '${stockAdjustmentReason.code}' not found.`
         );
 
-        await test.step('Open new stock adjustment reason creation form', async () => {
-            await menuAction.clickListingMenuOptionByTitle('New');
-        });
-
         try {
+
+            await test.step('Open form in creation mode', async () => {
+                await menuAction.clickListingMenuOptionByTitle('New');
+            });
 
             await test.step(`Fill code: ${stockAdjustmentReason.code}`, async () => {
                 await masterHeaderAction.fillCodeIntoTextBox(stockAdjustmentReason.code);
@@ -72,12 +77,12 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await masterHeaderAction.fillName(stockAdjustmentReason.name);
             });
 
-            await menuAction.clickTopMenuOption('Save');
+            await test.step('Save record', async () => {
+                await menuAction.clickTopMenuOption('Save');
+            });
 
             await test.step('Validate duplicate code error message', async () => {
-                await expect(
-                    page.getByText(/duplicate code.*already exists/i)
-                ).toBeVisible({ timeout: VALIDATION_TIMEOUT });
+                await toastHelper.assertDuplicateCodeMessage();
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
@@ -85,9 +90,8 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
             });
         }
 
-        await test.step('Log code validation summary', async () => {
-            SummaryHelper.logCodeValidationSummary(stockAdjustmentReason.code);
-        });
+        SummaryHelper.logCodeValidationSummary(stockAdjustmentReason.code);
+
     });
 
     test('should prevent creating stock adjustment reason with duplicate name', async ({ page }) => {
@@ -193,16 +197,16 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 });
 
                 await stockAdjustmentReasonPage.openDocumentType();
-                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.type);
+                await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.documentType);
                 await stockAdjustmentReasonPage.openAdjustmentType();
                 await lookupAction.selectLookupBoxItemRow(stockAdjustmentReason.adjustmentType);
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                    await lookupAction.selectLookupValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
                 }
 
                 if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                    await lookupAction.selectLookupValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
                 }
 
                 await test.step('Save record', async () => {
@@ -217,7 +221,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
             } catch (error) {
                 failedRecords.push(stockAdjustmentReason?.name);
-                console.error(`🔴 Failed stock adjustment reason creation for: ${stockAdjustmentReason?.name}\n`, error);
+                console.error(`🔴 Stock adjustment reason creation failed for: ${stockAdjustmentReason?.name}\n`, error);
             } finally {
                 await menuAction
                     .navigateBackToListing('Stock Adjustment Reason')

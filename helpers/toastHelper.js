@@ -6,6 +6,7 @@ export class ToastHelper {
         this.page = page;
         this.successToast = page.locator('.dx-toast-success');
         this.messageToast = page.locator('.dx-toast-message');
+        this.validationSummary = page.locator('#ValidationSummary');
     }
 
     /**
@@ -54,4 +55,17 @@ export class ToastHelper {
         await expect(toast).toBeVisible({ timeout: 5000 });
         await expect(toast).toContainText(expectedMessage);
     }
+
+    async assertDuplicateCodeMessage() {
+        await expect(
+            this.validationSummary.filter({ hasText: /duplicate code.*already exists/i })
+        ).toBeVisible();
+    }
+
+    async assertDuplicateNameMessage() {
+        await expect(
+            this.validationSummary.filter({ hasText: /already exists/i })
+        ).toBeVisible();
+    }
+
 }
