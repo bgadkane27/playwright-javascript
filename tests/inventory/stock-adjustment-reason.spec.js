@@ -190,13 +190,13 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 await test.step(`Fill name: ${stockAdjustmentReason.name}`, async () => {
                     await masterHeaderAction.fillName(stockAdjustmentReason.name);
                 });
-                
+
                 await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
-                await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
+                    await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
                 });
 
                 await test.step(`Open lookup and select document type: ${stockAdjustmentReason.adjustmentType}`, async () => {
-                await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
+                    await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
@@ -257,6 +257,136 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
         if (failedRecords.length > 0) {
             throw new Error(
                 `🔴 Stock adjustment reason creation failed for: ${failedRecords.join(', ')}`
+            );
+        }
+
+    });
+
+    test('should update stock adjustment reason(s) successfully', async ({ page }) => {
+
+        // ===== Record tracking =====
+        const updatedRecords = [];
+        const skippedRecords = [];
+        const failedRecords = [];
+        const NAME_COLUMN_INDEX = 3;
+
+        await test.step('Navigate to stock adjustment reason master', async () => {
+            await menuAction.clickLeftMenuOption('Setups');
+            await setupAction.navigateToMasterByText('Stock Adjustment Reason');
+        });
+
+        // ===== Iterate to update =====
+        for (const stockAdjustmentReason of stockAdjustmentReasonData.update) {
+
+            // ===== Skip invalid test data =====
+            if (
+                !stockAdjustmentReason?.name ||
+                !stockAdjustmentReason?.newName ||
+                (stockAdjustmentReasonData.feature?.allowCodeManual && !stockAdjustmentReason.newCode)
+            ) {
+                skippedRecords.push(stockAdjustmentReason?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Update skipped due to missing required data`, stockAdjustmentReason);
+                continue;
+            }
+
+            // ===== Skip if record does NOT exist =====
+            const exists = await listingAction.isRecordExists(stockAdjustmentReason.name, NAME_COLUMN_INDEX);
+            if (!exists) {
+                skippedRecords.push(stockAdjustmentReason.name);
+                console.warn(`⚠️ Skipped: Stock adjustment reason does not exist → ${stockAdjustmentReason.name}`);
+                continue;
+            }
+
+            try {
+
+                await test.step(`Select the record: ${stockAdjustmentReason.name}`, async () => {
+                    await listingAction.selectRecordByText(stockAdjustmentReason.name);
+                });
+
+                await test.step(`Open form to edit: ${stockAdjustmentReason.name}`, async () => {
+                    await menuAction.clickListingMenuOptionByTitle('Edit');
+                });
+
+                await test.step(`Fill new code: ${stockAdjustmentReason.newCode} if feature is true`, async () => {
+                    if (stockAdjustmentReasonData.feature?.allowCodeManual && stockAdjustmentReason.newCode) {
+                        await masterHeaderAction.fillCodeIntoTextBox(stockAdjustmentReason.newCode);
+                    }
+                });
+
+                await test.step(`Fill new name: ${stockAdjustmentReason.newName}`, async () => {
+                    await masterHeaderAction.fillName(stockAdjustmentReason.newName);
+                });
+
+                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.documentType)) {
+                        await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
+                    }
+                });
+
+                await test.step(`Open lookup and select adjustment type: ${stockAdjustmentReason.adjustmentType}`, async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.adjustmentType)) {
+                        await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
+                    }
+                });
+
+                await test.step('Fill optional fields (if provided)', async () => {
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
+                        await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    }
+
+                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
+                        await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    }
+                });
+
+                await test.step(`Save updated record: ${stockAdjustmentReason.newName}`, async () => {
+                    await menuAction.clickTopMenuOption('Save');
+                });
+
+                await test.step(`Validate updated name: ${stockAdjustmentReason.newName}`, async () => {
+                    await expect(page.locator("input[name='StockAdjustmentReason.Name']")).toHaveValue(stockAdjustmentReason.newName);
+                });
+
+                updatedRecords.push(`${stockAdjustmentReason.name} → ${stockAdjustmentReason.newName}`);
+
+            } catch (error) {
+                failedRecords.push(stockAdjustmentReason?.name);
+                console.error(`🔴 Stock adjustment reason updation failed for: ${stockAdjustmentReason?.name}\n`, error);
+            } finally {
+                await menuAction
+                    .navigateBackToListing('Stock Adjustment Reason')
+                    .catch(async () => {
+                        console.warn('🔴 Navigation failed, reloading page');
+                        await page.reload();
+                    });
+            }
+        }
+
+        SummaryHelper.logCrudSummary({
+            entityName: 'Stock Adjustment Reason',
+            action: 'Update',
+            successRecords: updatedRecords,
+            skippedRecords: skippedRecords,
+            failedRecords: failedRecords,
+            totalCount: stockAdjustmentReasonData.update.length
+        });
+
+        SummaryHelper.exportCrudSummary({
+            entityName: 'Stock Adjustment Reason',
+            action: 'Update',
+            successRecords: updatedRecords,
+            skippedRecords: skippedRecords,
+            failedRecords: failedRecords,
+            totalCount: stockAdjustmentReasonData.update.length
+        });
+
+        if (failedRecords.length > 0) {
+            throw new Error(
+                `🔴 Stock adjustment reason updation failed for: ${failedRecords.join(', ')}`
             );
         }
 
