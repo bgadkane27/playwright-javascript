@@ -66,6 +66,9 @@
     ],
     "delete": [
         {
+            "name": "Inventory Gain - Updated"
+        },
+        {
             "name": "Inventory Damage - Updated"
         },
         {
