@@ -47,13 +47,13 @@ export class MasterDeleteAction {
      * - Retries only real failures
      *
      * @param {Object} options
-     * @param {string} options.masterType
+     * @param {string} options.entityName
      * @param {string} options.name
      * @param {number} [options.retries=1]
      *
      * @returns {'deleted'|'skipped'|'failed'}
      */
-    async safeDeleteByName({ masterType, name, retries = 1 }) {
+    async safeDeleteByName({ entityName, name, retries = 1 }) {
         // ===== Skip if record does not exist =====
         const exists = await this.isRecordExists(name);
 
@@ -65,7 +65,7 @@ export class MasterDeleteAction {
         // ===== Try delete with retry =====
         for (let attempt = 1; attempt <= retries + 1; attempt++) {
             try {
-                await this.deleteMasterByName(masterType, name);
+                await this.deleteMasterByName(entityName, name);
                 return 'deleted';
             } catch (error) {
                 console.warn(`🔁 Delete attempt ${attempt} failed for ${name}`);

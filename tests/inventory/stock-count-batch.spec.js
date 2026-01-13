@@ -484,7 +484,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
         // ===== Iterate & Delete =====
         for (const stockCountBatch of stockCountBatchData.delete) {
             const result = await masterDeleteAction.safeDeleteByName({
-                masterType: 'StockCountBatch',
+                entityName: 'StockCountBatch',
                 name: stockCountBatch.name,
                 retries: 1
             });

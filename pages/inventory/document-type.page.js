@@ -3,7 +3,9 @@ export class DocumentTypePage {
     this.page = page;
 
     // Locators
-    this.expiryNotificationInput = page.getByLabel('Expiry Notification Before Days');
+    this.expiryNotificationInput = page
+      .getByLabel('Expiry Notification Before Days')
+      .or(page.getByRole('textbox', { name: /expirynotificationbeforedays/i }));
     this.applicableCompaniesSelect = page.locator('[name="DocumentType.CompanyIds"]');
     // If it's a multi-select dropdown, you might also want:
     // this.companyOption = (companyName) => page.getByRole('option', { name: companyName });
@@ -15,7 +17,6 @@ export class DocumentTypePage {
    */
   async fillExpiryNotificationBeforeDays(value) {
     await this.expiryNotificationInput.fill(value);
-    // Optional: await this.expiryNotificationInput.press('Tab');
   }
 
   /**
@@ -37,8 +38,5 @@ export class DocumentTypePage {
     for (const name of names) {
       await this.page.getByRole('option', { name }).click();
     }
-
-    // Optional: close dropdown if needed
-    // await this.page.keyboard.press('Escape');
   }
 }

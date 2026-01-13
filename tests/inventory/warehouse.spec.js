@@ -391,7 +391,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
         // ===== Iterate & Delete =====
         for (const warehouse of warehouseData.delete) {
             const result = await masterDeleteAction.safeDeleteByName({
-                masterType: 'Warehouse',
+                entityName: 'Warehouse',
                 name: warehouse.name,
                 retries: 1
             });

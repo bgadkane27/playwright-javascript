@@ -366,7 +366,7 @@ test.describe.skip('Charge CRUD Operations', () => {
         // ===== Iterate & Delete =====
         for (const charge of chargeData.delete) {
             const result = await masterDeleteAction.safeDeleteByName({
-                masterType: 'Charge',
+                entityName: 'Charge',
                 name: charge.name,
                 retries: 1
             });

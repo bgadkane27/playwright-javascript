@@ -371,7 +371,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
         // ===== Iterate & Delete =====
         for (const paymentTerm of paymentTermData.delete) {
             const result = await masterDeleteAction.safeDeleteByName({
-                masterType: 'Payment Term',
+                entityName: 'Payment Term',
                 name: paymentTerm.name,
                 retries: 1
             });
