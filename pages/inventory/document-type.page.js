@@ -36,7 +36,13 @@ export class DocumentTypePage {
     await this.openApplicableCompaniesDropdown();
 
     for (const name of names) {
-      await this.page.getByRole('option', { name }).click();
+      const item = this.page.locator('tr.dxeListBoxItemRow_Office365')
+        .filter({ hasText: name })
+        .first();
+
+        // Ensure the item is visible before clicking
+        await item.waitFor({ state: 'visible', timeout: 3000 });
+        await item.click();
     }
   }
 }

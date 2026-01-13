@@ -59,6 +59,12 @@ const Messages = {
         Update: 'Stock Adjustment Reason updated successfully',
         Delete: 'Record deleted successfully'
     },
+
+    DocumentType: {
+        Create: 'Document Type created successfully',
+        Update: 'Document Type updated successfully',
+        Delete: 'Record deleted successfully'
+    },
 };
 
 export default Messages;

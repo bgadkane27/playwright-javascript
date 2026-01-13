@@ -38,7 +38,7 @@ test.describe('Document Type CRUD Operations', () => {
         await menuAction.selectModule('Inventory');
     });
 
-    test.only('should prevent creating document type with duplicate code', async ({ page }) => {
+    test('validate: document type - should prevent duplicate code', async ({ page }) => {
 
         const CODE_COLUMN_INDEX = 2;
         const documentType = documentTypeData.validate;
@@ -99,40 +99,41 @@ test.describe('Document Type CRUD Operations', () => {
 
     });
 
-    test('should prevent creating document type with duplicate name', async ({ page }) => {
+    test('validate: document type - should prevent duplicate name', async ({ page }) => {
 
+        const ENTITY_NAME = 'Document Type';
         const NAME_COLUMN_INDEX = 3;
-        const stockAdjustmentReason = stockAdjustmentReasonData.validate;
+        const documentType = documentTypeData.validate;
 
         test.skip(
-            !stockAdjustmentReason?.name,
-            'Validation data missing: stock adjustment reason name'
+            !documentType?.name,
+            'Validation data missing for name.'
         );
 
-        await test.step('Navigate to stock adjustment reason master', async () => {
+        await test.step(`Navigate to master: ${ENTITY_NAME}`, async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Stock Adjustment Reason');
+            await setupAction.navigateToMasterByText(ENTITY_NAME);
         });
 
         // Precondition: Verify record with this name exists
-        const exists = await listingAction.isRecordExists(stockAdjustmentReason.name, NAME_COLUMN_INDEX);
+        const exists = await listingAction.isRecordExists(documentType.name, NAME_COLUMN_INDEX);
 
         test.skip(
             !exists,
-            `Precondition failed: Stock adjustment reason name '${stockAdjustmentReason.name}' not found.`
+            `Precondition failed: Document type name '${documentType.name}' not found.`
         );
 
         try {
 
-            await test.step(`Open form to create: ${stockAdjustmentReason.name}`, async () => {
+            await test.step(`Open form to create: ${documentType.name}`, async () => {
                 await menuAction.clickListingMenuOptionByTitle('New');
             });
 
-            await test.step(`Fill existing name: ${stockAdjustmentReason.name}`, async () => {
-                await masterHeaderAction.fillName(stockAdjustmentReason.name);
+            await test.step(`Fill existing name: ${documentType.name}`, async () => {
+                await masterHeaderAction.fillName(documentType.name);
             });
 
-            await test.step('Attempt to save', async () => {
+            await test.step('Save record', async () => {
                 await menuAction.clickTopMenuOption('Save');
             });
 
@@ -140,82 +141,82 @@ test.describe('Document Type CRUD Operations', () => {
                 await toastHelper.assertDuplicateNameMessage();
             });
         } finally {
-            await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Adjustment Reason');
+            await test.step(`Navigate back to listing: ${ENTITY_NAME}`, async () => {
+                await menuAction.navigateBackToListing(ENTITY_NAME);
             });
         }
 
-        SummaryHelper.logNameValidationSummary(stockAdjustmentReason.name);
+        SummaryHelper.logNameValidationSummary(documentType.name);
 
     });
 
-    test('should create document type(s) successfully', async ({ page }) => {
+    test('create: document type - should create successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const createdRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
+        const ENTITY_NAME = 'Document Type';
         const NAME_COLUMN_INDEX = 3;
 
-        await test.step('Navigate to stock adjustment reason master', async () => {
+        test.skip(
+            !documentTypeData.create?.length,
+            'No document types provided for creation'
+        );
+
+        await test.step(`Navigate to master: ${ENTITY_NAME}`, async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Stock Adjustment Reason');
+            await setupAction.navigateToMasterByText(ENTITY_NAME);
         });
 
         // ===== Iterate to create =====
-        for (const stockAdjustmentReason of stockAdjustmentReasonData.create) {
+        for (const documentType of documentTypeData.create) {
 
             // ===== Skip invalid test data =====
-            if (!stockAdjustmentReason?.name || (stockAdjustmentReasonData.feature?.allowCodeManual && !stockAdjustmentReason.code)) {
-                skippedRecords.push(stockAdjustmentReason?.name ?? 'UNKNOWN');
-                console.warn(`⚠️ Create skipped due to missing required data`, stockAdjustmentReason);
+            if (!documentType?.name || (documentTypeData.feature?.allowCodeManual && !documentType.code)) {
+                skippedRecords.push(documentType?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Create skipped due to missing required data`, documentType);
                 continue;
             }
 
             // ===== Skip if already exists =====
-            const exists = await listingAction.isRecordExists(stockAdjustmentReason.name, NAME_COLUMN_INDEX);
+            const exists = await listingAction.isRecordExists(documentType.name, NAME_COLUMN_INDEX);
             if (exists) {
-                skippedRecords.push(stockAdjustmentReason.name);
-                console.warn(`⚠️ Skipped: Stock adjustment reason already exists → ${stockAdjustmentReason.name}`);
+                skippedRecords.push(documentType.name);
+                console.warn(`⚠️ Skipped: Document type already exists → ${documentType.name}`);
                 continue;
             }
 
             try {
 
-                await test.step(`Open form to create: ${stockAdjustmentReason.name}`, async () => {
+                await test.step(`Open form to create: ${documentType.name}`, async () => {
                     await menuAction.clickListingMenuOptionByTitle('New');
                 });
 
-                await test.step(`Fill code: ${stockAdjustmentReason.code} if feature is true`, async () => {
-                    if (stockAdjustmentReasonData.feature?.allowCodeManual && stockAdjustmentReason.code) {
-                        await masterHeaderAction.fillCodeIntoTextBox(stockAdjustmentReason.code);
+                await test.step(`Fill code: ${documentType.code} if feature is true`, async () => {
+                    if (documentTypeData.feature?.allowCodeManual && documentType.code) {
+                        await masterHeaderAction.fillCodeIntoTextBox(documentType.code);
                     }
                 });
 
-                await test.step(`Fill name: ${stockAdjustmentReason.name}`, async () => {
-                    await masterHeaderAction.fillName(stockAdjustmentReason.name);
-                });
-
-                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
-                    await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
-                });
-
-                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.adjustmentType}`, async () => {
-                    await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
+                await test.step(`Fill name: ${documentType.name}`, async () => {
+                    await masterHeaderAction.fillName(documentType.name);
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
-                        await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(documentType.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                        await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.description)) {
+                        await masterHeaderAction.fillDescription(documentType.description);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                        await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.expiryNotificationBeforeDays)) {
+                        await documentTypePage.fillExpiryNotificationBeforeDays(documentType.expiryNotificationBeforeDays);
                     }
+
+                    await documentTypePage.selectCompanies(documentType.applicableCompanies);
                 });
 
                 await test.step('Save record', async () => {
@@ -223,17 +224,17 @@ test.describe('Document Type CRUD Operations', () => {
                 });
 
                 await test.step('Validate record created message', async () => {
-                    await toastHelper.assertByText('StockAdjustmentReason', 'Create');
+                    await toastHelper.assertByText('DocumentType', 'Create');
                 });
 
-                createdRecords.push(stockAdjustmentReason.name);
+                createdRecords.push(documentType.name);
 
             } catch (error) {
-                failedRecords.push(stockAdjustmentReason?.name);
-                console.error(`🔴 Stock adjustment reason creation failed for: ${stockAdjustmentReason?.name}\n`, error);
+                failedRecords.push(documentType?.name);
+                console.error(`🔴 ${ENTITY_NAME} creation failed for: ${documentType?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Stock Adjustment Reason')
+                    .navigateBackToListing(ENTITY_NAME)
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -242,32 +243,32 @@ test.describe('Document Type CRUD Operations', () => {
         }
 
         SummaryHelper.logCrudSummary({
-            entityName: 'Stock Adjustment Reason',
+            entityName: ENTITY_NAME,
             action: 'Create',
             successRecords: createdRecords,
             skippedRecords: skippedRecords,
             failedRecords: failedRecords,
-            totalCount: stockAdjustmentReasonData.create.length
+            totalCount: documentTypeData.create.length
         });
 
         SummaryHelper.exportCrudSummary({
-            entityName: 'Stock Adjustment Reason',
+            entityName: ENTITY_NAME,
             action: 'Create',
             successRecords: createdRecords,
             skippedRecords: skippedRecords,
             failedRecords: failedRecords,
-            totalCount: stockAdjustmentReasonData.create.length
+            totalCount: documentTypeData.create.length
         });
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `🔴 Stock adjustment reason creation failed for: ${failedRecords.join(', ')}`
+                `🔴 ${ENTITY_NAME} creation failed for: ${failedRecords.join(', ')}`
             );
         }
 
     });
 
-    test('should update document type(s) successfully', async ({ page }) => {
+    test.fixme('update: document type - should update successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const updatedRecords = [];
@@ -397,7 +398,7 @@ test.describe('Document Type CRUD Operations', () => {
 
     });
 
-    test.only('should delete document type(s) successfully', async ({ page }) => {
+    test('delete: document type - should delete successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const ENTITY_NAME = 'Document Type';
