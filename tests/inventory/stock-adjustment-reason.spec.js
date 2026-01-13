@@ -299,11 +299,11 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
 
             try {
 
-                await test.step(`Select the record: ${stockAdjustmentReason.name}`, async () => {
+                await test.step(`Select the record to update: ${stockAdjustmentReason.name}`, async () => {
                     await listingAction.selectRecordByText(stockAdjustmentReason.name);
                 });
 
-                await test.step(`Open form to edit: ${stockAdjustmentReason.name}`, async () => {
+                await test.step('Open form to edit', async () => {
                     await menuAction.clickListingMenuOptionByTitle('Edit');
                 });
 
@@ -343,7 +343,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                     }
                 });
 
-                await test.step(`Save updated record: ${stockAdjustmentReason.newName}`, async () => {
+                await test.step('Save updated record', async () => {
                     await menuAction.clickTopMenuOption('Save');
                 });
 
@@ -354,7 +354,7 @@ test.describe('Stock Adjustment Reason CRUD Operations', () => {
                 updatedRecords.push(`${stockAdjustmentReason.name} → ${stockAdjustmentReason.newName}`);
 
             } catch (error) {
-                failedRecords.push(stockAdjustmentReason?.name);
+                failedRecords.push(`${stockAdjustmentReason.name} → ${stockAdjustmentReason.newName}`);
                 console.error(`🔴 Stock adjustment reason updation failed for: ${stockAdjustmentReason?.name}\n`, error);
             } finally {
                 await menuAction
