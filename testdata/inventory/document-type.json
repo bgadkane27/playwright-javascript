@@ -40,8 +40,7 @@
       "expiryNotificationBeforeDays": "25",
       "description": "Update - Credit related document",
       "applicableCompanies": [
-        "Grand (HRMS,ERP)",
-        "Milton (ERP)"
+        "Tool (HRMS)"
       ]
     }
   ],

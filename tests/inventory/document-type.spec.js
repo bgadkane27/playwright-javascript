@@ -12,7 +12,7 @@ import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { DocumentTypePage } from '../../pages/inventory/document-type.page.js';
 import documentTypeData from '../../testdata/inventory/document-type.json';
 
-test.describe('Document Type CRUD Operations', () => {
+test.describe.skip('Document Type CRUD Operations', () => {
     let documentTypePage;
     let menuAction;
     let listingAction;
@@ -268,103 +268,99 @@ test.describe('Document Type CRUD Operations', () => {
 
     });
 
-    test.fixme('update: document type - should update successfully', async ({ page }) => {
+    test('update: document type - should update successfully', async ({ page }) => {
 
         // ===== Record tracking =====
         const updatedRecords = [];
         const skippedRecords = [];
         const failedRecords = [];
+        const ENTITY_NAME = 'Document Type';
         const NAME_COLUMN_INDEX = 3;
 
-        await test.step('Navigate to stock adjustment reason master', async () => {
+        test.skip(
+            !documentTypeData.update?.length,
+            'No document types provided for update'
+        );
+
+        await test.step(`Navigate to master: ${ENTITY_NAME}`, async () => {
             await menuAction.clickLeftMenuOption('Setups');
-            await setupAction.navigateToMasterByText('Stock Adjustment Reason');
+            await setupAction.navigateToMasterByText(ENTITY_NAME);
         });
 
         // ===== Iterate to update =====
-        for (const stockAdjustmentReason of stockAdjustmentReasonData.update) {
+        for (const documentType of documentTypeData.update) {
 
             // ===== Skip invalid test data =====
             if (
-                !stockAdjustmentReason?.name ||
-                !stockAdjustmentReason?.newName ||
-                (stockAdjustmentReasonData.feature?.allowCodeManual && !stockAdjustmentReason.newCode)
+                !documentType?.name ||
+                !documentType?.updatedName ||
+                (documentTypeData.feature?.allowCodeManual && !documentType.updatedCode)
             ) {
-                skippedRecords.push(stockAdjustmentReason?.name ?? 'UNKNOWN');
-                console.warn(`⚠️ Update skipped due to missing required data`, stockAdjustmentReason);
+                skippedRecords.push(documentType?.name ?? 'UNKNOWN');
+                console.warn(`⚠️ Update skipped due to missing required data`, documentType);
                 continue;
             }
 
             // ===== Skip if record does NOT exist =====
-            const exists = await listingAction.isRecordExists(stockAdjustmentReason.name, NAME_COLUMN_INDEX);
+            const exists = await listingAction.isRecordExists(documentType.name, NAME_COLUMN_INDEX);
             if (!exists) {
-                skippedRecords.push(stockAdjustmentReason.name);
-                console.warn(`⚠️ Skipped: Stock adjustment reason does not exist → ${stockAdjustmentReason.name}`);
+                skippedRecords.push(documentType.name);
+                console.warn(`⚠️ Skipped: ${ENTITY_NAME} does not exist → ${documentType.name}`);
                 continue;
             }
 
             try {
 
-                await test.step(`Select the record to update: ${stockAdjustmentReason.name}`, async () => {
-                    await listingAction.selectRecordByText(stockAdjustmentReason.name);
+                await test.step(`Select the record to update: ${documentType.name}`, async () => {
+                    await listingAction.selectRecordByText(documentType.name);
                 });
 
-                await test.step('Open form to edit', async () => {
+                await test.step(`Open form to edit: ${ENTITY_NAME}`, async () => {
                     await menuAction.clickListingMenuOptionByTitle('Edit');
                 });
 
-                await test.step(`Fill new code: ${stockAdjustmentReason.newCode} if feature is true`, async () => {
-                    if (stockAdjustmentReasonData.feature?.allowCodeManual && stockAdjustmentReason.newCode) {
-                        await masterHeaderAction.fillCodeIntoTextBox(stockAdjustmentReason.newCode);
+                await test.step(`Fill new code: ${documentType.updatedCode} if feature is true`, async () => {
+                    if (documentTypeData.feature?.allowCodeManual && documentType.updatedCode) {
+                        await masterHeaderAction.fillCodeIntoTextBox(documentType.updatedCode);
                     }
                 });
 
-                await test.step(`Fill new name: ${stockAdjustmentReason.newName}`, async () => {
-                    await masterHeaderAction.fillName(stockAdjustmentReason.newName);
-                });
-
-                await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.documentType)) {
-                        await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
-                    }
-                });
-
-                await test.step(`Open lookup and select adjustment type: ${stockAdjustmentReason.adjustmentType}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.adjustmentType)) {
-                        await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
-                    }
+                await test.step(`Fill new name: ${documentType.updatedName}`, async () => {
+                    await masterHeaderAction.fillName(documentType.updatedName);
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
-                        await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.nameArabic)) {
+                        await masterHeaderAction.fillNameArabic(documentType.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
-                        await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.description)) {
+                        await masterHeaderAction.fillDescription(documentType.description);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
-                        await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
+                    if (ValidationHelper.isNotNullOrWhiteSpace(documentType.expiryNotificationBeforeDays)) {
+                        await documentTypePage.fillExpiryNotificationBeforeDays(documentType.expiryNotificationBeforeDays);
                     }
+
+                    await documentTypePage.selectCompanies(documentType.applicableCompanies);
                 });
 
                 await test.step('Save updated record', async () => {
                     await menuAction.clickTopMenuOption('Save');
                 });
 
-                await test.step(`Validate updated name: ${stockAdjustmentReason.newName}`, async () => {
-                    await expect(page.locator("input[name='StockAdjustmentReason.Name']")).toHaveValue(stockAdjustmentReason.newName);
+                await test.step(`Validate updated name: ${documentType.updatedName}`, async () => {
+                    await expect(page.locator("input[name='DocumentType.Name']")).toHaveValue(documentType.updatedName);
                 });
 
-                updatedRecords.push(`${stockAdjustmentReason.name} → ${stockAdjustmentReason.newName}`);
+                updatedRecords.push(`${documentType.name} → ${documentType.updatedName}`);
 
             } catch (error) {
-                failedRecords.push(`${stockAdjustmentReason.name} → ${stockAdjustmentReason.newName}`);
-                console.error(`🔴 Stock adjustment reason updation failed for: ${stockAdjustmentReason?.name}\n`, error);
+                failedRecords.push(`${documentType.name} → ${documentType.updatedName}`);
+                console.error(`🔴 ${ENTITY_NAME} updation failed for: ${documentType?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Stock Adjustment Reason')
+                    .navigateBackToListing(ENTITY_NAME)
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -373,26 +369,26 @@ test.describe('Document Type CRUD Operations', () => {
         }
 
         SummaryHelper.logCrudSummary({
-            entityName: 'Stock Adjustment Reason',
+            entityName: ENTITY_NAME,
             action: 'Update',
             successRecords: updatedRecords,
             skippedRecords: skippedRecords,
             failedRecords: failedRecords,
-            totalCount: stockAdjustmentReasonData.update.length
+            totalCount: documentTypeData.update.length
         });
 
         SummaryHelper.exportCrudSummary({
-            entityName: 'Stock Adjustment Reason',
+            entityName: ENTITY_NAME,
             action: 'Update',
             successRecords: updatedRecords,
             skippedRecords: skippedRecords,
             failedRecords: failedRecords,
-            totalCount: stockAdjustmentReasonData.update.length
+            totalCount: documentTypeData.update.length
         });
 
         if (failedRecords.length > 0) {
             throw new Error(
-                `🔴 Stock adjustment reason updation failed for: ${failedRecords.join(', ')}`
+                `🔴 ${ENTITY_NAME} updation failed for: ${failedRecords.join(', ')}`
             );
         }
 

@@ -31,6 +31,11 @@ export class DocumentTypePage {
    * @param {string|string[]} companyNames 
    */
   async selectCompanies(companyNames) {
+
+    if (!companyNames || (Array.isArray(companyNames) && companyNames.length === 0)) {
+      return;
+    }
+    
     const names = Array.isArray(companyNames) ? companyNames : [companyNames];
 
     await this.openApplicableCompaniesDropdown();
