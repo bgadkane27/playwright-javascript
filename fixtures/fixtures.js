@@ -1,0 +1,78 @@
+import { test as base } from '@playwright/test';
+
+import { MenuAction } from '../components/menu.action.js';
+import { LookupAction } from '../components/lookup.action.js';
+import { ListingAction } from '../components/listing.action.js';
+import { SetupAction } from '../components/setup.action.js';
+import { CommonAction } from '../components/common.action.js';
+import { DocumentAction } from '../components/document.action.js';
+import { UploadAction } from '../components/upload.action.js';
+import { MasterHeaderAction } from '../components/master-header.action.js';
+import { MasterDeleteAction } from '../components/master-delete.action.js';
+import { ToastHelper } from '../helpers/toastHelper.js';
+
+export const test = base.extend({
+
+  /* ================== APP CONTEXT ================== */
+  app: async ({ page }, use) => {
+
+    const common = new CommonAction(page);
+    const menu = new MenuAction(page);
+    const listing = new ListingAction(page);
+    const lookup = new LookupAction(page);
+    const setup = new SetupAction(page);
+    const document = new DocumentAction(page);
+    const upload = new UploadAction(page);
+    const header = new MasterHeaderAction(page);
+    const toast = new ToastHelper(page);
+
+    const masterDelete = new MasterDeleteAction(
+      page,
+      listing,
+      common,
+      menu
+    );
+
+    await use({
+      page,
+      common,
+      menu,
+      listing,
+      lookup,
+      setup,
+      document,
+      upload,
+      header,
+      masterDelete,
+      toast
+    });
+  },
+
+  /* ================== MODULE SETUPS ================== */
+
+  accountingSetup: async ({ app }, use) => {
+    await app.common.navigateToApp('/');
+    await app.menu.selectModule('Accounting');
+    await use(true);
+  },
+
+  salesSetup: async ({ app }, use) => {
+    await app.common.navigateToApp('/');
+    await app.menu.selectModule('Sales');
+    await use(true);
+  },
+
+  purchaseSetup: async ({ app }, use) => {
+    await app.common.navigateToApp('/');
+    await app.menu.selectModule('Purchase');
+    await use(true);
+  },
+
+  inventorySetup: async ({ app }, use) => {
+    await app.common.navigateToApp('/');
+    await app.menu.selectModule('Inventory');
+    await use(true);
+  }
+});
+
+export const expect = test.expect;
