@@ -14,7 +14,7 @@ export class SetupAction {
      * @param {string} masterName - The name of the master to navigate to.
      */
     async navigateToMasterByText(masterName) {
-        await test.step(`Navigate to master: ${masterName}`, async () => {
+        await test.step(`Navigate to listing of ${masterName}`, async () => {
             const link = this.page.getByRole('link', { name: masterName, exact: true });
             await link.waitFor({ state: 'visible' });
             await link.click();
@@ -31,7 +31,7 @@ export class SetupAction {
      * @param {number} index - Index of the link to click.
      */
     async navigateToMasterByTextWithIndex(masterName, index) {
-        await test.step(`Navigate to master '${masterName}' at index ${index}`, async () => {
+        await test.step(`Navigate to listing of ${masterName} at index ${index}`, async () => {
             const link = this.page.getByRole('link', { name: masterName, exact: true }).nth(index);
             await link.waitFor({ state: 'visible' });
             await link.click();

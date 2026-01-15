@@ -31,7 +31,7 @@ export class MenuAction {
    * @param {string} option - Name of the left menu option to click.
    */
   async clickLeftMenuOption(option) {
-    await test.step(`Click left menu option: ${option}`, async () => {
+    await test.step(`Click on left menu option: ${option}`, async () => {
       await this.page.getByTitle(option, { exact: true }).click();
     });
   }
