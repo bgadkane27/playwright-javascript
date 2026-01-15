@@ -8,7 +8,7 @@ test.describe('Document Type CRUD Operations', () => {
     test('validate: document type - should prevent duplicate code', async ({ app, inventorySetup }) => {
 
         const ENTITY_NAME = 'Document Type';
-        var documentTypePage = new DocumentTypePage(page);
+        const documentTypePage = new DocumentTypePage(app.page);
         const CODE_COLUMN_INDEX = 2;
         const documentType = documentTypeData.validate;
 
