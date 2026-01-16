@@ -6,7 +6,16 @@
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:accounting": "playwright test --grep \"@accounting\"",
+    "test:sales": "playwright test --grep \"@sales\"",
+    "test:purchase": "playwright test --grep \"@purchase\"",
+    "test:inventory": "playwright test --grep \"@inventory\"",
+    "test:validation": "playwright test --grep \"@validation\"",
+    "test:negative": "playwright test --grep \"@negative\"",
+    "test:createMaster": "playwright test --grep \"@createMaster\"",
+    "test:updateMaster": "playwright test --grep \"@updateMaster\"",
+    "test:deleteMaster": "playwright test --grep \"@deleteMaster\""
   },
   "keywords": [],
   "author": "",

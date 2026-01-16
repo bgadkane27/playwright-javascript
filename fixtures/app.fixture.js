@@ -50,25 +50,25 @@ export const test = base.extend({
 
   /* ================== MODULE SETUPS ================== */
 
-  accountingSetup: async ({ app }, use) => {
+  accountingModule: async ({ app }, use) => {
     await app.common.navigateToApp('/');
     await app.menu.selectModule('Accounting');
     await use(true);
   },
 
-  salesSetup: async ({ app }, use) => {
+  salesModule: async ({ app }, use) => {
     await app.common.navigateToApp('/');
     await app.menu.selectModule('Sales');
     await use(true);
   },
 
-  purchaseSetup: async ({ app }, use) => {
+  purchaseModule: async ({ app }, use) => {
     await app.common.navigateToApp('/');
     await app.menu.selectModule('Purchase');
     await use(true);
   },
 
-  inventorySetup: async ({ app }, use) => {
+  inventoryModule: async ({ app }, use) => {
     await app.common.navigateToApp('/');
     await app.menu.selectModule('Inventory');
     await use(true);

@@ -1,4 +1,4 @@
-import { test as baseTest, expect } from './fixtures.js';
+import { test as baseTest, expect } from './app.fixture.js';
 
 export const test = baseTest;
 

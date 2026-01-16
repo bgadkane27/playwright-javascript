@@ -10,12 +10,14 @@ const ENTITY_NAME = ENTITY.DOCUMENT_TYPE;
 
 test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
-    test.beforeEach(async ({ app, inventorySetup }) => {
+    test.beforeEach(async ({ app, inventoryModule }) => {
         await app.menu.clickLeftMenuOption('Setups');
         await app.setup.navigateToMasterByText(ENTITY_NAME);
     });
 
-    test(`${ENTITY_NAME} | Create | Duplicate code -> Validation error shown`, async ({ app }) => {
+    test(`${ENTITY_NAME} | Create | Duplicate code -> Validation error shown`, 
+        { tag: ['@inventory', '@document-type', '@validation', '@negative'] },
+        async ({ app }) => {
 
         const documentType = documentTypeData.validate;
 
@@ -75,7 +77,9 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
     });
 
-    test(`${ENTITY_NAME} | Create | Duplicate name -> Validation error shown`, async ({ app }) => {
+    test(`${ENTITY_NAME} | Create | Duplicate name -> Validation error shown`, 
+        { tag: ['@inventory', '@document-type', '@validation', '@negative'] },
+        async ({ app }) => {
 
         const documentType = documentTypeData.validate;
 
@@ -93,7 +97,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
         test.skip(
             !exists,
-            `Precondition failed: Document type name '${documentType.name}' not found.`
+            `Precondition failed: Document Type name '${documentType.name}' not found.`
         );
 
         try {
