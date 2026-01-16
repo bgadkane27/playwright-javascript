@@ -13,6 +13,7 @@
     "test:inventory": "playwright test --grep \"@inventory\"",
     "test:validation": "playwright test --grep \"@validation\"",
     "test:negative": "playwright test --grep \"@negative\"",
+    "test:positive": "playwright test --grep \"@positive\"",
     "test:createMaster": "playwright test --grep \"@createMaster\"",
     "test:updateMaster": "playwright test --grep \"@updateMaster\"",
     "test:deleteMaster": "playwright test --grep \"@deleteMaster\""
