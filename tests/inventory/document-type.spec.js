@@ -1,6 +1,7 @@
 import { test, expect } from '../../fixtures/baseTest.js';
 import { ENTITY } from '../../constants/entities.js';
 import { LISTING_COLUMN_INDEX } from '../../constants/listing-columns.js';
+import { ACTION } from '../../constants/actions.js';
 import { ValidationHelper } from '../../helpers/validationHelper.js';
 import { SummaryHelper } from '../../helpers/summaryHelper.js';
 import { DocumentTypePage } from '../../pages/inventory/document-type.page.js';
@@ -16,7 +17,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
         await app.setup.navigateToMasterByText(ENTITY_NAME);
     });
 
-    test(`${ENTITY_NAME} | Validate | Duplicate code -> Validation error shown`,
+    test(`${ENTITY_NAME} | ${ACTION.VALIDATE} | Duplicate code -> Validation error shown`,
         { tag: ['@inventory', '@document-type', '@validation', '@negative'] },
         async ({ app }) => {
 
@@ -82,7 +83,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
         });
 
-    test(`${ENTITY_NAME} | Validate | Duplicate name -> Validation error shown`,
+    test(`${ENTITY_NAME} | ${ACTION.VALIDATE} | Duplicate name -> Validation error shown`,
         { tag: ['@inventory', '@document-type', '@validation', '@negative'] },
         async ({ app }) => {
 
@@ -138,7 +139,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
         });
 
-    test(`${ENTITY_NAME} | Create | Valid data -> Record created successfully`,
+    test(`${ENTITY_NAME} | ${ACTION.CREATE} | Valid data -> Record created successfully`,
         { tag: ['@inventory', '@document-type', '@success', '@positive'] },
         async ({ app }) => {
 
@@ -253,7 +254,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
         });
 
-    test(`${ENTITY_NAME} | Update | Valid data -> Record updated successfully`,
+    test(`${ENTITY_NAME} | ${ACTION.UPDATE} | Valid data -> Record updated successfully`,
         { tag: ['@inventory', '@document-type', '@success', '@positive'] },
         async ({ app }) => {
 
@@ -376,7 +377,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
 
         });
 
-    test(`${ENTITY_NAME} | Delete | Valid data -> Record deleted successfully`,
+    test(`${ENTITY_NAME} | ${ACTION.DELETE} | Valid data -> Record deleted successfully`,
         { tag: ['@inventory', '@document-type', '@success', '@positive'] },
         async ({ app }) => {
 
