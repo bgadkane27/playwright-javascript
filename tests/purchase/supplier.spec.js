@@ -53,11 +53,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         await test.step('Open new supplier creation form', async () => {
-            await menuAction.clickListingMenuOptionWithIndex('New', 0);
+            await menuAction.clickListingMenuOptionAtIndex('New', 0);
         });
 
         await test.step('Attempt to save supplier with duplicate name', async () => {
@@ -102,13 +102,13 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         for (const supplier of supplierData.suppliers) {
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -182,14 +182,14 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         for (const supplier of supplierData.keyInfos) {
 
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -330,7 +330,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -338,7 +338,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
 
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -465,7 +465,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -473,7 +473,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
 
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -600,7 +600,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -608,7 +608,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
 
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -713,7 +713,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         // Loop through each record
@@ -721,7 +721,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
 
             try {
                 await test.step(`Open new supplier form: ${supplier.name}`, async () => {
-                    await menuAction.clickListingMenuOptionWithIndex('New', 0);
+                    await menuAction.clickListingMenuOptionAtIndex('New', 0);
                 });
 
                 await test.step(`Fill supplier code: ${supplier.code} if feature is true`, async () => {
@@ -838,7 +838,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
         await test.step('Navigate to supplier master', async () => {
             await menuAction.clickLeftMenuOption('Supplier');
             // await menuAction.clickLeftMenuOption('Setups');
-            // await setupAction.navigateToMasterByTextWithIndex('Supplier', 1);
+            // await setupAction.navigateToMasterByTextAtIndex('Supplier', 1);
         });
 
         // ===== Iterate To Delete =====

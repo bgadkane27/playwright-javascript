@@ -59,7 +59,7 @@ export class MenuAction {
    *
    * @param {string} option - Name of the listing toolbar option.
    */
-  async clickListingMenuOptionWithIndex(option, index) {
+  async clickListingMenuOptionAtIndex(option, index) {
     await test.step(`Click listing toolbar option: ${option}`, async () => {
       const menuItem = this.page.locator(`li[title="${option}"]`).nth(index);
       await menuItem.waitFor({ state: 'visible' });

@@ -5,6 +5,10 @@ export class SetupAction {
         this.page = page;
     }
 
+    getMasterLink(masterName) {
+        return this.page.getByRole('link', { name: masterName, exact: true });
+    }
+
     /**
      * Navigates to the specified master by visible link text.
      *
@@ -15,7 +19,7 @@ export class SetupAction {
      */
     async navigateToMasterByText(masterName) {
         await test.step(`Navigate to listing of ${masterName}`, async () => {
-            const link = this.page.getByRole('link', { name: masterName, exact: true });
+            const link = this.getMasterLink(masterName);
             await link.waitFor({ state: 'visible' });
             await link.click();
         });
@@ -30,9 +34,9 @@ export class SetupAction {
      * @param {string} masterName - The name of the master.
      * @param {number} index - Index of the link to click.
      */
-    async navigateToMasterByTextWithIndex(masterName, index) {
+    async navigateToMasterByTextAtIndex(masterName, index) {
         await test.step(`Navigate to listing of ${masterName} at index ${index}`, async () => {
-            const link = this.page.getByRole('link', { name: masterName, exact: true }).nth(index);
+            const link = this.getMasterLink(masterName).nth(index);
             await link.waitFor({ state: 'visible' });
             await link.click();
         });
@@ -49,7 +53,7 @@ export class SetupAction {
     async openSettingByText(option) {
         await test.step(`Open setting option: ${option}`, async () => {
             await this.page
-                .getByRole("link", { name: option, exact: true })
+                .getByRole('link', { name: option, exact: true })
                 .click();
         });
     }
