@@ -192,8 +192,8 @@ export class SummaryHelper {
     type,
     value
   }) {
-    console.info(`\n===== Duplicate ${entityName} ${type} Validation Summary =====`);
-    console.info(`✅ Duplicate ${type}: ${value}`);
+    console.info(`\n===== Validation Summary for ${entityName} =====`);
+    console.info(`✅ Validated ${type}: ${value}`);
     console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
     console.info('==============================================\n');
   }

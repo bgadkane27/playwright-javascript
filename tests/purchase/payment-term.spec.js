@@ -111,7 +111,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
         });
 
         await test.step('Validate due days required for payment term message', async () => {
-            await toastHelper.assertByText('PaymentTerm', 'dueDaysRequired');
+            await toastHelper.assertTextToast('PaymentTerm', 'dueDaysRequired');
         });
 
     });
@@ -154,11 +154,11 @@ test.describe.skip('Payment Term CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(paymentTerm.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
+                    if (ValidationHelper.isNonEmptyString(paymentTerm.description)) {
                         await masterHeaderAction.fillDescription(paymentTerm.description);
                     }
                 });
@@ -183,7 +183,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
                 });
 
                 await test.step(`Validate payment term created message`, async () => {
-                    await toastHelper.assertByText('PaymentTerm', 'Create');
+                    await toastHelper.assertTextToast('PaymentTerm', 'Create');
                 });
 
                 createdRecords.push(paymentTerm.name);
@@ -281,11 +281,11 @@ test.describe.skip('Payment Term CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(paymentTerm.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(paymentTerm.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(paymentTerm.description)) {
+                    if (ValidationHelper.isNonEmptyString(paymentTerm.description)) {
                         await masterHeaderAction.fillDescription(paymentTerm.description);
                     }
                 });

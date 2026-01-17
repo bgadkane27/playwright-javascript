@@ -82,7 +82,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
             });
 
             await test.step('Validate duplicate code error message', async () => {
-                await toastHelper.assertDuplicateCodeMessage();
+                await toastHelper.assertValidationMessage('duplicate code.*already exists');
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
@@ -132,7 +132,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
             });
 
             await test.step('Validate duplicate name error message', async () => {
-                await toastHelper.assertDuplicateNameMessage();
+                await toastHelper.assertValidationMessage('already exists');
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
@@ -200,15 +200,15 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.positiveAdjustmentAccount)) {
                         await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.negativeAdjustmentAccount)) {
                         await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
                     }
                 });
@@ -218,7 +218,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
                 });
 
                 await test.step('Validate record created message', async () => {
-                    await toastHelper.assertByText('StockAdjustmentReason', 'Create');
+                    await toastHelper.assertTextToast('StockAdjustmentReason', 'Create');
                 });
 
                 createdRecords.push(stockAdjustmentReason.name);
@@ -318,27 +318,27 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
                 });
 
                 await test.step(`Open lookup and select document type: ${stockAdjustmentReason.documentType}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.documentType)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.documentType)) {
                         await lookupAction.openLookupAndSelectItem('DocumentType', stockAdjustmentReason.documentType);
                     }
                 });
 
                 await test.step(`Open lookup and select adjustment type: ${stockAdjustmentReason.adjustmentType}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.adjustmentType)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.adjustmentType)) {
                         await lookupAction.openLookupAndSelectItem('AdjustmentType', stockAdjustmentReason.adjustmentType);
                     }
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockAdjustmentReason.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.positiveAdjustmentAccount)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.positiveAdjustmentAccount)) {
                         await lookupAction.openLookupAndSelectValue('PositiveAdjustmentMainAccount', stockAdjustmentReason.positiveAdjustmentAccount);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockAdjustmentReason.negativeAdjustmentAccount)) {
+                    if (ValidationHelper.isNonEmptyString(stockAdjustmentReason.negativeAdjustmentAccount)) {
                         await lookupAction.openLookupAndSelectValue('NegativeAdjustmentMainAccount', stockAdjustmentReason.negativeAdjustmentAccount);
                     }
                 });

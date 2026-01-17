@@ -255,11 +255,11 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(stockCountBatch.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockCountBatch.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.description)) {
+                    if (ValidationHelper.isNonEmptyString(stockCountBatch.description)) {
                         await masterHeaderAction.fillDescription(stockCountBatch.description);
                     }
                 });
@@ -276,7 +276,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
                     await stockCountBatchPage.fillFreezedDate(newDate);
                 });
 
-                if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.adjustmentMethod)) {
+                if (ValidationHelper.isNonEmptyString(stockCountBatch.adjustmentMethod)) {
                     await test.step('Open Adjustment Method lookup popup', async () => {
                         await stockCountBatchPage.openAdjustmentMethodLookup();
                     });
@@ -289,7 +289,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
                 await menuAction.clickTopMenuOption('Save');
 
                 await test.step(`Validate stock count batch created message`, async () => {
-                    await toastHelper.assertByText('StockCountBatch', 'Create');
+                    await toastHelper.assertTextToast('StockCountBatch', 'Create');
                 });
 
                 createdRecords.push(stockCountBatch.name);
@@ -393,17 +393,17 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(stockCountBatch.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(stockCountBatch.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.description)) {
+                    if (ValidationHelper.isNonEmptyString(stockCountBatch.description)) {
                         await masterHeaderAction.fillDescription(stockCountBatch.description);
                     }
 
                 });
 
-                if (ValidationHelper.isNotNullOrWhiteSpace(stockCountBatch.adjustmentMethod)) {
+                if (ValidationHelper.isNonEmptyString(stockCountBatch.adjustmentMethod)) {
                     await test.step('Open Adjustment Method lookup popup', async () => {
                         await stockCountBatchPage.openAdjustmentMethodLookup();
                     });

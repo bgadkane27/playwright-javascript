@@ -126,15 +126,15 @@ test.describe.skip('Salesman CRUD Operations', () => {
                 await commonAction.clickOnListingItem('Edit');
 
                 // update salesman basic details
-                if (StringHelper.isNotNullOrWhiteSpace(salesman.updatedName)) {
+                if (StringHelper.isNonEmptyString(salesman.updatedName)) {
                     await commonAction.fillName(salesman.updatedName);
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(salesman.nameArabic)) {
+                if (StringHelper.isNonEmptyString(salesman.nameArabic)) {
                     await commonAction.fillNameArabic(salesman.nameArabic);
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(salesman.description)) {
+                if (StringHelper.isNonEmptyString(salesman.description)) {
                     await commonAction.fillDescription(salesman.description);
                 }
 
@@ -142,7 +142,7 @@ test.describe.skip('Salesman CRUD Operations', () => {
                 if (salesman.other) {
                     await salesmanPage.clickOnOtherGird();
 
-                    if (StringHelper.isNotNullOrWhiteSpace(salesman.other.type)) {
+                    if (StringHelper.isNonEmptyString(salesman.other.type)) {
                         await salesmanPage.clickOnType();
                         await LookupHelper.selectLookupBoxItemRow(page, salesman.other.type);
                     }
@@ -151,19 +151,19 @@ test.describe.skip('Salesman CRUD Operations', () => {
                         await salesmanPage.fillSalesCommissionInPercent(salesman.other.salesCommissionInPercent);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(salesman.other.title)) {
+                    if (StringHelper.isNonEmptyString(salesman.other.title)) {
                         await salesmanPage.fillTitle(salesman.other.title);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(salesman.other.email)) {
+                    if (StringHelper.isNonEmptyString(salesman.other.email)) {
                         await salesmanPage.fillEmail(salesman.other.email);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(salesman.other.extension)) {
+                    if (StringHelper.isNonEmptyString(salesman.other.extension)) {
                         await salesmanPage.fillExtension(salesman.other.extension);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(salesman.other.mobile)) {
+                    if (StringHelper.isNonEmptyString(salesman.other.mobile)) {
                         await salesmanPage.fillMobile(salesman.other.mobile);
                     }
                 }

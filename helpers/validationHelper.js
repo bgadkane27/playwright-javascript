@@ -9,12 +9,12 @@ export class ValidationHelper {
    * false → value is null, undefined, not a string, or only whitespace
    *
    * @example
-   * ValidationHelper.isNotNullOrWhiteSpace('ABC');   // true
-   * ValidationHelper.isNotNullOrWhiteSpace('   ');   // false
-   * ValidationHelper.isNotNullOrWhiteSpace(null);    // false
-   * ValidationHelper.isNotNullOrWhiteSpace(123);     // false
+   * ValidationHelper.isNonEmptyString('ABC');   // true
+   * ValidationHelper.isNonEmptyString('   ');   // false
+   * ValidationHelper.isNonEmptyString(null);    // false
+   * ValidationHelper.isNonEmptyString(123);     // false
    */
-  static isNotNullOrWhiteSpace(value) {
+  static isNonEmptyString(value) {
     return typeof value === 'string' && value.trim().length > 0;
   }
 

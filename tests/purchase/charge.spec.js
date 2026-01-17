@@ -157,11 +157,11 @@ test.describe.skip('Charge CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(charge.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(charge.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.description)) {
+                    if (ValidationHelper.isNonEmptyString(charge.description)) {
                         await masterHeaderAction.fillDescription(charge.description);
                     }
 
@@ -171,7 +171,7 @@ test.describe.skip('Charge CRUD Operations', () => {
                 });
 
                 await test.step(`Select main account: ${charge.mainAccount}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.mainAccount)) {
+                    if (ValidationHelper.isNonEmptyString(charge.mainAccount)) {
                         await commonAction.selectMainAccount(charge.mainAccount);
                     }
                 });
@@ -181,7 +181,7 @@ test.describe.skip('Charge CRUD Operations', () => {
                 });
 
                 await test.step(`Validate charge created message`, async () => {
-                    await toastHelper.assertByText('Charge', 'Create');
+                    await toastHelper.assertTextToast('Charge', 'Create');
                 });
 
                 createdRecords.push(charge.name);
@@ -275,11 +275,11 @@ test.describe.skip('Charge CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(charge.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(charge.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.description)) {
+                    if (ValidationHelper.isNonEmptyString(charge.description)) {
                         await masterHeaderAction.fillDescription(charge.description);
                     }
 
@@ -289,7 +289,7 @@ test.describe.skip('Charge CRUD Operations', () => {
                 });
 
                 await test.step(`Select main account: ${charge.mainAccount}`, async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(charge.mainAccount)) {
+                    if (ValidationHelper.isNonEmptyString(charge.mainAccount)) {
                         await commonAction.selectMainAccount(charge.mainAccount);
                     }
                 });

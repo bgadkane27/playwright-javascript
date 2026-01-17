@@ -1,10 +1,10 @@
 export class DateHelper {
 
     /**
-     * Returns today's date in DD-MM-YYYY format.
-     * Optionally adds days to the current date.
+     * Returns a formatted date in DD-MM-YYYY format.
+     * Supports past and future dates.
      *
-     * @param {number} addDays - Number of days to add (default: 0)
+     * @param {number} addDays - Days to add (can be negative)
      * @returns {string} Formatted date (DD-MM-YYYY)
      */
     static getDate(addDays = 0) {

@@ -1,11 +1,11 @@
 import { test as setup, expect } from '@playwright/test';
 import path from 'path';
 import { LoginPage } from '../../pages/common/login.page';
-import login from '../../testdata/common/loginData.json';
+import loginData from '../../testdata/common/loginData.json';
 
 const authFile = path.join(process.cwd(), '.auth/user.json');
 
-setup('Login into system', async ({ page }) => {
+setup('System | Login | Valid data -> Login successfully', async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await setup.step('Navigate to login page', async () => {
@@ -13,11 +13,11 @@ setup('Login into system', async ({ page }) => {
     });
 
     await setup.step('Login with valid credentials', async () => {
-        await loginPage.login(login.username, login.password);
+        await loginPage.login(loginData.username, loginData.password);
     });
 
     await setup.step('Verify title should contain Enfinity', async () => {
-        await expect(page).toHaveTitle(/Enfinity/);
+        await expect(page).toHaveTitle(/Enfinity/, { message: 'Login failed.' });
     });
 
     await setup.step('Save authentication state', async () => {
@@ -25,8 +25,6 @@ setup('Login into system', async ({ page }) => {
     });
 
     await setup.step('Login Summary', async () => {
-        console.info('===== Successful Login Summary =====\n');
-        console.info(`✅ Login with username: ${login.username}`);
-        console.info(`🕒 Login Time: ${new Date().toLocaleString('en-IN')}\n`);
+        console.info(`\n[LOGIN] User: ${loginData.username} | Time: ${new Date().toLocaleString('en-IN')}\n`);
     });
 });

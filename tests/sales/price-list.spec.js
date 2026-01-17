@@ -42,11 +42,11 @@ test.describe.skip('Price List CRUD Operations', () => {
 
             await commonAction.fillName(priceList.name);
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+            if (StringHelper.isNonEmptyString(priceList.nameArabic)) {
                 await commonAction.fillNameArabic(priceList.nameArabic);
             }
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+            if (StringHelper.isNonEmptyString(priceList.currency)) {
                 await commonAction.clickOnCurrency();
                 await LookupHelper.selectListItem(page, priceList.currency)
             }
@@ -111,11 +111,11 @@ test.describe.skip('Price List CRUD Operations', () => {
 
             await commonAction.fillName(priceList.name);
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+            if (StringHelper.isNonEmptyString(priceList.nameArabic)) {
                 await commonAction.fillNameArabic(priceList.nameArabic);
             }
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+            if (StringHelper.isNonEmptyString(priceList.currency)) {
                 await commonAction.clickOnCurrency();
                 await LookupHelper.selectListItem(page, priceList.currency)
             }
@@ -253,11 +253,11 @@ test.describe.skip('Price List CRUD Operations', () => {
 
             await commonAction.fillName(priceList.name);
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+            if (StringHelper.isNonEmptyString(priceList.nameArabic)) {
                 await commonAction.fillNameArabic(priceList.nameArabic);
             }
 
-            if (StringHelper.isNotNullOrWhiteSpace(priceList.currency)) {
+            if (StringHelper.isNonEmptyString(priceList.currency)) {
                 await commonAction.clickOnCurrency();
                 await LookupHelper.selectListItem(page, priceList.currency)
             }
@@ -401,15 +401,15 @@ test.describe.skip('Price List CRUD Operations', () => {
                 await commonAction.clickOnListingItem('Edit');
 
                 // Proceed with updation if record exists
-                // if (StringHelper.isNotNullOrWhiteSpace(priceList.updatedName)) {
+                // if (StringHelper.isNonEmptyString(priceList.updatedName)) {
                 //     await commonAction.fillName(priceList.updatedName);
                 // }
 
-                // if (StringHelper.isNotNullOrWhiteSpace(priceList.nameArabic)) {
+                // if (StringHelper.isNonEmptyString(priceList.nameArabic)) {
                 //     await commonAction.fillNameArabic(priceList.nameArabic);
                 // }
 
-                // if (StringHelper.isNotNullOrWhiteSpace(priceList.description)) {
+                // if (StringHelper.isNonEmptyString(priceList.description)) {
                 //     await commonAction.fillDescription(priceList.description);
                 // }
 

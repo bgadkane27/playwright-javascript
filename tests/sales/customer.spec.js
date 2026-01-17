@@ -40,11 +40,11 @@ test.describe.skip('Customer CRUD Operations', () => {
 
                 await commonAction.fillName(customer.name);
 
-                if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                if (StringHelper.isNonEmptyString(customer.nameArabic)) {
                     await commonAction.fillNameArabic(customer.nameArabic);
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                if (StringHelper.isNonEmptyString(customer.currency)) {
                     await commonAction.clickOnCurrency();
                     await LookupHelper.selectListItem(page, customer.currency);
                 }
@@ -108,11 +108,11 @@ test.describe.skip('Customer CRUD Operations', () => {
 
                     await commonAction.fillName(customer.name);
 
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                    if (StringHelper.isNonEmptyString(customer.nameArabic)) {
                         await commonAction.fillNameArabic(customer.nameArabic);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                    if (StringHelper.isNonEmptyString(customer.currency)) {
                         await commonAction.clickOnCurrency();
                         await LookupHelper.selectListItem(page, customer.currency);
                     }
@@ -275,11 +275,11 @@ test.describe.skip('Customer CRUD Operations', () => {
 
                     await commonAction.fillName(customer.name);
 
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                    if (StringHelper.isNonEmptyString(customer.nameArabic)) {
                         await commonAction.fillNameArabic(customer.nameArabic);
                     }
 
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                    if (StringHelper.isNonEmptyString(customer.currency)) {
                         await commonAction.clickOnCurrency();
                         await LookupHelper.selectListItem(page, customer.currency);
                     }
@@ -399,12 +399,12 @@ test.describe.skip('Customer CRUD Operations', () => {
                     await commonAction.fillName(customer.name);
 
                     // Fill record Arabic name if provided
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                    if (StringHelper.isNonEmptyString(customer.nameArabic)) {
                         await commonAction.fillNameArabic(customer.nameArabic);
                     }
 
                     // Select currency if provided
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                    if (StringHelper.isNonEmptyString(customer.currency)) {
                         await commonAction.clickOnCurrency();
                         await LookupHelper.selectListItem(page, customer.currency);
                     }
@@ -549,12 +549,12 @@ test.describe.skip('Customer CRUD Operations', () => {
                     await commonAction.fillName(customer.name);
 
                     // Fill record Arabic name if provided
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.nameArabic)) {
+                    if (StringHelper.isNonEmptyString(customer.nameArabic)) {
                         await commonAction.fillNameArabic(customer.nameArabic);
                     }
 
                     // Select currency if provided
-                    if (StringHelper.isNotNullOrWhiteSpace(customer.currency)) {
+                    if (StringHelper.isNonEmptyString(customer.currency)) {
                         await commonAction.clickOnCurrency();
                         await LookupHelper.selectListItem(page, customer.currency);
                     }

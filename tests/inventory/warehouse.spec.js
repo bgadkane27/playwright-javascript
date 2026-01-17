@@ -173,11 +173,11 @@ test.describe.skip('Warehouse CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(warehouse.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(warehouse.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(warehouse.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(warehouse.description)) {
+                    if (ValidationHelper.isNonEmptyString(warehouse.description)) {
                         await masterHeaderAction.fillDescription(warehouse.description);
                     }
 
@@ -197,7 +197,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
                 });
 
                 await test.step(`Validate warehouse created message`, async () => {
-                    await toastHelper.assertByText('Warehouse', 'Create');
+                    await toastHelper.assertTextToast('Warehouse', 'Create');
                 });
 
                 createdRecords.push(warehouse.name);
@@ -301,11 +301,11 @@ test.describe.skip('Warehouse CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(warehouse.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(warehouse.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(warehouse.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(warehouse.description)) {
+                    if (ValidationHelper.isNonEmptyString(warehouse.description)) {
                         await masterHeaderAction.fillDescription(warehouse.description);
                     }
 

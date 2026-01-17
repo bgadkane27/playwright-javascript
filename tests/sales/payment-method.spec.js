@@ -41,7 +41,7 @@ test.describe.skip('Payment Method CRUD Operations', () => {
 
                 await commonAction.fillName(paymentMethod.name);
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.nameArabic)) {
+                if (StringHelper.isNonEmptyString(paymentMethod.nameArabic)) {
                     await commonAction.fillNameArabic(paymentMethod.nameArabic);
                 }
 
@@ -124,33 +124,33 @@ test.describe.skip('Payment Method CRUD Operations', () => {
                 await commonAction.clickOnListingItem('Edit');
 
                 // Proceed with updation if record exists
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.updatedName)) {
+                if (StringHelper.isNonEmptyString(paymentMethod.updatedName)) {
                     await commonAction.fillName(paymentMethod.updatedName);
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.nameArabic)) {
+                if (StringHelper.isNonEmptyString(paymentMethod.nameArabic)) {
                     await commonAction.fillNameArabic(paymentMethod.nameArabic);
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.type)) {
+                if (StringHelper.isNonEmptyString(paymentMethod.type)) {
                     await paymentMethodPage.clickOnType();
                     await LookupHelper.selectLookupBoxItemRow(page, paymentMethod.type);
                 }
 
                 if (paymentMethod.type === 'Debit Card' || paymentMethod.type === 'Credit Card') {
-                    if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.bankAccount)) {
+                    if (StringHelper.isNonEmptyString(paymentMethod.bankAccount)) {
                         await paymentMethodPage.clickOnBankAccount();
                         await LookupHelper.selectLookupText(page, paymentMethod.bankAccount);
                     }
                 }
                 else {
-                    if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.mainAccount)) {
+                    if (StringHelper.isNonEmptyString(paymentMethod.mainAccount)) {
                         await paymentMethodPage.clickOnMainAccount();
                         await LookupHelper.selectLookupText(page, paymentMethod.mainAccount);
                     }
                 }
 
-                if (StringHelper.isNotNullOrWhiteSpace(paymentMethod.description)) {
+                if (StringHelper.isNonEmptyString(paymentMethod.description)) {
                     await commonAction.fillDescription(paymentMethod.description);
                 }
 

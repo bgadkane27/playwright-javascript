@@ -122,11 +122,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -203,11 +203,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -285,7 +285,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Validate supplier updated message', async () => {
-                    await toastHelper.assertByText('Supplier', 'Update');
+                    await toastHelper.assertTextToast('Supplier', 'Update');
                 });
 
                 createdRecords.push(supplier.name);
@@ -352,11 +352,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -487,11 +487,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -622,11 +622,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -735,11 +735,11 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step('Fill optional fields (if provided)', async () => {
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.nameArabic)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.nameArabic)) {
                         await masterHeaderAction.fillNameArabic(supplier.nameArabic);
                     }
 
-                    if (ValidationHelper.isNotNullOrWhiteSpace(supplier.currency)) {
+                    if (ValidationHelper.isNonEmptyString(supplier.currency)) {
                         await supplierPage.clickCurrency();
                         await lookupAction.selectListItem(supplier.currency);
                     }
@@ -861,7 +861,7 @@ test.describe.skip('Supplier CRUD Operations', () => {
                 });
 
                 await test.step(`Validate supplier deleted message: ${supplier.name}`, async () => {
-                    await toastHelper.assertByText('Supplier', 'Delete');
+                    await toastHelper.assertTextToast('Supplier', 'Delete');
                 });
 
                 // ===== Track record deletion =====

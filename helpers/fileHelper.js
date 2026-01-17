@@ -12,10 +12,17 @@ export class FileHelper {
      * @throws {Error} - If file doesn't exist
      */
     static getUploadFile(folder, fileName, fileExtension = '.xlsx') {
-        const filePath = path.join(process.cwd(), 'imports', folder, `${fileName}${fileExtension}`);
+
+        if (!folder || !fileName) {
+            throw new Error('Folder and fileName are required');
+        }
         
+        const filePath = path.join(process.cwd(), 'imports', folder, `${fileName}${fileExtension}`);
+
         if (!fs.existsSync(filePath)) {
-            throw new Error(`File not found: ${filePath}`);
+            throw new Error(
+                `Upload file not found.\nFolder: ${folder}\nFile  : ${fileName}${fileExtension}`
+            );
         }
 
         return filePath;
