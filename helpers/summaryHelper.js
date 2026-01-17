@@ -101,7 +101,7 @@ export class SummaryHelper {
   }
 
   /* ===========================
-     HTML GENERATOR
+     CRUD HTML GENERATOR
   ============================ */
   static generateHtml(summary) {
     return `
@@ -142,7 +142,7 @@ export class SummaryHelper {
         ? summary.skippedRecords.map(r => `<li>${r}</li><br />`).join('')
         : ``}
       </ul> 
-      <p>Executed at: ${summary.executedAt}</p>
+      <p>Test Executed at: ${summary.executedAt}</p>
     </body>
     </html>`;
   }
@@ -172,7 +172,22 @@ export class SummaryHelper {
     console.info('==============================================\n');
   }
 
-  static logValidation({
+  /**
+ * logValidation
+ * -------------
+ * Logs a formatted summary for duplicate validation test cases.
+ *
+ * Used when:
+ * - Validating duplicate entries (Code / Name / Any unique field)
+ * - Displaying clear console output after validation tests
+ *
+ * @param {Object} params
+ * @param {string} params.entityName - Name of the entity (e.g., Document Type, Item)
+ * @param {string} params.type - Field type being validated (e.g., Code, Name)
+ * @param {string} params.value - Duplicate value used for validation
+ */
+
+  static logValidationSummary({
     entityName,
     type,
     value
@@ -181,6 +196,65 @@ export class SummaryHelper {
     console.info(`✅ Duplicate ${type}: ${value}`);
     console.info(`🕒 Test executed at: ${new Date().toLocaleString('en-IN')}`);
     console.info('==============================================\n');
+  }
+
+  static exportValidationSummary({ entityName, type, value }) {
+    const validationSummary = {
+      module: entityName,
+      type,
+      value,
+      executedAt: new Date().toLocaleString('en-IN')
+    };
+
+    const outputDir = path.resolve('reports/summaries');
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    const fileBaseName = `Duplicate_${entityName.replace(/[^a-z0-9]/gi, '_')}_${type}_Validation_Summary`;
+    try {
+      // 📄 JSON
+      fs.writeFileSync(
+        path.join(outputDir, `${fileBaseName}.json`),
+        JSON.stringify(validationSummary, null, 2)
+      );
+
+      // 🌐 HTML
+      fs.writeFileSync(
+        path.join(outputDir, `${fileBaseName}.html`),
+        this.generateValidationHtml(validationSummary)
+      );
+    } catch (error) {
+      console.error('Failed to export validation summary:', error);
+    }
+
+  }
+
+  /* ===========================
+     VALIDATION HTML GENERATOR
+  ============================ */
+  static generateValidationHtml(validationSummary) {
+    return `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>${validationSummary.module} ${validationSummary.type} Validation Summary</title>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 20px; color: #d2d2d2; background: #1a1a1a; }
+      h2,h3 { margin-bottom: 10px; }
+      p { color: #1f9aff; }
+      .success { color: #66ff66c1; }
+      .highlight { color: #b325ff; }
+    </style>
+  </head>
+  <body>
+    <h2>Validation Summary for ${validationSummary.module}</h2>
+    <h4 class="success">✔ Validated ${validationSummary.type}: 
+    <span class="highlight">${validationSummary.value}</span>
+    </h4>
+    <p>Test executed at: ${validationSummary.executedAt}</p>
+  </body>
+  </html>`;
   }
 
 }

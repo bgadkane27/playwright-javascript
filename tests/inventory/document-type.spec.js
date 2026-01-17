@@ -74,7 +74,15 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
             }
 
             await test.step('Log validation summary', async () => {
-                SummaryHelper.logValidation({
+                SummaryHelper.logValidationSummary({
+                    entityName: ENTITY_NAME,
+                    type: 'Code',
+                    value: documentType.code
+                });
+            });
+
+            await test.step('Export validation summary', async () => {
+                SummaryHelper.exportValidationSummary({
                     entityName: ENTITY_NAME,
                     type: 'Code',
                     value: documentType.code
@@ -130,7 +138,15 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
             }
 
             await test.step('Log validation summary', async () => {
-                SummaryHelper.logValidation({
+                SummaryHelper.logValidationSummary({
+                    entityName: ENTITY_NAME,
+                    type: 'Name',
+                    value: documentType.name
+                });
+            });
+
+            await test.step('Export validation summary', async () => {
+                SummaryHelper.exportValidationSummary({
                     entityName: ENTITY_NAME,
                     type: 'Name',
                     value: documentType.name
