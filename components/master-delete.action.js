@@ -20,7 +20,7 @@ export class MasterDeleteAction {
             return await this.page
                 .locator(`text=${name}`)
                 .first()
-                .isVisible({ timeout: 3000 });
+                .isVisible();
         } catch {
             return false;
         }
