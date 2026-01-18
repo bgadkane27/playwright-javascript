@@ -92,7 +92,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Count Batch');
+                await menuAction.navigateBackToListingByTitle('Stock Count Batch');
             });
         }
 
@@ -149,7 +149,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Count Batch');
+                await menuAction.navigateBackToListingByTitle('Stock Count Batch');
             });
         }
 
@@ -201,7 +201,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Count Batch');
+                await menuAction.navigateBackToListingByTitle('Stock Count Batch');
             });
         }
 
@@ -299,7 +299,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
                 console.error(`🔴 Failed stock count batch creation: ${stockCountBatch?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Stock Count Batch')
+                    .navigateBackToListingByTitle('Stock Count Batch')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -427,7 +427,7 @@ test.describe.skip('Stock Count Batch CRUD Operations', () => {
             } finally {
                 await test.step(`Back to listing`, async () => {
                     await menuAction
-                        .navigateBackToListing('Stock Count Batch')
+                        .navigateBackToListingByTitle('Stock Count Batch')
                         .catch(async () => {
                             console.warn('🔴 Navigation failed, reloading page');
                             await page.reload();

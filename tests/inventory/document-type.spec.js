@@ -71,7 +71,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
                 });
             } finally {
                 await test.step(`Navigate back to listing of ${ENTITY_NAME}`, async () => {
-                    await app.menu.navigateBackToListing(ENTITY_NAME);
+                    await app.menu.navigateBackToListingByTitle(ENTITY_NAME);
                 });
             }
 
@@ -135,7 +135,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
                 });
             } finally {
                 await test.step(`Navigate back to listing of ${ENTITY_NAME}`, async () => {
-                    await app.menu.navigateBackToListing(ENTITY_NAME);
+                    await app.menu.navigateBackToListingByTitle(ENTITY_NAME);
                 });
             }
 
@@ -233,7 +233,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
                         console.error(`🔴 ${ENTITY_NAME} creation failed for: ${documentType?.name}\n`, error);
                     } finally {
                         await app.menu
-                            .navigateBackToListing(ENTITY_NAME)
+                            .navigateBackToListingByTitle(ENTITY_NAME)
                             .catch(async () => {
                                 console.warn('🔴 Navigation failed, reloading page');
                                 await app.page.reload();
@@ -356,7 +356,7 @@ test.describe(`${ENTITY_NAME} | CRUD Operations`, () => {
                         console.error(`🔴 ${ENTITY_NAME} update failed for: ${documentType?.name}\n`, error);
                     } finally {
                         await app.menu
-                            .navigateBackToListing(ENTITY_NAME)
+                            .navigateBackToListingByTitle(ENTITY_NAME)
                             .catch(async () => {
                                 console.warn('🔴 Navigation failed, reloading page');
                                 await app.page.reload();

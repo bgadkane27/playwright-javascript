@@ -38,6 +38,8 @@ export class MasterHeaderAction {
      *
      * This method locates the Name textbox using a partial ID match
      * and fills it with the provided name value.
+     * 
+     * Multiple Name inputs exist in DOM; using first visible one
      *
      * @param {string} option - The name value to be entered.
      */

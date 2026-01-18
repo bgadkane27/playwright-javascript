@@ -86,7 +86,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Adjustment Reason');
+                await menuAction.navigateBackToListingByTitle('Stock Adjustment Reason');
             });
         }
 
@@ -136,7 +136,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Stock Adjustment Reason');
+                await menuAction.navigateBackToListingByTitle('Stock Adjustment Reason');
             });
         }
 
@@ -228,7 +228,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
                 console.error(`🔴 Stock adjustment reason creation failed for: ${stockAdjustmentReason?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Stock Adjustment Reason')
+                    .navigateBackToListingByTitle('Stock Adjustment Reason')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -358,7 +358,7 @@ test.describe.skip('Stock Adjustment Reason CRUD Operations', () => {
                 console.error(`🔴 Stock adjustment reason updation failed for: ${stockAdjustmentReason?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Stock Adjustment Reason')
+                    .navigateBackToListingByTitle('Stock Adjustment Reason')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();

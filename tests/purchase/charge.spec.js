@@ -69,7 +69,7 @@ test.describe.skip('Charge CRUD Operations', () => {
         });
 
         await test.step('Navigate back to listing', async () => {
-            await menuAction.navigateBackToListing('Charge');
+            await menuAction.navigateBackToListingByTitle('Charge');
         });
 
         await test.step('Log name validation summary', async () => { 
@@ -110,7 +110,7 @@ test.describe.skip('Charge CRUD Operations', () => {
         });
 
         await test.step('Navigate back to listing', async () => {
-            await menuAction.navigateBackToListing('Charge');
+            await menuAction.navigateBackToListingByTitle('Charge');
         });
 
         await test.step('Log name validation summary', async () => { 
@@ -191,7 +191,7 @@ test.describe.skip('Charge CRUD Operations', () => {
                 console.error(`🔴 Failed to create charge: ${charge?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Charge')
+                    .navigateBackToListingByTitle('Charge')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -310,7 +310,7 @@ test.describe.skip('Charge CRUD Operations', () => {
             } finally {
                 await test.step(`Back to listing`, async () => {
                     await menuAction
-                        .navigateBackToListing('Charge')
+                        .navigateBackToListingByTitle('Charge')
                         .catch(async () => {
                             console.warn('🔴 Navigation failed, reloading page');
                             await page.reload();

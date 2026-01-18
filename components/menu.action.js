@@ -60,7 +60,7 @@ export class MenuAction {
    * @param {string} option - Name of the listing toolbar option.
    */
   async clickListingMenuOptionAtIndex(option, index) {
-    await test.step(`Click listing toolbar option: ${option}`, async () => {
+    await test.step(`Click listing toolbar option: ${option} at index ${index}`, async () => {
       const menuItem = this.page.locator(`li[title="${option}"]`).nth(index);
       await menuItem.waitFor({ state: 'visible' });
       await menuItem.click();
@@ -78,13 +78,15 @@ export class MenuAction {
    *
    * @param {string} option - Name of the master/transaction toolbar option.
    */
-  async clickTopMenuOption(option) {    
+  async clickTopMenuOption(option) {
+    await test.step(`Click top menu option: ${option}`, async () => {
       const optionButton = this.page
         .locator('div.dxm-hasText', { hasText: option })
         .first();
 
       await optionButton.click();
       await this.page.waitForTimeout(1000);
+    });
   }
 
   /**
@@ -103,13 +105,13 @@ export class MenuAction {
   }
 
   /** Navigate to the listing by clicking on the form title hyperlink */
-  async navigateBackToListing(formTitle) {
+  async navigateBackToListingByTitle(formTitle) {
     await this.page.getByRole("link", { name: formTitle, exact: true }).click();
     await this.page.waitForLoadState('networkidle');
   }
 
   //** click on close form */
-  async clickCloseForm(){
+  async clickCloseForm() {
     await this.page.getByRole('listitem', { name: 'Close form' }).click();
     await this.page.waitForLoadState('networkidle');
   }

@@ -193,7 +193,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
                 console.error(`🔴 Failed to create payment term: ${paymentTerm?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Payment Term')
+                    .navigateBackToListingByTitle('Payment Term')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -315,7 +315,7 @@ test.describe.skip('Payment Term CRUD Operations', () => {
             } finally {
                 await test.step(`Back to listing`, async () => {
                     await menuAction
-                        .navigateBackToListing('Payment Term')
+                        .navigateBackToListingByTitle('Payment Term')
                         .catch(async () => {
                             console.warn('🔴 Navigation failed, reloading page');
                             await page.reload();

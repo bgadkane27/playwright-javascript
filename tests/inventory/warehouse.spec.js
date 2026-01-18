@@ -73,7 +73,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Warehouse');
+                await menuAction.navigateBackToListingByTitle('Warehouse');
             });
         }
 
@@ -116,7 +116,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
             });
         } finally {
             await test.step('Navigate back to listing', async () => {
-                await menuAction.navigateBackToListing('Warehouse');
+                await menuAction.navigateBackToListingByTitle('Warehouse');
             });
         }
 
@@ -207,7 +207,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
                 console.error(`🔴 Failed warehouse creation: ${warehouse?.name}\n`, error);
             } finally {
                 await menuAction
-                    .navigateBackToListing('Warehouse')
+                    .navigateBackToListingByTitle('Warehouse')
                     .catch(async () => {
                         console.warn('🔴 Navigation failed, reloading page');
                         await page.reload();
@@ -334,7 +334,7 @@ test.describe.skip('Warehouse CRUD Operations', () => {
             } finally {
                 await test.step(`Back to listing`, async () => {
                     await menuAction
-                        .navigateBackToListing('Warehouse')
+                        .navigateBackToListingByTitle('Warehouse')
                         .catch(async () => {
                             console.warn('🔴 Navigation failed, reloading page');
                             await page.reload();
